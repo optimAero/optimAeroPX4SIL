@@ -1,0 +1,104 @@
+# MATLAB-specific ignores
+
+# MATLAB backup files
+*.asv
+
+# MATLAB code generation
+codegen/
+slprj/
+sccprj/
+mexa64/
+mexw64/
+mexmaci64/
+#*.mex*
+*.slxc
+*.slx.cache
+*.autosave
+*.rpt
+
+# Simulink autosave files
+*.mdl.autosave
+*.mdl.rtw
+*.mdl.log
+*.mdl.slxc
+*.mdl.slxc.cache
+*.mdl.rebuild.mat
+*.slx.autosave
+*.slx.rtw
+*.slx.log
+*.slx.slxc
+*.slx.slxc.cache
+*.slx.rebuild.mat
+
+# MATLAB figures
+*.fig
+
+# MATLAB App Designer files
+*.mlappinstall
+
+# MATLAB temporary files
+*.tmr
+*.swp
+*.lock
+
+# MATLAB preference files
+*.prf
+*.settings
+
+# MATLAB Desktop layout files
+*.matlab-desktop.xml
+*.matlab-desktop.json
+
+# MATLAB Project definition files
+*.mlproj
+
+# MATLAB app packaging files
+*.mlapp
+
+# Temporary and log files
+*.log
+*.tmp
+*.bak
+
+# DS_Store file for macOS
+.DS_Store
+
+# MATLAB Crash Logs
+matlab_crash_dump.*
+
+# Local binary files
+*.bin
+*.exe
+*.dll
+*.so
+*.dylib
+
+# MATLAB profiler files
+*.p
+
+# MATLAB-generated HTML files
+*.html
+
+# MATLAB generated Java class files
+*.class
+
+# MATLAB Editor layout and session files
+*.m~ 
+*.asv
+
+# MATLAB JIT acceleration files
+*.mexs
+
+# MATLAB Web App Server files
+*.mwapp
+
+# Ignore directories
+output/
+results/
+logs/
+tmp/
+cache/
+work/
+
+# Ignore MATLAB associated files
+*.xml
