@@ -71,7 +71,7 @@ Once built, the PX4 executable should connect to the Simulink model. Ensure you 
 
 ## Launching SIL AFTER initial setup
 
-After the initial setup launch the full SIL can be done using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL(true,'FlightGear')`. If PX4 cannot establish a connection close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL(true,"FlightGear","192.168.50.236")` )
+After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","simHostIP","192.168.50.236")` )
 
 ## SIL Connector Notes
 
@@ -159,15 +159,15 @@ Mapping the commands from the <strong>pixhawk_sil_connector</strong> to the <str
 
 ### Ending the simulation
 
-When ending the simulation after a successful launch  Ctrl+C must be used to end the PX4 autopilot first (in the WSL terminal press Ctrl+C). If this is not done first the Simulink model will fail to close and matlab will need to be terminate
+When ending the simulation after a successful launch, Ctrl+C must be used to end the PX4 autopilot first (in the WSL terminal, press Ctrl+C). If this is not done first, the Simulink model will fail to close and MATLAB will need to be terminated.
 
 ### Vehicle parameters
 
-The F16 parameters that should be used when running the simulation can be found here: ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16. In some cases these parameters are not properly loaded into QGC. If that occurs, the parameters will need to updated manually.
+The F16 parameters that should be used when running the simulation can be found here: ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
 
 ### Simulink fail to launch
 
-In some cases simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
+In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
 
 <p>
     <img src="README_Images/demuxCmds.png" alt="Demux Commands" width="600"/>
