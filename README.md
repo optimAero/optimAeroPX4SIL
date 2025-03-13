@@ -57,10 +57,10 @@ Once opened, click: Application Settings > Comm links, add a link and press conn
 
 For more information, read the "PX4 Simulink Integration" document stored in the PX4Sim folder of the repo. To run the simulation, follow these steps:
 
-5. Make sure the **required Matlaba toolboxes** and **required support packages** (listed below) are downloaded in Matlab Add On Manager.
+5. Make sure the **required Matlab toolboxes** and **required support packages** (listed below) are downloaded in Matlab Add On Manager.
 6. You must set up the PX4 build tool chain which may be done through the Matlab setup of the UAV Toolbox Support Package for PX4 Autopilots. https://www.mathworks.com/help/uav/px4/ug/setting-px4-toolchain-ubuntu.html.  Otherwise, you can do it via WSL in the folder where you checked out the PX4 repository: ./Tools/setup/ubuntu.sh
-7. Open Matlab, run `initVehicleSIL(false,"FlightGear", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
-8. If using FlightGear visualization,  run `runFlightGear.m` in MATLAB
+7. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"visualizationType","FlightGear","simHostIP", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
+8. If using FlightGear visualization and FlightGear does not open after Step 7,  run `runFlightGear.m` in MATLAB
 9. Open and run the `VehicleSILSimulation.slx` model
 10. While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
 8. Launch wsl in the command prompt (`wsl`)
