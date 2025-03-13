@@ -4,32 +4,32 @@
 % ======================================================================================================================
 %                                                       INPUTS
 % ======================================================================================================================
-% launchFullSIL:            Flag used to launch the full SIL, should not be used on first attempt of using SIL
-% visualizationType:        The method that will be used to visualize the aircraft while SIL is running
-% launchQGroundControl:     This is a flag telling the function that QGC is not already launched
-% simHostIP:                 IP Address of users computer
-% vehicleType:              The plant model that will be used during the SIL simulation (currently can only be F-16)
-% controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
+% opts.launchFullSIL:            Flag used to launch the full SIL, should not be used on first attempt of using SIL
+% opts.visualizationType:        The method that will be used to visualize the aircraft while SIL is running
+% opts.launchQGroundControl:     This is a flag telling the function that QGC is not already launched
+% opts.simHostIP:                 IP Address of users computer
+% opts.vehicleType:              The plant model that will be used during the SIL simulation (currently can only be F-16)
+% opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
 %
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL(true,"FlightGear","10.0.0.200"): Launch full SIL sim and visualize vehicle using FlightGear and set IP
+% initVehicleSIL("launchFullSIL", true, "visualizationType","FlightGear","simHostIP","10.0.0.200"): Launch full SIL sim and visualize vehicle using FlightGear and set IP
 % address for PX4 connection.
-% initVehicleSIL(false):             Run the intialization file only, this should be used before changing any models
-function initVehicleSIL(launchFullSIL, visualizationType, launchQGroundControl, simHostIP, vehicleType, controllerType )
+% initVehicleSIL("launchFullSIL",false,):             Run the intialization file only, this should be used before changing any models
+function initVehicleSIL(opts)
 
     arguments
-        launchFullSIL        (1,1) logical = false        % input true if running the full SIL is desired
-        visualizationType    (1,1) string  = "Matlab"     % Options "PassThrough", "FlightGear", or "Matlab"
-        launchQGroundControl (1,1) logical = false        % If QGC is already launched set this to false (TODO: currently non-functional)
-        simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
-        vehicleType          (1,1) string  = "F-16"       % Currently F-16 is the only vehicle config
-        controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
+        opts.launchFullSIL        (1,1) logical = false        % input true if running the full SIL is desired
+        opts.vehicleType          (1,1) string  = "F-16"       % Currently F-16 is the only vehicle config
+        opts.visualizationType    (1,1) string  = "Matlab"     % Options "PassThrough", "FlightGear", or "Matlab"
+        opts.launchQGroundControl (1,1) logical = false        % If QGC is already launched set this to false (TODO: currently non-functional)
+        opts.simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
+        opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
     end
 % Note: In future versions these will be arguments 
-vehicleParams.type              = vehicleType; 
-vehicleParams.controllerType    = controllerType; 
+vehicleParams.type              = opts.vehicleType; 
+vehicleParams.opts.controllerType    = opts.controllerType; 
 
 % check for required toolboxes, support packages, and MATLAB version
 % list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names-from-ver#answer_300675)
@@ -188,7 +188,7 @@ turbulenceMinAirspeed_mps = 1;
 
 % Variant Models
 % Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
-if strcmp(visualizationType, 'Matlab')
+if strcmp(opts.visualizationType, 'Matlab')
     warning("When using Matlab visualization the SIL runs slower than FlightGear. Recommend setting simulink model to" + ...
         " accelerator mode.")
 end
@@ -198,10 +198,10 @@ save('workspace')
 evalin("base", 'load workspace.mat')
 delete workspace.mat
 % Launch full SIL if requested
-if launchFullSIL
+if opts.launchFullSIL
     % Run flightgear if requested
     currLoc = pwd;
-    if strcmp(visualizationType, "FlightGear")
+    if strcmp(opts.visualizationType, "FlightGear")
         evalin("base", 'runFlightGear')
     end
 
@@ -213,9 +213,9 @@ if launchFullSIL
 
     % Launch PX4
     cd px4-autopilot % NOTE: if you want a faster compile time, point this to the Linux partition of WSL (e.g., home dir)
-    simHostIPVal = double(split(simHostIP, '.'));
+    opts.simHostIPVal = double(split(opts.simHostIP, '.'));
     system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-        simHostIPVal(1), simHostIPVal(2), simHostIPVal(3), simHostIPVal(4)));
+        opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
     % Open simulink model
     cd(currLoc)
     open VehicleSilSimulation.slx
