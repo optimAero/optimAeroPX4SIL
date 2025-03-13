@@ -8,7 +8,7 @@ info@optim.aero
 
 # optimAero PX4 Simulink SIL Overview
 
-This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently the default plant model is of an F-16 aircraft based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>. A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. All simulink models were created using MATLAB 2024a Update 6.
+This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently the default plant model is of an F-16 aircraft based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>. A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. **All simulink models were created using MATLAB 2024a Update 6**.
 
 
 ## Windows installation instructions (NOTE: this will fail on Mac, as Matlab does not support Mac for all required toolboxes):
@@ -57,11 +57,12 @@ Once opened, click: Application Settings > Comm links, add a link and press conn
 
 For more information, read the "PX4 Simulink Integration" document stored in the PX4Sim folder of the repo. To run the simulation, follow these steps:
 
-5. Make sure the required toolboxes and support packages (listed below) are downloaded in Matlab Add On Manager. You must set up the PX4 build tool chain which may be done through the Matlab setup of the UAV Toolbox Support Package for PX4 Autopilots. https://www.mathworks.com/help/uav/px4/ug/setting-px4-toolchain-ubuntu.html.  Otherwise, you can do it via WSL in the folder where you checked out the PX4 repository: ./Tools/setup/ubuntu.sh
-6. Open Matlab, run `initVehicleSIL.m` and change the Matlab directory to its containing folder (this script initializes the workspace)
-7. If using FlightGear visualization,  run `runFlightGear.m` in MATLAB
-8. Open and run the `VehicleSILSimulation.slx` model
-9. While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
+5. Make sure the **required Matlaba toolboxes** and **required support packages** (listed below) are downloaded in Matlab Add On Manager.
+6. You must set up the PX4 build tool chain which may be done through the Matlab setup of the UAV Toolbox Support Package for PX4 Autopilots. https://www.mathworks.com/help/uav/px4/ug/setting-px4-toolchain-ubuntu.html.  Otherwise, you can do it via WSL in the folder where you checked out the PX4 repository: ./Tools/setup/ubuntu.sh
+7. Open Matlab, run `initVehicleSIL(false,"FlightGear", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
+8. If using FlightGear visualization,  run `runFlightGear.m` in MATLAB
+9. Open and run the `VehicleSILSimulation.slx` model
+10. While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
 8. Launch wsl in the command prompt (`wsl`)
 9. Build the PX4 executable:
 `make px4_sitl_default optimAeroF16`
@@ -70,7 +71,7 @@ Once built, the PX4 executable should connect to the Simulink model. Ensure you 
 
 ## Launching SIL AFTER initial setup
 
-After the initial setup launch the full SIL can be done using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL(true,'FlightGear')`. If PX4 cannot establish a connection close the WSL terminal and run the `initVehicleSIL` function using the `eth0Path` argument (example: `initVehicleSIL(true,"FlightGear","192.168.50.236")` )
+After the initial setup launch the full SIL can be done using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL(true,'FlightGear')`. If PX4 cannot establish a connection close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL(true,"FlightGear","192.168.50.236")` )
 
 ## SIL Connector Notes
 
