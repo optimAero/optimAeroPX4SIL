@@ -28,8 +28,11 @@ function initVehicleSIL(opts)
         opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
     end
 % Note: In future versions these will be arguments 
-vehicleParams.type              = opts.vehicleType; 
-vehicleParams.opts.controllerType    = opts.controllerType; 
+vehicleParams.type                  = opts.vehicleType; 
+vehicleParams.controllerType        = opts.controllerType; 
+visualizationType                   = opts.visualizationType;
+controllerType                      = opts.controllerType;
+vehicleType                         = opts.vehicleType;
 
 % check for required toolboxes, support packages, and MATLAB version
 % list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names-from-ver#answer_300675)
@@ -212,7 +215,7 @@ if opts.launchFullSIL
 
 
     % Launch PX4
-    cd px4-autopilot % NOTE: if you want a faster compile time, point this to the Linux partition of WSL (e.g., home dir)
+    cd PX4-Autopilot % NOTE: if you want a faster compile time, point this to the Linux partition of WSL (e.g., home dir)
     opts.simHostIPVal = double(split(opts.simHostIP, '.'));
     system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
         opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
