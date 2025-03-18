@@ -62,13 +62,13 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 5. Make sure the **Required Matlab Toolboxes** and **Required Support Packages** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
 6. You must set up the PX4 build tool chain which can be done through the Matlab setup of the UAV Toolbox Support Package for PX4 Autopilots, Figure 2. https://www.mathworks.com/help/uav/px4/ug/setting-px4-toolchain-ubuntu.html. Otherwise, you can do it via WSL in the folder where you checked out the PX4 repository: ./Tools/setup/ubuntu.sh
    <p>
-       <img src="README_Images/addOns.PNG" alt="Add On Manager" width="600"/>
+       <img src="README_Images/AddOns.PNG" alt="Add On Manager" width="600"/>
    </p>
    <p>
        <em> Figure 1: Add-On Manager</em>
    </p>
    <p>
-       <img src="README_Images/uavSupportPack.png" alt="UAV Support Package" width="600"/>
+       <img src="README_Images/UAVSupportPack.PNG" alt="UAV Support Package" width="600"/>
    </p>
    <p>
        <em> Figure 2: UAV Support Package for PX4</em>
