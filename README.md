@@ -20,7 +20,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
    cd PX4SIL
    git submodule update --init --recursive
    ```
-   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: compilation of PX4 will be slow if the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, check the PX4-Autopilot repo, NOT THE FULL SIL REPO, out into the WSL root directory on the Linux partition. <strong>NOTE:</strong> If this method is used DO NOT initialize the SIL using )
+   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: compilation of PX4 will be slow if the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, check the PX4-Autopilot repo, NOT THE FULL SIL REPO, out into the WSL root directory on the Linux partition. <strong>NOTE:</strong> If this method is used DO NOT initialize the SIL as stated in the <strong>  Launching SIL AFTER initial setup </strong> section. You must launch PX4 as stated in STEP 10-11 )
 
 2. From an elevated cmd prompt (e.g., run cmd as administrator or use Powershell): 
 
@@ -29,13 +29,13 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
    ipconfig
    ```
    to get the get L/WAN IP (e.g. 192.168.12.104).  You will use this IP in step 3. This IP is your `simHostIP`.
-
+`
    Then, install WSL by typing the following into the elevated cmd prompt (Note: the SIL has only been tested using Ubuntu <strong>22.04.3 LTS</strong>): 
     ```
    wsl --install
    ```
 
-3. In WSL:
+1. In WSL:
    Type:
     ```
    ifconfig
@@ -48,7 +48,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
    ```
    **NOTE: If PX4 does not connect to Simulink after Step 11, you may need to set this environment variable again**
 
-4. In QGroundControl (QGC):
+2. In QGroundControl (QGC):
    QGC may  be installed from: https://github.com/mavlink/qgroundcontrol/releases
 
    Once opened, click: Application Settings > Comm links, add a link and press connect: 
@@ -62,7 +62,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 5. Make sure the **Required Matlab Toolboxes** and **Required Support Packages** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
 6. You must set up the PX4 build tool chain which can be done through the Matlab setup of the UAV Toolbox Support Package for PX4 Autopilots, Figure 2. https://www.mathworks.com/help/uav/px4/ug/setting-px4-toolchain-ubuntu.html. Otherwise, you can do it via WSL in the folder where you checked out the PX4 repository: ./Tools/setup/ubuntu.sh
    <p>
-       <img src="README_Images/addOns.png" alt="Add On Manager" width="600"/>
+       <img src="README_Images/addOns.PNG" alt="Add On Manager" width="600"/>
    </p>
    <p>
        <em> Figure 1: Add-On Manager</em>
@@ -79,10 +79,11 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
    2. NOTE - If FlightGear does not appear after using the visualization argument, simply  run `runFlightGear.m` in the MATLAB terminal after calling the `initVehicleSIL` function.
 8. Open and run the `VehicleSILSimulation.slx` model
 9.  While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
-10. Launch wsl in the command prompt (`wsl`)
+10. Launch wsl in the command prompt (`wsl`) and navigate to the PX4-Autopilot repo/subrepo (depending on what you chose in STEP 1)
 11. Build the PX4 executable:
-`make px4_sitl_default optimAeroF16`
-
+```
+make px4_sitl_default optimAeroF16
+```
 Once built, the PX4 executable should connect to the Simulink model. Ensure you run the Simulink file first before attempting to connect the PX4 executable. The Simulink model will report "Initializing" or "waiting to connect on 4560" when it is ready for the PX4 executable to connect.
 
 ## Launching SIL AFTER initial setup
