@@ -26,6 +26,7 @@ function initVehicleSIL(opts)
         opts.launchQGroundControl (1,1) logical = false        % If QGC is already launched set this to false (TODO: currently non-functional)
         opts.simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
         opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
+        opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot" % This is the path to the PX4 repo
     end
 % Note: In future versions these will be arguments 
 vehicleParams.type                  = opts.vehicleType; 
@@ -215,14 +216,22 @@ if opts.launchFullSIL
 
 
     % Launch PX4
-    cd PX4-Autopilot % NOTE: if you want a faster compile time, point this to the Linux partition of WSL (e.g., home dir)
+    eval(strcat("cd ", opts.PX4RepoPath))
     opts.simHostIPVal = double(split(opts.simHostIP, '.'));
-    system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
+    [status,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
         opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
     % Open simulink model
-    cd(currLoc)
-    open VehicleSilSimulation.slx
-    sim VehicleSilSimulation
+    if isempty(cmdout)
+        % cmdout being empty means PX4 is running If it is not empty then most likely there's an error
+        cd(currLoc)
+        open VehicleSilSimulation.slx
+        sim VehicleSilSimulation
+    else
+        warning(['If the repo path argument points to the WSL side, matlab cannot call the make command. PX4 must be' ...
+            ' built manually'])
+        error(cmdout)
+
+    end
 
 end
 
