@@ -20,7 +20,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
    cd PX4SIL
    git submodule update --init --recursive
    ```
-   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: compilation of PX4 will be slow if the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, check the PX4-Autopilot repo, NOT THE FULL SIL REPO, out into the WSL root directory on the Linux partition. <strong>NOTE:</strong> If this method is used DO NOT initialize the SIL as stated in the <strong>  Launching SIL AFTER initial setup </strong> section. You must launch PX4 as stated in STEP 10-11 )
+   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: compilation of PX4 will be slow if the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, clone the PX4-Autopilot repo, NOT THE FULL SIL REPO, into the WSL root directory on the Linux partition.
 
 2. From an elevated cmd prompt (e.g., run cmd as administrator or use Powershell): 
 
@@ -88,7 +88,7 @@ Once built, the PX4 executable should connect to the Simulink model. Ensure you 
 
 ## Launching SIL AFTER initial setup
 
-After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","simHostIP","192.168.50.236")` )
+After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","simHostIP","192.168.50.236")` ). <strong>If the PX4-Autopilot repo has been cloned on the WSL root directory use the `"PX4InWSL",true` argument.</strong>
 
 ## SIL Connector Notes
 

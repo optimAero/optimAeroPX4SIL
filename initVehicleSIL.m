@@ -11,12 +11,12 @@
 % opts.vehicleType:              The plant model that will be used during the SIL simulation (currently can only be F-16)
 % opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
 % opts.PX4RepoPath               Path relative to optimAeroPX4SIL if PX4 repo is on windows side, or path relative to root wsl directory
-% opts.PX4InWSL                  If attempting to use the PX4 repo checked out on the wsl side, set this variable to true
+% opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
 % initVehicleSIL("launchFullSIL", true, "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL",true): 
-% Launch full SIL sim, visualize vehicle using FlightGear, use the PX4 repo checked out on the WSL side and set IP 
+% Launch full SIL sim, visualize vehicle using FlightGear, use the PX4 repo clned into the WSL root directory and set IP 
 % address for PX4 connection.
 % initVehicleSIL("launchFullSIL",false):   Run the intialization file only, this should be used before changing any models
 function initVehicleSIL(opts)
@@ -224,7 +224,7 @@ if opts.launchFullSIL
         [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
             opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
     else
-        % Launch PX4-Autopilot that is checked out on the WSL side
+        % Launch PX4-Autopilot that is cloned into the WSL root directory
         [~,cmdout] = system(sprintf('start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
             opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
     end
