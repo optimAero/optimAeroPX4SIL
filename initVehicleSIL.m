@@ -27,7 +27,7 @@ arguments
     opts.visualizationType    (1,1) string  = "Matlab"     % Options "PassThrough", "FlightGear", or "Matlab"
     opts.simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
     opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
-    opts.PX4RepoPath          (1,1) string  = "px4-autopilot"   
+    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   
     opts.PX4InWSL             (1,1) logical = false        
 end
 % Note: In future versions these will be arguments
