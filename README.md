@@ -6,16 +6,17 @@ https://www.optim.aero
 
 info@optim.aero
 
-<strong>Simulator Preview</strong>:[![Thumbnail](https://img.youtube.com/vi/evAoTjM-tIw/maxresdefault.jpg)](https://www.youtube.com/watch?v=evAoTjM-tIw)
+<strong>Simulator Preview</strong>:
 
-<strong>Installation Tutorial</strong>:[![Thumbnail](https://img.youtube.com/vi/XtOpK9rAsmg/maxresdefault.jpg)](https://www.youtube.com/watch?v=XtOpK9rAsmg)
+[![Thumbnail](https://img.youtube.com/vi/evAoTjM-tIw/hqdefault.jpg)](https://www.youtube.com/watch?v=evAoTjM-tIw)
+
 
 # optimAero PX4 Simulink SIL Overview
 
 This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently the default plant model is of an F-16 aircraft based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>. A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. **All simulink models were created using MATLAB 2024a Update 6**.
 
-
 ## Windows installation instructions (NOTE: this will fail on Mac, as Matlab does not support Mac for all required toolboxes):
+<strong>Installation Tutorial</strong>:[![Thumbnail](https://img.youtube.com/vi/XtOpK9rAsmg/maxresdefault.jpg)](https://www.youtube.com/watch?v=XtOpK9rAsmg)
 
 1. In git bash:
 
