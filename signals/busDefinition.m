@@ -1,12 +1,13 @@
-function busDefinition() 
-% BUSDEFINITION initializes a set of bus objects in the MATLAB base workspace 
+% BUSDEFINITION initializes a set of bus objects in the MATLAB base workspace
+function busDefinition(vehicleType)
 
 % Servo bus definition
-servosBusDefinition();
-% servo commands bus 
-servosCommandBusDefinition();
+servosBusDefinition(vehicleType);
 
-% Bus object: ADCSensorBus 
+% servo commands bus
+servosCommandBusDefinition(vehicleType);
+
+% Bus object: ADCSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'BaroSensorBus';
@@ -40,7 +41,7 @@ ADCSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'ADCSensorBus', ADCSensorBus);
 
-% Bus object: AccelSensorBus 
+% Bus object: AccelSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -107,7 +108,7 @@ AccelSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'AccelSensorBus', AccelSensorBus);
 
-% Bus object: ActuatorBus 
+% Bus object: ActuatorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'ServosBus';
@@ -141,7 +142,7 @@ ActuatorBus.Elements = elems;
 clear elems;
 assignin('base', 'ActuatorBus', ActuatorBus);
 
-% Bus object: ActuatorCommandBus 
+% Bus object: ActuatorCommandBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'controllerArmed';
@@ -186,7 +187,7 @@ ActuatorCommandBus.Elements = elems;
 clear elems;
 assignin('base', 'ActuatorCommandBus', ActuatorCommandBus);
 
-% Bus object: AirData 
+% Bus object: AirData
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'airspeedInBody_mps';
@@ -231,7 +232,7 @@ AirData.Elements = elems;
 clear elems;
 assignin('base','AirData', AirData);
 
-% Bus object: AirEnvironmentBus 
+% Bus object: AirEnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'airTemperature_K';
@@ -331,7 +332,7 @@ AirEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'AirEnvironmentBus', AirEnvironmentBus);
 
-% Bus object: AircraftForcesMomentsBus 
+% Bus object: AircraftForcesMomentsBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'forcesInBody_N';
@@ -409,7 +410,7 @@ AircraftForcesMomentsBus.Elements = elems;
 clear elems;
 assignin('base', 'AircraftForcesMomentsBus', AircraftForcesMomentsBus);
 
-% Bus object: BaroSensorBus 
+% Bus object: BaroSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -465,7 +466,7 @@ BaroSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'BaroSensorBus', BaroSensorBus);
 
-% Bus object: BodyStateBus 
+% Bus object: BodyStateBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'aircraftVelInNED_mps';
@@ -576,7 +577,7 @@ BodyStateBus.Elements = elems;
 clear elems;
 assignin('base', 'BodyStateBus', BodyStateBus);
 
-% Bus object: ComponentForcesMomentsBus 
+% Bus object: ComponentForcesMomentsBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'forcesInBody_N';
@@ -610,7 +611,7 @@ ComponentForcesMomentsBus.Elements = elems;
 clear elems;
 assignin('base', 'ComponentForcesMomentsBus', ComponentForcesMomentsBus);
 
-% Bus object: DiffPressureSensorBus 
+% Bus object: DiffPressureSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -655,7 +656,7 @@ DiffPressureSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'DiffPressureSensorBus', DiffPressureSensorBus);
 
-% Bus object: EarthEnvironmentBus 
+% Bus object: EarthEnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'gravityScalar_mps2';
@@ -700,7 +701,7 @@ EarthEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'EarthEnvironmentBus', EarthEnvironmentBus);
 
-% Bus object: EngineBus 
+% Bus object: EngineBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'angVel_radps';
@@ -745,7 +746,7 @@ EngineBus.Elements = elems;
 clear elems;
 assignin('base', 'EngineBus', EngineBus);
 
-% Bus object: EngineCommandBus 
+% Bus object: EngineCommandBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'cmdThrottle_unit';
@@ -768,7 +769,7 @@ EngineCommandBus.Elements = elems;
 clear elems;
 assignin('base', 'EngineCommandBus', EngineCommandBus);
 
-% Bus object: EnvironmentBus 
+% Bus object: EnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'EarthEnvironment';
@@ -813,7 +814,7 @@ EnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'EnvironmentBus', EnvironmentBus);
 
-% Bus object: GPSSensorBus 
+% Bus object: GPSSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -968,7 +969,7 @@ GPSSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'GPSSensorBus', GPSSensorBus);
 
-% Bus object: GyroSensorBus 
+% Bus object: GyroSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -1035,7 +1036,7 @@ GyroSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'GyroSensorBus', GyroSensorBus);
 
-% Bus object: INSSensorBus 
+% Bus object: INSSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'GyroSensorBus';
@@ -1080,7 +1081,7 @@ INSSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'INSSensorBus', INSSensorBus);
 
-% Bus object: MagSensorBus 
+% Bus object: MagSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -1147,7 +1148,7 @@ MagSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'MagSensorBus', MagSensorBus);
 
-% Bus object: MassPropertiesBus 
+% Bus object: MassPropertiesBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'aircraftMass_kg';
@@ -1203,7 +1204,7 @@ MassPropertiesBus.Elements = elems;
 clear elems;
 assignin('base','MassPropertiesBus', MassPropertiesBus);
 
-% Bus object: SensorsBus 
+% Bus object: SensorsBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'GPSSensorBus';
@@ -1251,7 +1252,7 @@ assignin('base', 'SensorsBus', SensorsBus);
 
 
 
-% Bus object: TerrainEnvironmentBus 
+% Bus object: TerrainEnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'terrainHeightInNED_m';
@@ -1274,7 +1275,7 @@ TerrainEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'TerrainEnvironmentBus', TerrainEnvironmentBus);
 
-% Bus object: VehicleBus 
+% Bus object: VehicleBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'VehicleConfiguration';
@@ -1341,7 +1342,7 @@ VehicleBus.Elements = elems;
 clear elems;
 assignin('base', 'VehicleBus', VehicleBus);
 
-% Bus object: VehicleConfigurationBus 
+% Bus object: VehicleConfigurationBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'isVehicleAirborne';
@@ -1375,3 +1376,4 @@ VehicleConfigurationBus.Elements = elems;
 clear elems;
 assignin('base', 'VehicleConfigurationBus', VehicleConfigurationBus);
 
+end
