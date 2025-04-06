@@ -7,6 +7,45 @@ servosBusDefinition(vehicleType);
 % servo commands bus
 servosCommandBusDefinition(vehicleType);
 
+
+% Bus object: ComponentForcesMomentsBus
+clear elems;
+elems(1) = Simulink.BusElement;
+elems(1).Name = 'forcesInBody_N';
+elems(1).Dimensions = 3;
+elems(1).DimensionsMode = 'Fixed';
+elems(1).DataType = 'double';
+elems(1).Complexity = 'real';
+elems(1).Min = [];
+elems(1).Max = [];
+elems(1).DocUnits = '';
+elems(1).Description = '';
+
+elems(2) = Simulink.BusElement;
+elems(2).Name = 'momentsInBody_Nm';
+elems(2).Dimensions = 3;
+elems(2).DimensionsMode = 'Fixed';
+elems(2).DataType = 'double';
+elems(2).Complexity = 'real';
+elems(2).Min = [];
+elems(2).Max = [];
+elems(2).DocUnits = '';
+elems(2).Description = '';
+
+ComponentForcesMomentsBus = Simulink.Bus;
+ComponentForcesMomentsBus.HeaderFile = '';
+ComponentForcesMomentsBus.Description = '';
+ComponentForcesMomentsBus.DataScope = 'Auto';
+ComponentForcesMomentsBus.Alignment = -1;
+ComponentForcesMomentsBus.PreserveElementDimensions = 0;
+ComponentForcesMomentsBus.Elements = elems;
+clear elems;
+assignin('base', 'ComponentForcesMomentsBus', ComponentForcesMomentsBus);
+
+
+% Propulsion System Bus
+propulsionSystemBusDefinition(vehicleType)
+
 % Bus object: ADCSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
@@ -125,7 +164,7 @@ elems(2) = Simulink.BusElement;
 elems(2).Name = 'EngineBus';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'Bus: EngineBus';
+elems(2).DataType = 'Bus: PropulsionBus';
 elems(2).Complexity = 'real';
 elems(2).Min = [];
 elems(2).Max = [];
@@ -577,39 +616,6 @@ BodyStateBus.Elements = elems;
 clear elems;
 assignin('base', 'BodyStateBus', BodyStateBus);
 
-% Bus object: ComponentForcesMomentsBus
-clear elems;
-elems(1) = Simulink.BusElement;
-elems(1).Name = 'forcesInBody_N';
-elems(1).Dimensions = 3;
-elems(1).DimensionsMode = 'Fixed';
-elems(1).DataType = 'double';
-elems(1).Complexity = 'real';
-elems(1).Min = [];
-elems(1).Max = [];
-elems(1).DocUnits = '';
-elems(1).Description = '';
-
-elems(2) = Simulink.BusElement;
-elems(2).Name = 'momentsInBody_Nm';
-elems(2).Dimensions = 3;
-elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'double';
-elems(2).Complexity = 'real';
-elems(2).Min = [];
-elems(2).Max = [];
-elems(2).DocUnits = '';
-elems(2).Description = '';
-
-ComponentForcesMomentsBus = Simulink.Bus;
-ComponentForcesMomentsBus.HeaderFile = '';
-ComponentForcesMomentsBus.Description = '';
-ComponentForcesMomentsBus.DataScope = 'Auto';
-ComponentForcesMomentsBus.Alignment = -1;
-ComponentForcesMomentsBus.PreserveElementDimensions = 0;
-ComponentForcesMomentsBus.Elements = elems;
-clear elems;
-assignin('base', 'ComponentForcesMomentsBus', ComponentForcesMomentsBus);
 
 % Bus object: DiffPressureSensorBus
 clear elems;
@@ -701,50 +707,7 @@ EarthEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'EarthEnvironmentBus', EarthEnvironmentBus);
 
-% Bus object: EngineBus
-clear elems;
-elems(1) = Simulink.BusElement;
-elems(1).Name = 'angVel_radps';
-elems(1).Dimensions = 1;
-elems(1).DimensionsMode = 'Fixed';
-elems(1).DataType = 'double';
-elems(1).Complexity = 'real';
-elems(1).Min = [];
-elems(1).Max = [];
-elems(1).DocUnits = '';
-elems(1).Description = '';
 
-elems(2) = Simulink.BusElement;
-elems(2).Name = 'engineForcesMoments';
-elems(2).Dimensions = 1;
-elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'Bus: ComponentForcesMomentsBus';
-elems(2).Complexity = 'real';
-elems(2).Min = [];
-elems(2).Max = [];
-elems(2).DocUnits = '';
-elems(2).Description = '';
-
-elems(3) = Simulink.BusElement;
-elems(3).Name = 'fuelRate_kgps';
-elems(3).Dimensions = 1;
-elems(3).DimensionsMode = 'Fixed';
-elems(3).DataType = 'double';
-elems(3).Complexity = 'real';
-elems(3).Min = [];
-elems(3).Max = [];
-elems(3).DocUnits = '';
-elems(3).Description = '';
-
-EngineBus = Simulink.Bus;
-EngineBus.HeaderFile = '';
-EngineBus.Description = '';
-EngineBus.DataScope = 'Auto';
-EngineBus.Alignment = -1;
-EngineBus.PreserveElementDimensions = 0;
-EngineBus.Elements = elems;
-clear elems;
-assignin('base', 'EngineBus', EngineBus);
 
 % Bus object: EngineCommandBus
 clear elems;
