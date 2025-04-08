@@ -16,7 +16,7 @@
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
 % initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL",true):
-%   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo clned into the WSL root directory and set IP
+%   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory and set IP
 %   address for PX4 connection.
 % initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
