@@ -161,7 +161,7 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'EngineBus';
+elems(2).Name = 'PropulsionBus';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
 elems(2).DataType = 'Bus: PropulsionBus';
