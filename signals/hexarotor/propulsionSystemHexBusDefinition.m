@@ -3,7 +3,7 @@ function propulsionSystemHexBusDefinition()
 
 ii = 1;
 elems(ii) = Simulink.BusElement;
-elems(ii).Name = sprintf('angVel%d_radps',ii);
+elems(ii).Name = sprintf('rotorAngVel_radps',ii);
 elems(ii).Dimensions = 6;
 elems(ii).DimensionsMode = 'Fixed';
 elems(ii).DataType = 'double';

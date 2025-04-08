@@ -48,17 +48,27 @@ switch lower(vehicleType)
         PropulsionBus.Elements = elems;
         assignin('base', 'PropulsionBus', PropulsionBus);
     case "hexarotor"
-        propulsionSystemHexBusDefinition
         elems(1) = Simulink.BusElement;
-        elems(1).Name = 'PropulsionSystemHexBus';
-        elems(1).Dimensions = 1;
+        elems(1).Name = 'rotorAngVel_radps';
+        elems(1).Dimensions = 6;
         elems(1).DimensionsMode = 'Fixed';
-        elems(1).DataType = 'Bus: PropulsionSystemHexBus';
+        elems(1).DataType = 'double';
         elems(1).Complexity = 'real';
         elems(1).Min = [];
         elems(1).Max = [];
         elems(1).DocUnits = '';
         elems(1).Description = '';
+
+        elems(2) = Simulink.BusElement;
+        elems(2).Name = 'engineForcesMoments';
+        elems(2).Dimensions = 1;
+        elems(2).DimensionsMode = 'Fixed';
+        elems(2).DataType = 'Bus: ComponentForcesMomentsBus';
+        elems(2).Complexity = 'real';
+        elems(2).Min = [];
+        elems(2).Max = [];
+        elems(2).DocUnits = '';
+        elems(2).Description = '';
 
         PropulsionBus = Simulink.Bus;
         PropulsionBus.HeaderFile = '';
