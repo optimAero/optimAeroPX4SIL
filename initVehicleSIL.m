@@ -8,16 +8,18 @@
 %                                NOTE: should not be used on first attempt of using SIL.
 % opts.visualizationType:        The method that will be used to visualize the aircraft while SIL is running
 % opts.simHostIP:                IP Address of users computer
-% opts.vehicleType:              The plant model that will be used during the SIL simulation (currently can only be F-16)
+% opts.vehicleType:              The plant model that will be used during the SIL simulation: F-16, hexarotor, etc
 % opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
 % opts.PX4RepoPath               Path relative to optimAeroPX4SIL if PX4 repo is on windows side, or path relative to root wsl directory
 % opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL("launchFullSIL", true, "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL",true):
-% Launch full SIL sim, visualize vehicle using FlightGear, use the PX4 repo clned into the WSL root directory and set IP
-% address for PX4 connection.
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL",true):
+%   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory and set IP
+%   address for PX4 connection.
+% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL", false)
+%   Load sim as "hexarotor"
 % initVehicleSIL("launchFullSIL",false):   Run the intialization file only, this should be used before changing any models
 function initVehicleSIL(opts)
 
