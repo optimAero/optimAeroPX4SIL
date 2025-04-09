@@ -226,7 +226,7 @@ ActuatorCommandBus.Elements = elems;
 clear elems;
 assignin('base', 'ActuatorCommandBus', ActuatorCommandBus);
 
-% Bus object: AirData
+% Bus object: AirDataBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'airspeedInBody_mps';
@@ -261,15 +261,15 @@ elems(3).Max = [];
 elems(3).DocUnits = '';
 elems(3).Description = '';
 
-AirData = Simulink.Bus;
-AirData.HeaderFile = '';
-AirData.Description = '';
-AirData.DataScope = 'Auto';
-AirData.Alignment = -1;
-AirData.PreserveElementDimensions = 0;
-AirData.Elements = elems;
+AirDataBus = Simulink.Bus;
+AirDataBus.HeaderFile = '';
+AirDataBus.Description = '';
+AirDataBus.DataScope = 'Auto';
+AirDataBus.Alignment = -1;
+AirDataBus.PreserveElementDimensions = 0;
+AirDataBus.Elements = elems;
 clear elems;
-assignin('base','AirData', AirData);
+assignin('base','AirDataBus', AirDataBus);
 
 % Bus object: AirEnvironmentBus
 clear elems;
@@ -1285,10 +1285,10 @@ elems(4).DocUnits = '';
 elems(4).Description = '';
 
 elems(5) = Simulink.BusElement;
-elems(5).Name = 'AirData';
+elems(5).Name = 'AirDataBus';
 elems(5).Dimensions = 1;
 elems(5).DimensionsMode = 'Fixed';
-elems(5).DataType = 'Bus: AirData';
+elems(5).DataType = 'Bus: AirDataBus';
 elems(5).Complexity = 'real';
 elems(5).Min = [];
 elems(5).Max = [];
