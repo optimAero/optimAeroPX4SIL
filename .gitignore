@@ -99,6 +99,7 @@ logs/
 tmp/
 cache/
 work/
+ignoreFolder/
 
 # Ignore MATLAB associated files
 *.xml
