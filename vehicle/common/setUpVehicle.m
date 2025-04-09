@@ -15,7 +15,6 @@ switch lower(vehicleParams.type)
         vehicleParams.refCG_m = [0; 0; 0]; % reference cg
         vehicleParams.maxRPM = 3000;
         vehicleParams.SRef_m2 = 0.5;
-        vehicleParams.CFmax_NpPam2 = 30;
         aeroDataHex
     otherwise
         error(char(["unknown vehicle: " vehicleType]))
