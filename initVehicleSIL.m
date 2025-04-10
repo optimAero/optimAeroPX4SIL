@@ -15,10 +15,12 @@
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL",true):
-%   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory and set IP
-%   address for PX4 connection.
-% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL", false)
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType","FlightGear","simHostIP",
+% "10.0.0.200","PX4InWSL",true):
+%   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory
+% and set IP address for PX4 connection.
+% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType","FlightGear","simHostIP",
+% "10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
 % initVehicleSIL("launchFullSIL",false):   Run the intialization file only, this should be used before changing any models
 function initVehicleSIL(opts)
@@ -37,7 +39,8 @@ vehicleParams.type                   = opts.vehicleType;
 vehicleParams.controllerType         = opts.controllerType;
 
 % check for required toolboxes, support packages, and MATLAB version
-% list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names-from-ver#answer_300675)
+% list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names
+% -from-ver#answer_300675)
 requiredTools ={'Aerospace_Blockset'
     'Aerospace_Toolbox'
     'Control_Toolbox'
@@ -50,7 +53,7 @@ requiredTools ={'Aerospace_Blockset'
 
 requiredSupportPackages = {};
 requiredSupportPackages(1).Name = {'UAV Toolbox Support Package for PX4 Autopilots'};
-requiredSupportPackages(1).Version = '24.1.2';
+requiredSupportPackages(1).Version = {'24.1.2', '24.1.3'};
 
 for ii = 1:length(requiredTools)
     if ~license('test', char(requiredTools(ii)))
@@ -70,8 +73,9 @@ else
         compareIdx = contains(supportPackagesInstalledNames, requiredSupportPackages(ii).Name);
         if ~any(compareIdx)
             warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-        elseif ~strcmpi(supportPackagesInstalledVersions(compareIdx), requiredSupportPackages(ii).Version)
-            warning(['Please install v' requiredSupportPackages(ii).Version])
+        elseif all(strcmpi(supportPackagesInstalledVersions(compareIdx), requiredSupportPackages(ii).Version))
+            warning(['Please install v' requiredSupportPackages(ii).Version{1} ' or v' ...
+                requiredSupportPackages(ii).Version{2} ' of the ' requiredSupportPackages(ii).Name{1}])
         end
     end
 end
