@@ -1,7 +1,9 @@
 % This script sets up the actuator parameters for the selected vehicle. This includes
 % parameters that define the motors, control surfaces, engines, etc.
-
+actuatorDelay_s = 0.005;
+plantSampleTime_s = 0.01;
 parameters.engine.minThrottle = 0.01; %idle happens above this value
+
 switch lower(vehicleParams.type)
     case "f-16"
         % Max deflection of control surfaces
