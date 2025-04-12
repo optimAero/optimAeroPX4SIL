@@ -1,4 +1,5 @@
-% GPS data
+% This script holds the parameters for the GPS, accelerometer, gyro, and barometer sensors. 
+% GPS data used in the simulation
 parameters.gps.vertPositionAccuracy_m = 40;
 parameters.gps.horzPositionAccuracy_m = 30;
 parameters.gps.vertPositionAccuracy_m = 0;
