@@ -1,4 +1,4 @@
-% Place all unit conversions or global constants into this script
+% This script holds all unit conversions or global constants
 
 ft2m = 0.3048;
 m2ft = 3.28084;

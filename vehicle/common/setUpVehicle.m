@@ -1,3 +1,5 @@
+% This script populates the base workspace with vehicle parameters for the specified vehicle. This script also includes
+% the data describing the initial location of the vehicle in the ismulation.
 switch lower(vehicleParams.type)
     case "f-16"
         vehicleParams.dryMass_kg = 20500 * lbs2kg;

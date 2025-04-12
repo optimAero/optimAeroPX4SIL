@@ -1,4 +1,5 @@
-% BUSDEFINITION initializes a set of bus objects in the MATLAB base workspace
+% busDefinition: This function initializes a set of bus objects in the MATLAB base workspace. All busses used in the
+% simulation can be found in this function
 function busDefinition(vehicleType)
 
 % Servo bus definition

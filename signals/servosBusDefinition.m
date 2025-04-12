@@ -1,6 +1,7 @@
-
+% servosBusDefinition: This function creates a bus that contains the actuator positions/dynamics after the corresponding
+% servo commands have been processed. 
+% Note: For new vehicle designs, servo busses can be added here.
 function servosBusDefinition(vehicleType)
-% Note: For new vehicle designs, servo command busses can be added here.
 
 switch lower(vehicleType)
     case "f-16"

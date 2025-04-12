@@ -1,4 +1,5 @@
-% propulsionSystemBusDefinition:
+% propulsionSystemBusDefinition: This function creates a bus that contains data for any propulsion system used by the
+% specified vehicle. 
 function propulsionSystemBusDefinition(vehicleType)
 % Bus object: PropulsionBus
 
