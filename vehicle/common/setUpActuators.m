@@ -13,7 +13,7 @@ switch lower(vehicleParams.type)
         vehicleParams.rotor.cmdToRpmData = [0 vehicleParams.rotor.maxRPM];
         vehicleParams.rotor.cmdToRpmBkpts_nd = [0 1];
         vehicleParams.rotor.kct_nd =  0.002455798004676;
-        vehicleParams.rotor.kcp_nd = 3.886725188459610e-06; 
+        vehicleParams.rotor.kcp_nd = 1.530217019534773e-04; 
         % Mimic PX4 spin direction and motor number for hexarotor
         % NOTE: +X-Axis is out of the nose, +Y is out of starboard side, +Z is toward ground
         vehicleParams.rotor.motorLocs = [ 0.0000    1.0000 0;
