@@ -1,12 +1,53 @@
-function busDefinition() 
-% BUSDEFINITION initializes a set of bus objects in the MATLAB base workspace 
+% busDefinition: This function initializes a set of bus objects in the MATLAB base workspace. All busses used in the
+% simulation can be found in this function
+function busDefinition(vehicleType)
 
 % Servo bus definition
-servosBusDefinition();
-% servo commands bus 
-servosCommandBusDefinition();
+servosBusDefinition(vehicleType);
 
-% Bus object: ADCSensorBus 
+% servo commands bus
+servosCommandBusDefinition(vehicleType);
+
+
+% Bus object: ComponentForcesMomentsBus
+clear elems;
+elems(1) = Simulink.BusElement;
+elems(1).Name = 'forcesInBody_N';
+elems(1).Dimensions = 3;
+elems(1).DimensionsMode = 'Fixed';
+elems(1).DataType = 'double';
+elems(1).Complexity = 'real';
+elems(1).Min = [];
+elems(1).Max = [];
+elems(1).DocUnits = '';
+elems(1).Description = '';
+
+elems(2) = Simulink.BusElement;
+elems(2).Name = 'momentsInBody_Nm';
+elems(2).Dimensions = 3;
+elems(2).DimensionsMode = 'Fixed';
+elems(2).DataType = 'double';
+elems(2).Complexity = 'real';
+elems(2).Min = [];
+elems(2).Max = [];
+elems(2).DocUnits = '';
+elems(2).Description = '';
+
+ComponentForcesMomentsBus = Simulink.Bus;
+ComponentForcesMomentsBus.HeaderFile = '';
+ComponentForcesMomentsBus.Description = '';
+ComponentForcesMomentsBus.DataScope = 'Auto';
+ComponentForcesMomentsBus.Alignment = -1;
+ComponentForcesMomentsBus.PreserveElementDimensions = 0;
+ComponentForcesMomentsBus.Elements = elems;
+clear elems;
+assignin('base', 'ComponentForcesMomentsBus', ComponentForcesMomentsBus);
+
+
+% Propulsion System Bus
+propulsionSystemBusDefinition(vehicleType)
+
+% Bus object: ADCSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'BaroSensorBus';
@@ -40,7 +81,7 @@ ADCSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'ADCSensorBus', ADCSensorBus);
 
-% Bus object: AccelSensorBus 
+% Bus object: AccelSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -107,7 +148,7 @@ AccelSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'AccelSensorBus', AccelSensorBus);
 
-% Bus object: ActuatorBus 
+% Bus object: ActuatorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'ServosBus';
@@ -121,10 +162,10 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'EngineBus';
+elems(2).Name = 'PropulsionBus';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'Bus: EngineBus';
+elems(2).DataType = 'Bus: PropulsionBus';
 elems(2).Complexity = 'real';
 elems(2).Min = [];
 elems(2).Max = [];
@@ -141,7 +182,7 @@ ActuatorBus.Elements = elems;
 clear elems;
 assignin('base', 'ActuatorBus', ActuatorBus);
 
-% Bus object: ActuatorCommandBus 
+% Bus object: ActuatorCommandBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'controllerArmed';
@@ -186,7 +227,7 @@ ActuatorCommandBus.Elements = elems;
 clear elems;
 assignin('base', 'ActuatorCommandBus', ActuatorCommandBus);
 
-% Bus object: AirData 
+% Bus object: AirDataBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'airspeedInBody_mps';
@@ -221,17 +262,17 @@ elems(3).Max = [];
 elems(3).DocUnits = '';
 elems(3).Description = '';
 
-AirData = Simulink.Bus;
-AirData.HeaderFile = '';
-AirData.Description = '';
-AirData.DataScope = 'Auto';
-AirData.Alignment = -1;
-AirData.PreserveElementDimensions = 0;
-AirData.Elements = elems;
+AirDataBus = Simulink.Bus;
+AirDataBus.HeaderFile = '';
+AirDataBus.Description = '';
+AirDataBus.DataScope = 'Auto';
+AirDataBus.Alignment = -1;
+AirDataBus.PreserveElementDimensions = 0;
+AirDataBus.Elements = elems;
 clear elems;
-assignin('base','AirData', AirData);
+assignin('base','AirDataBus', AirDataBus);
 
-% Bus object: AirEnvironmentBus 
+% Bus object: AirEnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'airTemperature_K';
@@ -331,7 +372,7 @@ AirEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'AirEnvironmentBus', AirEnvironmentBus);
 
-% Bus object: AircraftForcesMomentsBus 
+% Bus object: AircraftForcesMomentsBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'forcesInBody_N';
@@ -409,7 +450,7 @@ AircraftForcesMomentsBus.Elements = elems;
 clear elems;
 assignin('base', 'AircraftForcesMomentsBus', AircraftForcesMomentsBus);
 
-% Bus object: BaroSensorBus 
+% Bus object: BaroSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -465,7 +506,7 @@ BaroSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'BaroSensorBus', BaroSensorBus);
 
-% Bus object: BodyStateBus 
+% Bus object: BodyStateBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'aircraftVelInNED_mps';
@@ -576,41 +617,8 @@ BodyStateBus.Elements = elems;
 clear elems;
 assignin('base', 'BodyStateBus', BodyStateBus);
 
-% Bus object: ComponentForcesMomentsBus 
-clear elems;
-elems(1) = Simulink.BusElement;
-elems(1).Name = 'forcesInBody_N';
-elems(1).Dimensions = 3;
-elems(1).DimensionsMode = 'Fixed';
-elems(1).DataType = 'double';
-elems(1).Complexity = 'real';
-elems(1).Min = [];
-elems(1).Max = [];
-elems(1).DocUnits = '';
-elems(1).Description = '';
 
-elems(2) = Simulink.BusElement;
-elems(2).Name = 'momentsInBody_Nm';
-elems(2).Dimensions = 3;
-elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'double';
-elems(2).Complexity = 'real';
-elems(2).Min = [];
-elems(2).Max = [];
-elems(2).DocUnits = '';
-elems(2).Description = '';
-
-ComponentForcesMomentsBus = Simulink.Bus;
-ComponentForcesMomentsBus.HeaderFile = '';
-ComponentForcesMomentsBus.Description = '';
-ComponentForcesMomentsBus.DataScope = 'Auto';
-ComponentForcesMomentsBus.Alignment = -1;
-ComponentForcesMomentsBus.PreserveElementDimensions = 0;
-ComponentForcesMomentsBus.Elements = elems;
-clear elems;
-assignin('base', 'ComponentForcesMomentsBus', ComponentForcesMomentsBus);
-
-% Bus object: DiffPressureSensorBus 
+% Bus object: DiffPressureSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -655,7 +663,7 @@ DiffPressureSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'DiffPressureSensorBus', DiffPressureSensorBus);
 
-% Bus object: EarthEnvironmentBus 
+% Bus object: EarthEnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'gravityScalar_mps2';
@@ -700,52 +708,9 @@ EarthEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'EarthEnvironmentBus', EarthEnvironmentBus);
 
-% Bus object: EngineBus 
-clear elems;
-elems(1) = Simulink.BusElement;
-elems(1).Name = 'angVel_radps';
-elems(1).Dimensions = 1;
-elems(1).DimensionsMode = 'Fixed';
-elems(1).DataType = 'double';
-elems(1).Complexity = 'real';
-elems(1).Min = [];
-elems(1).Max = [];
-elems(1).DocUnits = '';
-elems(1).Description = '';
 
-elems(2) = Simulink.BusElement;
-elems(2).Name = 'engineForcesMoments';
-elems(2).Dimensions = 1;
-elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'Bus: ComponentForcesMomentsBus';
-elems(2).Complexity = 'real';
-elems(2).Min = [];
-elems(2).Max = [];
-elems(2).DocUnits = '';
-elems(2).Description = '';
 
-elems(3) = Simulink.BusElement;
-elems(3).Name = 'fuelRate_kgps';
-elems(3).Dimensions = 1;
-elems(3).DimensionsMode = 'Fixed';
-elems(3).DataType = 'double';
-elems(3).Complexity = 'real';
-elems(3).Min = [];
-elems(3).Max = [];
-elems(3).DocUnits = '';
-elems(3).Description = '';
-
-EngineBus = Simulink.Bus;
-EngineBus.HeaderFile = '';
-EngineBus.Description = '';
-EngineBus.DataScope = 'Auto';
-EngineBus.Alignment = -1;
-EngineBus.PreserveElementDimensions = 0;
-EngineBus.Elements = elems;
-clear elems;
-assignin('base', 'EngineBus', EngineBus);
-
-% Bus object: EngineCommandBus 
+% Bus object: EngineCommandBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'cmdThrottle_unit';
@@ -768,7 +733,7 @@ EngineCommandBus.Elements = elems;
 clear elems;
 assignin('base', 'EngineCommandBus', EngineCommandBus);
 
-% Bus object: EnvironmentBus 
+% Bus object: EnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'EarthEnvironment';
@@ -813,7 +778,7 @@ EnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'EnvironmentBus', EnvironmentBus);
 
-% Bus object: GPSSensorBus 
+% Bus object: GPSSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -968,7 +933,7 @@ GPSSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'GPSSensorBus', GPSSensorBus);
 
-% Bus object: GyroSensorBus 
+% Bus object: GyroSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -1035,7 +1000,7 @@ GyroSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'GyroSensorBus', GyroSensorBus);
 
-% Bus object: INSSensorBus 
+% Bus object: INSSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'GyroSensorBus';
@@ -1080,7 +1045,7 @@ INSSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'INSSensorBus', INSSensorBus);
 
-% Bus object: MagSensorBus 
+% Bus object: MagSensorBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'device_id';
@@ -1147,7 +1112,7 @@ MagSensorBus.Elements = elems;
 clear elems;
 assignin('base', 'MagSensorBus', MagSensorBus);
 
-% Bus object: MassPropertiesBus 
+% Bus object: MassPropertiesBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'aircraftMass_kg';
@@ -1203,7 +1168,7 @@ MassPropertiesBus.Elements = elems;
 clear elems;
 assignin('base','MassPropertiesBus', MassPropertiesBus);
 
-% Bus object: SensorsBus 
+% Bus object: SensorsBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'GPSSensorBus';
@@ -1251,7 +1216,7 @@ assignin('base', 'SensorsBus', SensorsBus);
 
 
 
-% Bus object: TerrainEnvironmentBus 
+% Bus object: TerrainEnvironmentBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'terrainHeightInNED_m';
@@ -1274,7 +1239,7 @@ TerrainEnvironmentBus.Elements = elems;
 clear elems;
 assignin('base', 'TerrainEnvironmentBus', TerrainEnvironmentBus);
 
-% Bus object: VehicleBus 
+% Bus object: VehicleBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'VehicleConfiguration';
@@ -1321,10 +1286,10 @@ elems(4).DocUnits = '';
 elems(4).Description = '';
 
 elems(5) = Simulink.BusElement;
-elems(5).Name = 'AirData';
+elems(5).Name = 'AirDataBus';
 elems(5).Dimensions = 1;
 elems(5).DimensionsMode = 'Fixed';
-elems(5).DataType = 'Bus: AirData';
+elems(5).DataType = 'Bus: AirDataBus';
 elems(5).Complexity = 'real';
 elems(5).Min = [];
 elems(5).Max = [];
@@ -1341,7 +1306,7 @@ VehicleBus.Elements = elems;
 clear elems;
 assignin('base', 'VehicleBus', VehicleBus);
 
-% Bus object: VehicleConfigurationBus 
+% Bus object: VehicleConfigurationBus
 clear elems;
 elems(1) = Simulink.BusElement;
 elems(1).Name = 'isVehicleAirborne';
@@ -1375,3 +1340,4 @@ VehicleConfigurationBus.Elements = elems;
 clear elems;
 assignin('base', 'VehicleConfigurationBus', VehicleConfigurationBus);
 
+end

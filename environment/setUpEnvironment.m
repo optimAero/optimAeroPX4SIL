@@ -1,3 +1,4 @@
+% This script initialzies the environment, including the wind parameters.
 % Winds aloft
 xWindInNED_mps = 0;
 yWindInNED_mps = 0;
