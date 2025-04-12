@@ -1,3 +1,4 @@
+
 function servosBusDefinition(vehicleType)
 % Note: For new vehicle designs, servo command busses can be added here.
 

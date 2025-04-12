@@ -2,17 +2,6 @@
 % Reference: Stevens, B. L., Lewis, F. L., & Johnson, E. N. (2015). Aircraft control and simulation: Dynamics,
 % controls design, and autonomous systems: Third edition. wiley. https://doi.org/10.1002/9781119174882
 
-% Max deflection of control surfaces
-maxAilDefl_deg = 20;
-maxRudderDefl_deg = 30;
-maxElevatorDefl_deg = 25;
-elevatorDeflRateLimit_degps = 60;
-aileronDeflRateLimit_degps = 80;
-rudderDeflRateLimit_degps = 120;
-tauElevator_s = 0.0495;
-tauAilerons_s = 0.0495;
-tauRudder_s = 0.0495;
-
 % All coefficients use alpha as one set of breakpoints.
 alphaBkpts_nd = -2:9;% -10:5:45 degs;
 % Damping coefficients 

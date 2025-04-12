@@ -1,15 +1,23 @@
-actuatorDelay_s = 0.005;
-plantSampleTime_s = 0.01;
+% This script sets up the actuator parameters for the selected vehicle. This includes
+% parameters that define the motors, control surfaces, engines, etc.
+
 parameters.engine.minThrottle = 0.01; %idle happens above this value
-
-
 switch lower(vehicleParams.type)
     case "f-16"
-        % TODO: Should things in vehicle\F16\data\aeroDataF16.m be listed here?
+        % Max deflection of control surfaces
+        maxAilDefl_deg = 20;
+        maxRudderDefl_deg = 30;
+        maxElevatorDefl_deg = 25;
+        elevatorDeflRateLimit_degps = 60;
+        aileronDeflRateLimit_degps = 80;
+        rudderDeflRateLimit_degps = 120;
+        tauElevator_s = 0.0495;
+        tauAilerons_s = 0.0495;
+        tauRudder_s = 0.0495;
     case "hexarotor"
         % Engine based on U15II KV100 T-Motor
         vehicleParams.rotor.diameter_m  = 1.016; % 40 inch rotor
-        vehicleParams.rotor.maxRPM      = 3473; %Temporary value
+        vehicleParams.rotor.maxRPM      = 3473;
         vehicleParams.rotor.cmdToRpmData = [0 vehicleParams.rotor.maxRPM];
         vehicleParams.rotor.cmdToRpmBkpts_nd = [0 1];
         vehicleParams.rotor.kct_nd =  0.002455798004676;
