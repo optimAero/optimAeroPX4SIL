@@ -91,10 +91,13 @@ addpath(genpath('utilities'));
 addpath(genpath('visualization'));
 addpath(genpath('PX4SILConnector'));
 addpath(genpath('vehicle/common'));
+
 if strcmpi(vehicleParams.type, "F-16")
     addpath(genpath('vehicle/F16'));
+    compilerVehicleName = "optimAeroF16";
 elseif strcmpi(vehicleParams.type, "hexarotor")
     addpath(genpath('vehicle/hexarotor'))
+    compilerVehicleName = "optimAeroHex";
 end
 
 Simulink.fileGenControl('set', ...
@@ -123,12 +126,6 @@ setUpActuators
 % set up winds
 setUpEnvironment
 
-% Load engine model
-if strcmpi(vehicleParams.type, "F-16")
-    F16EngineData
-elseif strcmpi(vehicleParams.type, "hexarotor")
-    % Load data for hexarotor propulsion and aero here
-end
 
 % Variant Models
 % Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
@@ -158,12 +155,12 @@ if opts.launchFullSIL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
         opts.simHostIPVal = double(split(opts.simHostIP, '.'));
-        [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-            opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
+        [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
+            opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), compilerVehicleName ));
     else
         % Launch PX4-Autopilot that is cloned into the WSL root directory
-        [~,cmdout] = system(sprintf('start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-            opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
+        [~,cmdout] = system(sprintf('start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
+            opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), compilerVehicleName ));
     end
 
     if ~isempty(cmdout)

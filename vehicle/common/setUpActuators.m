@@ -16,6 +16,8 @@ switch lower(vehicleParams.type)
         tauElevator_s = 0.0495;
         tauAilerons_s = 0.0495;
         tauRudder_s = 0.0495;
+        F16EngineData
+
     case "hexarotor"
         % Engine based on U15II KV100 T-Motor
         vehicleParams.rotor.diameter_m  = 1.016; % 40 inch rotor
