@@ -12,6 +12,8 @@
 % opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
 % opts.PX4RepoPath               Path relative to optimAeroPX4SIL if PX4 repo is on windows side, or path relative to root wsl directory
 % opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
+% opts.makeClean                 Removes all the compiled build files and intermediate artifacts. This may need to be 
+%                                set to true when making changes to the configuration file. 
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
@@ -33,6 +35,7 @@ arguments
     opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
     opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"
     opts.PX4InWSL             (1,1) logical = false
+    opts.makeClean            (1,1) logical = false
 end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
@@ -155,12 +158,30 @@ if opts.launchFullSIL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
         opts.simHostIPVal = double(split(opts.simHostIP, '.'));
-        [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
-            opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), compilerVehicleName ));
+        if opts.makeClean
+            [~,cmdout] = system(sprintf(['start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make clean && ' ...
+                'make px4_sitl_default %s"'],...
+                opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
+                compilerVehicleName ));
+        else
+            [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
+                opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
+                compilerVehicleName ));
+        end
     else
-        % Launch PX4-Autopilot that is cloned into the WSL root directory
-        [~,cmdout] = system(sprintf('start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
-            opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), compilerVehicleName ));
+        if opts.makeClean
+            % Launch PX4-Autopilot that is cloned into the WSL root directory
+            [~,cmdout] = system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && ' ...
+                'make clean && make px4_sitl_default %s"'],...
+                opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
+                opts.simHostIPVal(4), compilerVehicleName ));
+        else
+            % Launch PX4-Autopilot that is cloned into the WSL root directory
+            [~,cmdout] = system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d &&' ...
+                ' make px4_sitl_default %s"'],...
+                opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
+                opts.simHostIPVal(4), compilerVehicleName ));
+        end
     end
 
     if ~isempty(cmdout)
