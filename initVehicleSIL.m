@@ -17,25 +17,28 @@
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType","FlightGear","simHostIP",
-% "10.0.0.200","PX4InWSL",true):
+% initVehicleSIL("launchFullSIL",false):   
+%   Run the intialization file only, this should be used before changing any models
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL",true):
 %   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory
-% and set IP address for PX4 connection.
-% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType","FlightGear","simHostIP",
-% "10.0.0.200","PX4InWSL", false)
+%   and set IP address for PX4 connection.
+% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
-% initVehicleSIL("launchFullSIL",false):   Run the intialization file only, this should be used before changing any models
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "192.168.12.145", "PX4InWSL", true, "makeClean", true)
+%   Launch full sim for hexarotor in flight gear with the PX4 repo in Linux partition for faster compilation, make clean
+%   on PX4 compile every time
+
 function initVehicleSIL(opts)
 
 arguments
     opts.launchFullSIL        (1,1) logical = false
-    opts.vehicleType          (1,1) string  = "F-16"       % F-16, hexarotor
-    opts.visualizationType    (1,1) string  = "Matlab"     % Options "PassThrough", "FlightGear", or "Matlab"
-    opts.simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
-    opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
-    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"
-    opts.PX4InWSL             (1,1) logical = false
-    opts.makeClean            (1,1) logical = false
+    opts.vehicleType          (1,1) string  = "F-16"            % "F-16", "hexarotor"
+    opts.visualizationType    (1,1) string  = "Matlab"          % "PassThrough", "FlightGear", or "Matlab"
+    opts.simHostIP            (1,1) string  = "10.0.0.243"      % Replace with your IP address (not WSL's IP)
+    opts.controllerType       (1,1) string  = "PX4"             % Currently PX4 is the only controller that can be used
+    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
+    opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
+    opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
 end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
