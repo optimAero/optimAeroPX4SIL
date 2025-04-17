@@ -17,14 +17,14 @@
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL("launchFullSIL",false):   
+% initVehicleSIL("launchFullSIL", false):   
 %   Run the intialization file only, this should be used before changing any models
 % initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL",true):
 %   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory
 %   and set IP address for PX4 connection.
 % initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
-% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "192.168.12.145", "PX4InWSL", true, "makeClean", true)
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "192.168.12.145", "PX4InWSL", true, "makeClean", true, "clearSLCache", false)
 %   Launch full sim for hexarotor in flight gear with the PX4 repo in Linux partition for faster compilation, make clean
 %   on PX4 compile every time
 
@@ -39,6 +39,7 @@ arguments
     opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
     opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
+    opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache on every run - this will recompile all slx models, can fix some Simulink errors
 end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
@@ -157,6 +158,30 @@ if opts.launchFullSIL
 
     % Launch PX4
     opts.simHostIPVal = double(split(opts.simHostIP, '.'));
+    if opts.clearSLCache
+        cacheFolderPath = 'work'; 
+
+        if exist(cacheFolderPath, 'dir')
+            fileTypes = {'*.slxc', '*.mexw64'};
+            
+            for k = 1:length(fileTypes)
+                files = dir(fullfile(cacheFolderPath, '**', fileTypes{k}));
+                
+                for i = 1:length(files)
+                    filePath = fullfile(files(i).folder, files(i).name);
+                    try
+                        delete(filePath);
+                        fprintf('Deleted: %s\n', filePath);
+                    catch ME
+                        fprintf('Error deleting file: %s\nReason: %s\n', filePath, ME.message);
+                    end
+                end
+            end
+        else
+            fprintf('Folder "%s" does not exist.\n', cacheFolderPath);
+        end
+    end
+
     if ~opts.PX4InWSL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
