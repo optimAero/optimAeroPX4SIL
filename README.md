@@ -133,6 +133,15 @@ QGC must be connected in order to use the joystick when flying via PX4. In QGC, 
 
 To add a custom vehicle configuration, the Simulink model and the PX4 configuration file, along with other files, must be changed.
 
+## PX4 SIL Flight Log Locations
+`build\px4_sitl_default\rootfs\log\`
+
+For example, if using WSL-located repo: 
+`\\wsl.localhost\Ubuntu\home\owner\PX4-Autopilot\build\px4_sitl_default\rootfs\log\`
+
+If using Windows-located PX4 repo: 
+`D:\GIT\optimAeroPX4SIL\PX4-Autopilot\build\px4_sitl_default\rootfs\log`
+
 ### Simulink Changes
 
 #### Step 1: Plant Model
