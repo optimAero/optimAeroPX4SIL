@@ -14,6 +14,8 @@
 % opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
 % opts.makeClean                 Removes all the compiled build files and intermediate artifacts. This may need to be 
 %                                set to true when making changes to the configuration file. 
+% opts.clearSLCache              % Clear simulink cache. This deletes the work folder and will force all slx models 
+%                                to be recompiled. This can fix some Simulink errors
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
@@ -24,9 +26,10 @@
 %   and set IP address for PX4 connection.
 % initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
-% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "192.168.12.145", "PX4InWSL", true, "makeClean", true, "clearSLCache", false)
-%   Launch full sim for hexarotor in flight gear with the PX4 repo in Linux partition for faster compilation, make clean
-%   on PX4 compile every time
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP",
+% "192.168.12.145", "PX4InWSL", true, "makeClean", true, "clearSLCache", false)
+%   Launch full sim for hexarotor in FlightGear using the PX4 repo in the Linux partition for faster compilation, 
+% make clean on PX4 compile and  NOT clearing the Simulink clache
 
 function initVehicleSIL(opts)
 
@@ -39,7 +42,7 @@ arguments
     opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
     opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
-    opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache on every run - this will recompile all slx models, can fix some Simulink errors
+    opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
 end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
