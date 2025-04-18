@@ -198,7 +198,7 @@ The F16 parameters that should be used when running the simulation can be found 
 
 ### Simulink fail to launch
 
-In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
+In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder (clearing the Simulink cache) in the repo and re-launch the Simulink model. This can also be done by setting the `clearSLCache` argument to true when using the `initVehicleSIL.m` function.
 
 <p>
     <img src="README_Images/demuxCmds.png" alt="Demux Commands" width="600"/>
