@@ -129,10 +129,6 @@ Installing FlightGear is optional but helps with visualizing flights. Once it is
 
 QGC must be connected in order to use the joystick when flying via PX4. In QGC, the joystick may be set up once PX4 is running and connected to Simulink. Plug in a joystick (an Xbox or PS5 controller has been tested successfully), click the Q in the top left, then Vehicle Setup, then Joystick. Select the correct Active Joystick, and it is recommended to assign some buttons to ARM and ACRO flight mode.
 
-## Adding Custom Vehicle Configuration
-
-To add a custom vehicle configuration, the Simulink model and the PX4 configuration file, along with other files, must be changed.
-
 ## PX4 SIL Flight Log Locations
 `build\px4_sitl_default\rootfs\log\`
 
@@ -141,6 +137,10 @@ For example, if using WSL-located repo:
 
 If using Windows-located PX4 repo: 
 `D:\GIT\optimAeroPX4SIL\PX4-Autopilot\build\px4_sitl_default\rootfs\log`
+
+## Adding Custom Vehicle Configuration
+
+To add a custom vehicle configuration, the Simulink model and the PX4 configuration file, along with other files, must be changed.
 
 ### Simulink Changes
 
@@ -194,7 +194,7 @@ When ending the simulation after a successful launch, Ctrl+C must be used to end
 
 ### Vehicle parameters
 
-The F16 parameters that should be used when running the simulation can be found here: ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
+The F16 parameters that should be used when running the simulation can be found here: `ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16`. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
 
 ### Simulink fail to launch
 
