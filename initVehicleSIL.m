@@ -12,27 +12,37 @@
 % opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
 % opts.PX4RepoPath               Path relative to optimAeroPX4SIL if PX4 repo is on windows side, or path relative to root wsl directory
 % opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
+% opts.makeClean                 Removes all the compiled build files and intermediate artifacts. This may need to be 
+%                                set to true when making changes to the configuration file. 
+% opts.clearSLCache              % Clear simulink cache. This deletes the work folder and will force all slx models 
+%                                to be recompiled. This can fix some Simulink errors
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType","FlightGear","simHostIP",
-% "10.0.0.200","PX4InWSL",true):
+% initVehicleSIL("launchFullSIL", false):   
+%   Run the intialization file only, this should be used before changing any models
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL",true):
 %   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory
-% and set IP address for PX4 connection.
-% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType","FlightGear","simHostIP",
-% "10.0.0.200","PX4InWSL", false)
+%   and set IP address for PX4 connection.
+% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
-% initVehicleSIL("launchFullSIL",false):   Run the intialization file only, this should be used before changing any models
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP",
+% "192.168.12.145", "PX4InWSL", true, "makeClean", true, "clearSLCache", false)
+%   Launch full sim for hexarotor in FlightGear using the PX4 repo in the Linux partition for faster compilation, 
+% make clean on PX4 compile and  NOT clearing the Simulink clache
+
 function initVehicleSIL(opts)
 
 arguments
     opts.launchFullSIL        (1,1) logical = false
-    opts.vehicleType          (1,1) string  = "F-16"       % F-16, hexarotor
-    opts.visualizationType    (1,1) string  = "Matlab"     % Options "PassThrough", "FlightGear", or "Matlab"
-    opts.simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
-    opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
-    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"
-    opts.PX4InWSL             (1,1) logical = false
+    opts.vehicleType          (1,1) string  = "F-16"            % "F-16", "hexarotor"
+    opts.visualizationType    (1,1) string  = "Matlab"          % "PassThrough", "FlightGear", or "Matlab"
+    opts.simHostIP            (1,1) string  = "10.0.0.243"      % Replace with your IP address (not WSL's IP)
+    opts.controllerType       (1,1) string  = "PX4"             % Currently PX4 is the only controller that can be used
+    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
+    opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
+    opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
+    opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
 end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
@@ -91,10 +101,13 @@ addpath(genpath('utilities'));
 addpath(genpath('visualization'));
 addpath(genpath('PX4SILConnector'));
 addpath(genpath('vehicle/common'));
+
 if strcmpi(vehicleParams.type, "F-16")
     addpath(genpath('vehicle/F16'));
+    compilerVehicleName = "optimAeroF16";
 elseif strcmpi(vehicleParams.type, "hexarotor")
     addpath(genpath('vehicle/hexarotor'))
+    compilerVehicleName = "optimAeroHex";
 end
 
 Simulink.fileGenControl('set', ...
@@ -123,12 +136,6 @@ setUpActuators
 % set up winds
 setUpEnvironment
 
-% Load engine model
-if strcmpi(vehicleParams.type, "F-16")
-    F16EngineData
-elseif strcmpi(vehicleParams.type, "hexarotor")
-    % Load data for hexarotor propulsion and aero here
-end
 
 % Variant Models
 % Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
@@ -154,16 +161,58 @@ if opts.launchFullSIL
 
     % Launch PX4
     opts.simHostIPVal = double(split(opts.simHostIP, '.'));
+    if opts.clearSLCache
+        cacheFolderPath = 'work'; 
+
+        if exist(cacheFolderPath, 'dir')
+            fileTypes = {'*.slxc', '*.mexw64'};
+            
+            for k = 1:length(fileTypes)
+                files = dir(fullfile(cacheFolderPath, '**', fileTypes{k}));
+                
+                for i = 1:length(files)
+                    filePath = fullfile(files(i).folder, files(i).name);
+                    try
+                        delete(filePath);
+                        fprintf('Deleted: %s\n', filePath);
+                    catch ME
+                        fprintf('Error deleting file: %s\nReason: %s\n', filePath, ME.message);
+                    end
+                end
+            end
+        else
+            fprintf('Folder "%s" does not exist.\n', cacheFolderPath);
+        end
+    end
+
     if ~opts.PX4InWSL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
         opts.simHostIPVal = double(split(opts.simHostIP, '.'));
-        [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-            opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
+        if opts.makeClean
+            [~,cmdout] = system(sprintf(['start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make clean && ' ...
+                'make px4_sitl_default %s"'],...
+                opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
+                compilerVehicleName ));
+        else
+            [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
+                opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
+                compilerVehicleName ));
+        end
     else
-        % Launch PX4-Autopilot that is cloned into the WSL root directory
-        [~,cmdout] = system(sprintf('start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-            opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
+        if opts.makeClean
+            % Launch PX4-Autopilot that is cloned into the WSL root directory
+            [~,cmdout] = system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && ' ...
+                'make clean && make px4_sitl_default %s"'],...
+                opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
+                opts.simHostIPVal(4), compilerVehicleName ));
+        else
+            % Launch PX4-Autopilot that is cloned into the WSL root directory
+            [~,cmdout] = system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d &&' ...
+                ' make px4_sitl_default %s"'],...
+                opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
+                opts.simHostIPVal(4), compilerVehicleName ));
+        end
     end
 
     if ~isempty(cmdout)
