@@ -140,8 +140,16 @@ setUpEnvironment
 % Variant Models
 % Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
 if strcmpi(opts.visualizationType, 'Matlab')
+    load_system('VehicleSilSimulation.slx')
     warning("When using Matlab visualization the SIL runs slower than FlightGear. Recommend setting simulink model to" + ...
         " accelerator mode.")
+    if strcmpi(vehicleParams.type,'Hexarotor')
+        set_param('VehicleSilSimulation/visualizationVariant/MatlabVisualization/UAV Animation', 'UAVType', ...
+            'Multirotor');
+    else
+        set_param('VehicleSilSimulation/visualizationVariant/MatlabVisualization/UAV Animation', 'UAVType', ...
+            'FixedWing');
+    end
 end
 
 % Save all workspace variables and push them to base workspace
