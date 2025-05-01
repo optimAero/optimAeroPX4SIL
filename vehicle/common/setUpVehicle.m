@@ -24,8 +24,8 @@ switch lower(vehicleParams.type)
         aeroDataHex
         % set initial location to Juancho E. Yrausquin Airport, helipad 
         referenceAltitude_m = 125 * ft2m;
-        referenceLatitude_deg = 17.64450; %17.644479; 
-        referenceLongitude_deg = -63.21988; %-63.219700;
+        referenceLatitude_deg = 17.64450;
+        referenceLongitude_deg = -63.21988;
     otherwise
         error(char(["unknown vehicle: " vehicleType]))
 end
