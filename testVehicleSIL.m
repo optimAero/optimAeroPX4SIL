@@ -96,7 +96,7 @@ try
     
     disp('Rebuilding test harnesses...')
     rebuildHarness('all', 'pathRootDir', pathHere)
-    if strcmp(vehicleParams.type, "F16")
+    if strcmpi(vehicleParams.type, "F16")
         sltest.testmanager.load('F16.mldatx');
     end
     sltest.testmanager.load('sensors.mldatx');
