@@ -136,6 +136,10 @@ setUpActuators
 % set up winds
 setUpEnvironment
 
+% Save all workspace variables and push them to base workspace
+save('workspace')
+evalin("base", 'load workspace.mat')
+delete workspace.mat
 
 % Variant Models
 % Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
@@ -151,11 +155,6 @@ if strcmpi(opts.visualizationType, 'Matlab')
             'FixedWing');
     end
 end
-
-% Save all workspace variables and push them to base workspace
-save('workspace')
-evalin("base", 'load workspace.mat')
-delete workspace.mat
 % Launch full SIL if requested
 if opts.launchFullSIL
     % Run flightgear if requested
