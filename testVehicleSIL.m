@@ -104,7 +104,7 @@ try
     results = sltest.testmanager.run;
     
     % reporting
-    testResultsPath = strrep(mfilename("fullpath"), 'testVehicleSIL', 'testResults.pdf');
+    testResultsPath = strrep(mfilename("fullpath"), 'testVehicleSIL', 'testResults' + vehicleParams.type + '.pdf');
     if exist(testResultsPath, 'file')
         delete testResults.pdf
     end
