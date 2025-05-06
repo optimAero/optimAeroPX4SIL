@@ -13,7 +13,7 @@ info@optim.aero
 
 # optimAero PX4 Simulink SIL Overview
 
-This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently the default plant model is of an F-16 aircraft based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>. A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. **All simulink models were created using MATLAB 2024a Update 6**.
+This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently there are two models to chose from, the first being a F-16 model based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>, the second being a Group-3 hexarotor UAS based on the vehicle discussed in <em>The development and flight testing of a group-3, ultra-lift, UAS for the research and development sector (Epps, Bershadsky, Haviland, Johnson)<em>. A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. **All simulink models were created using MATLAB 2024a Update 6**.
 
 ## Windows installation instructions (NOTE: this will fail on Mac, as Matlab does not support Mac for all required toolboxes):
 <strong>Installation Tutorial Video</strong>: (Click to view)[![Thumbnail](https://img.youtube.com/vi/XtOpK9rAsmg/maxresdefault.jpg)](https://www.youtube.com/watch?v=XtOpK9rAsmg)
@@ -79,8 +79,8 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
        <em> Figure 2: UAV Support Package for PX4</em>
    </p>
 
-7. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"simHostIP", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
-   1. (OPTIONAL) Vehicle visualization can also occur via FlightGear. To download FlightGear follow the instructions in the <strong> Visualization </strong> section below. Once downloaded the `FlightGear` argument can be used when calling the `initVehicleSil` function (e.g.,`initVehicleSIL("launchFullSIL",false,"visualizationType","FlightGear","simHostIP", <simHostIP>)`)
+7. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"simHostIP", <simHostIP>,"vehicleType","F-16")` and change the Matlab directory to its containing folder (this script initializes the workspace)
+   1. (OPTIONAL) Vehicle visualization can also occur via FlightGear. To download FlightGear follow the instructions in the <strong> Visualization </strong> section below. Once downloaded the `FlightGear` argument can be used when calling the `initVehicleSil` function (e.g.,`initVehicleSIL("launchFullSIL",false,"visualizationType","FlightGear","simHostIP", <simHostIP>,"vehicleType","F-16")`)
    2. NOTE - If FlightGear does not appear after using the visualization argument, simply  run `runFlightGear.m` in the MATLAB terminal after calling the `initVehicleSIL` function.
 8. Open and run the `VehicleSILSimulation.slx` model
 9.  While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
@@ -93,7 +93,7 @@ Once built, the PX4 executable should connect to the Simulink model. Ensure you 
 
 ## Launching SIL AFTER initial setup
 
-After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","simHostIP","192.168.50.236")` ). <strong>If the PX4-Autopilot repo has been cloned on the WSL root directory use the `"PX4InWSL",true` argument.</strong>
+After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","vehicleType","F-16")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","simHostIP","192.168.50.236","vehicleType","F-16")` ). <strong>If the PX4-Autopilot repo has been cloned on the WSL root directory use the `"PX4InWSL",true` argument.</strong>
 
 ## SIL Connector Notes
 
@@ -101,7 +101,7 @@ The Pixhawk SIL connector is developed by Kiril Boychev and can be found here: <
 
 ## Unit Tests
 
-Unit tests (UTs) for nearly all of the reference models used in the plant have been created and are stored in the  "testing" folder of each main model folder (i.e., vehicle/testing). All UTs can be run at once using the `testVehicleSIL.m` script (note: `initVehicleSIL(false)` must be run first).
+Unit tests (UTs) for nearly all of the reference models used in the plant have been created and are stored in the  "testing" folder of each main model folder (i.e., vehicle/testing). All UTs can be run at once using the `testVehicleSIL.m` script (note: `initVehicleSIL("launchFullSIL",false)` must be run first). The UT's for the vehicle selected when calling `initVehicleSIL("launchFullSIL",false)` will be what's ran when `testVehicleSIL.m` is called.
 
 If additional UTs need to be created, the makeHarness function can be used to generate a blank test harness of the model entered into the argument of the function. (see description of makeHarness in the file itself)
 
@@ -158,18 +158,15 @@ A custom vehicle configuration can be added to the Simulink model by adding the 
 
 The <strong>ServosCommandBus</strong> and <strong>ServosBus</strong> must be updated based on the aircraft configuration that is being added. All of the vehicle's actuators (control surfaces, propellers, etc.,) must be added as an element of a sub-bus of the ServosCommandBus bus. The <strong>signals/CustomAircraftS/servosBusDefinitionCustomAircraft.m</strong> and  <strong>signals/CustomAircraftS/servosCommandCustomAircraftBusDefinition.m</strong> files can be modified to include the required signals.
 
-A variant must be added to the <em>PX4 Interface Variant</em> model, Figure 4. This variant must have the correct signals mapped to the <strong>ServosCommandBus</strong> bus assignment block as shown in Figure 5.
+A variant must be added to the <em>Command Output Variant</em> model, Figure 4. This variant must have the correct signals mapped to the <strong>ServosCommandBus</strong> bus assignment block.
 <p>
     <img src="README_Images/PX4SimulinkVariant.png" alt="PX4 Simulink Varaint" width="600"/>
-</p>
-<p>
-    <em>Figure 4: PX4 Simulink Varaint</em>
 </p>
 <p>
     <img src="README_Images/commandMapping.png" alt="PX4 Command Mapping" width="600"/>
 </p>
 <p>
-    <em>Figure 5: PX4 Command Mapping</em>
+    <em>Figure 4: PX4 Command Mapping</em>
 </p>
 
 ### PX4 Changes
@@ -184,10 +181,6 @@ The aircraft configuration file must be added to the <strong>px4-autopilot\ROMFS
 
 ## Known Issues
 
-### Mapping commands from PX4
-
-Mapping the commands from the <strong>pixhawk_sil_connector</strong> to the <strong>ServosCommandBus</strong> can be challenging. One method of figuring out what signals from the pixhawk_sil_connector correspond to the vehicle's actuators is by using a demux to view all 16 signals coming from the first output of the px4_sil_connector as shown in Figure 6, and observing how the signals change given a joystick input.
-
 ### Ending the simulation
 
 When ending the simulation after a successful launch, Ctrl+C must be used to end the PX4 autopilot first (in the WSL terminal, press Ctrl+C). If this is not done first, the Simulink model will fail to close and MATLAB will need to be terminated.
@@ -200,9 +193,3 @@ The F16 parameters that should be used when running the simulation can be found 
 
 In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder (clearing the Simulink cache) in the repo and re-launch the Simulink model. This can also be done by setting the `clearSLCache` argument to true when using the `initVehicleSIL.m` function.
 
-<p>
-    <img src="README_Images/demuxCmds.png" alt="Demux Commands" width="600"/>
-</p>
-<p>
-    <em>Figure 6: Demux command signals</em>
-</p>
