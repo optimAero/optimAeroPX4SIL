@@ -23,7 +23,7 @@ disp('Test Vehicle SIL Model')
 
 clear all
 bdclose('all')
-evalin('base', 'initVehicleSIL')
+sltest.testmanager.clear
 
 %% Change the cache folders to non-default locations
 cfg = Simulink.fileGenControl('getConfig');
@@ -98,6 +98,11 @@ try
     rebuildHarness('all', 'pathRootDir', pathHere)
     if strcmpi(vehicleParams.type, "F16")
         sltest.testmanager.load('F16.mldatx');
+    elseif strcmpi(vehicleParams.type, "hexarotor")
+        sltest.testmanager.load('hexarotor.mldatx');
+
+    else 
+        error(char(["unknown vehicle: " vehicleParams.type]))
     end
     sltest.testmanager.load('sensors.mldatx');
     sltest.testmanager.load('environment.mldatx');
@@ -106,7 +111,7 @@ try
     % reporting
     testResultsPath = strrep(mfilename("fullpath"), 'testVehicleSIL', 'testResults' + vehicleParams.type + '.pdf');
     if exist(testResultsPath, 'file')
-        delete testResults.pdf
+        eval('delete ' + testResultsPath)
     end
     
     % get branch and current commit hash
