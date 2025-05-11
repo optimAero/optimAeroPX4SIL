@@ -15,11 +15,11 @@ for ii = 1:6
 end
 
 
-FailureHexBus = Simulink.Bus;
-FailureHexBus.HeaderFile = '';
-FailureHexBus.Description = '';
-FailureHexBus.DataScope = 'Auto';
-FailureHexBus.Alignment = -1;
-FailureHexBus.PreserveElementDimensions = 0;
-FailureHexBus.Elements = elems;
-assignin('base','FailureHexBus', FailureHexBus);
+FailureBus = Simulink.Bus;
+FailureBus.HeaderFile = '';
+FailureBus.Description = '';
+FailureBus.DataScope = 'Auto';
+FailureBus.Alignment = -1;
+FailureBus.PreserveElementDimensions = 0;
+FailureBus.Elements = elems;
+assignin('base','FailureBus', FailureBus);

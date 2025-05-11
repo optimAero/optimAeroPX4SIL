@@ -10,6 +10,7 @@
 % opts.simHostIP:                IP Address of users computer
 % opts.vehicleType:              The plant model that will be used during the SIL simulation: F-16, hexarotor, etc
 % opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
+% opts.failureType               A control surfance, engine, or motor failure
 % opts.PX4RepoPath               Path relative to optimAeroPX4SIL if PX4 repo is on windows side, or path relative to root wsl directory
 % opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
 % opts.makeClean                 Removes all the compiled build files and intermediate artifacts. This may need to be 
@@ -39,6 +40,7 @@ arguments
     opts.visualizationType    (1,1) string  = "Matlab"          % "PassThrough", "FlightGear", or "Matlab"
     opts.simHostIP            (1,1) string  = "10.0.0.243"      % Replace with your IP address (not WSL's IP)
     opts.controllerType       (1,1) string  = "PX4"             % Currently PX4 is the only controller that can be used
+    opts.failureType          (1,1) {mustBeFailureEnum}         % Must be a hex or F-16 failure type. Default is NONE
     opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
     opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
@@ -47,6 +49,7 @@ end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
 vehicleParams.controllerType         = opts.controllerType;
+vehicleParams.failureType            = opts.failureType;
 
 % check for required toolboxes, support packages, and MATLAB version
 % list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names
@@ -135,6 +138,17 @@ setUpActuators
 
 % set up winds
 setUpEnvironment
+
+% Check failure type
+try
+    if strcmpi(vehicleParams.type,"F-16")
+        vehicleParams.failureType = EnumF16FailureType(vehicleParams.failureType);
+    elseif strcmpi(vehicleParams.type,"hexarotor")
+        vehicleParams.failureType = EnumHexFailureType(vehicleParams.failureType);
+    end
+catch
+    error("The selected failure type does not match the selected vehicle.")
+end
 
 % Save all workspace variables and push them to base workspace
 save('workspace')
@@ -234,4 +248,11 @@ if opts.launchFullSIL
     sim VehicleSilSimulation
 end
 
+end
+
+function mustBeFailureEnum(failureType)
+    if ~(ismember(failureType, string(enumeration('EnumHexFailureType'))) || ...
+            ismember(failureType, string(enumeration('EnumF16FailureType'))))
+        error('Argument must be a member of EnumHexFailureType or EnumF16FailureType.');
+    end
 end
