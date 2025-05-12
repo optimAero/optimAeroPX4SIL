@@ -1,11 +1,11 @@
 classdef EnumHexFailureType < uint32
    enumeration
       none   (0)
-      rotor1 (1)
-      rotor2 (2)
-      rotor3 (3)
-      rotor4 (4)
-      rotor5 (5)
-      rotor6 (6)
+      motor1 (1)
+      motor2 (2)
+      motor3 (3)
+      motor4 (4)
+      motor5 (5)
+      motor6 (6)
    end
 end
