@@ -31,7 +31,7 @@ switch lower(vehicleType)
         % Call bus definition for Hex
         servosBusDefinitionHex
         elems(1) = Simulink.BusElement;
-        elems(1).Name = 'ServosHexBus';
+        elems(1).Name = 'ServosHex';
         elems(1).Dimensions = 1;
         elems(1).DimensionsMode = 'Fixed';
         elems(1).DataType   = 'Bus: ServosHexBus';
@@ -54,7 +54,7 @@ switch lower(vehicleType)
         % Call bus definition for Custom Aircraft
         servosBusDefinitionCustomAircraft
         elems(1) = Simulink.BusElement;
-        elems(1).Name = 'ServosCustomAircraftBus';
+        elems(1).Name = 'ServosCustomAircraft';
         elems(1).Dimensions = 1;
         elems(1).DimensionsMode = 'Fixed';
         elems(1).DataType   = 'Bus: ServosCustomAircraftBus';

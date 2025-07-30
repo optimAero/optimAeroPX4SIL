@@ -118,7 +118,8 @@ Simulink.fileGenControl('set', ...
     'CodeGenFolder', 'work', ...
     'createDir', true)
 
-load('standardSILConfigurationParams.mat')
+% load('standardSILConfigurationParams.mat')
+load('autoCodeConfigurationParams.mat')
 stepSize_s = 0.004; % step size used in standardSILConfugrationParams.mat file
 
 % Conversions

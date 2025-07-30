@@ -9,7 +9,7 @@ switch lower(vehicleType)
         % F16 servo command bus definition
         servosCommandF16BusDefinition
         elems(1) = Simulink.BusElement;
-        elems(1).Name = 'ServosCommandF16Bus';
+        elems(1).Name = 'ServosCommandF16';
         elems(1).Dimensions = 1;
         elems(1).DimensionsMode = 'Fixed';
         elems(1).DataType = 'Bus: ServosCommandF16Bus';
@@ -31,7 +31,7 @@ switch lower(vehicleType)
     case "hexarotor"
         motorCommandHexBusDefinition
         elems(1) = Simulink.BusElement;
-        elems(1).Name = 'MotorCommandHexBus';
+        elems(1).Name = 'MotorCommandHex';
         elems(1).Dimensions = 1;
         elems(1).DimensionsMode = 'Fixed';
         elems(1).DataType = 'Bus: MotorCommandHexBus';
@@ -53,7 +53,7 @@ switch lower(vehicleType)
         % Custom aircraft servo command bus definition
         servosCommandCustomAircraftBusDefinition
         elems(1) = Simulink.BusElement;
-        elems(1).Name = 'ServosCommandCustomAircraftBus';
+        elems(1).Name = 'ServosCommandCustomAircraft';
         elems(1).Dimensions = 1;
         elems(1).DimensionsMode = 'Fixed';
         elems(1).DataType = 'Bus: ServosCommandCustomAircraftBus';

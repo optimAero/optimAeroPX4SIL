@@ -153,7 +153,7 @@ assignin('base', 'AccelSensorBus', AccelSensorBus);
 % Bus object: ActuatorBus
 clear elems;
 elems(1) = Simulink.BusElement;
-elems(1).Name = 'ServosBus';
+elems(1).Name = 'Servos';
 elems(1).Dimensions = 1;
 elems(1).DimensionsMode = 'Fixed';
 elems(1).DataType = 'Bus: ServosBus';
@@ -164,7 +164,7 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'PropulsionBus';
+elems(2).Name = 'Propulsion';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
 elems(2).DataType = 'Bus: PropulsionBus';
@@ -198,7 +198,7 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'ServosCommandBus';
+elems(2).Name = 'ServosCommand';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
 elems(2).DataType = 'Bus: ServosCommandBus';
@@ -209,7 +209,7 @@ elems(2).DocUnits = '';
 elems(2).Description = '';
 
 elems(3) = Simulink.BusElement;
-elems(3).Name = 'EngineCommandBus';
+elems(3).Name = 'EngineCommand';
 elems(3).Dimensions = 1;
 elems(3).DimensionsMode = 'Fixed';
 elems(3).DataType = 'Bus: EngineCommandBus';
@@ -1288,7 +1288,7 @@ elems(4).DocUnits = '';
 elems(4).Description = '';
 
 elems(5) = Simulink.BusElement;
-elems(5).Name = 'AirDataBus';
+elems(5).Name = 'AirData';
 elems(5).Dimensions = 1;
 elems(5).DimensionsMode = 'Fixed';
 elems(5).DataType = 'Bus: AirDataBus';
