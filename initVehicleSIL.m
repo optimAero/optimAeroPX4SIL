@@ -36,7 +36,7 @@ function initVehicleSIL(opts)
 
 arguments
     opts.launchFullSIL        (1,1) logical = false
-    opts.vehicleType          (1,1) string  = "F-16"            % "F-16", "hexarotor"
+    opts.vehicleType          (1,1) string  = "hexarotor"            % "F-16", "hexarotor"
     opts.visualizationType    (1,1) string  = "Matlab"          % "PassThrough", "FlightGear", or "Matlab"
     opts.simHostIP            (1,1) string  = "10.0.0.243"      % Replace with your IP address (not WSL's IP)
     opts.controllerType       (1,1) string  = "PX4"             % Currently PX4 is the only controller that can be used
@@ -46,6 +46,7 @@ arguments
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
     opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
 end
+restoredefaultpath
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
 vehicleParams.controllerType         = opts.controllerType;
