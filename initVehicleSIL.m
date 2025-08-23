@@ -36,9 +36,9 @@ function initVehicleSIL(opts)
 
 arguments
     opts.launchFullSIL        (1,1) logical = false
-    opts.vehicleType          (1,1) string  = "hexarotor"            % "F-16", "hexarotor"
+    opts.vehicleType          (1,1) string  = "hexarotor"       % "F-16", "hexarotor"
     opts.visualizationType    (1,1) string  = "Matlab"          % "PassThrough", "FlightGear", or "Matlab"
-    opts.simHostIP            (1,1) string  = "10.0.0.243"      % Replace with your IP address (not WSL's IP)
+    opts.simHostIP            (1,1) string  = "auto"            % Replace with your IP address (not WSL's IP)
     opts.controllerType       (1,1) string  = "PX4"             % Currently PX4 is the only controller that can be used
     opts.failureType          (1,1) string  = "none"            % Must be a F-16 or hexartor failure type listed in EnumHexFailureType.m or EnumF16FailureType.m
     opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
@@ -173,6 +173,14 @@ if strcmpi(opts.visualizationType, 'Matlab')
 end
 % Launch full SIL if requested
 if opts.launchFullSIL
+
+    % Get WSL IP address if simHostIP is set to auto 
+    if (opts.simHostIP) == "auto"
+        getWSLIP
+        opts.simHostIP = wslVEip;
+    end
+    opts.simHostIPVal = double(split(string(opts.simHostIP), '.'));
+
     % Run flightgear if requested
     currLoc = pwd;
     if strcmpi(opts.visualizationType, "FlightGear")
@@ -183,7 +191,6 @@ if opts.launchFullSIL
     disp('Launch QGroundControl manually.');
 
     % Launch PX4
-    opts.simHostIPVal = double(split(opts.simHostIP, '.'));
     if opts.clearSLCache
         cacheFolderPath = 'work'; 
 
