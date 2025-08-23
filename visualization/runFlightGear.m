@@ -16,7 +16,7 @@ frameRate_Hz = floor(1 / stepSize_s);
 
 % Check to see if F16 FlightGear visualization exist
 f16DirName = 'C:\Program Files\FlightGear 2020.3\data\Aircraft\f16';
-hexDirName = 'C:\Program Files\FlightGear 2020.3\data\Aircraft\Palledrone';
+hexDirName = 'C:\Program Files\FlightGear 2020.3\data\Aircraft\bigHexy';
 options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=c172p --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
 switch lower(vehicleParams.type)
     case "f-16"
@@ -25,7 +25,7 @@ switch lower(vehicleParams.type)
         end
     case "hexarotor"
         if isdir(hexDirName)
-            options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=Palledrone --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+            options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=bigHexy-block-52 --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
         end
     otherwise
         warning("Unknown vehicle for display")

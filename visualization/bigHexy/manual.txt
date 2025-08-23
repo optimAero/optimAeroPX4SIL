@@ -1,0 +1,9 @@
+*********
+**
+** Flightgear F-16 Manual
+**
+*********
+
+The manual is now located at:
+
+https://github.com/NikolaiVChr/f16/wiki
