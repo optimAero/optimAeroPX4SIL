@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<PropertyList include="f16-base.xml">
+<PropertyList include="bigHexy.xml">
 
  <sim>
   <description>optimAero Big-Hexy Hexacopter | Palledrone</description>
@@ -46,7 +46,7 @@
     <link16 type="bool">true</link16>
     <cft type="bool">false</cft>
   </f16>
-   <path archive="y">Aircraft/bigHexy/Models/F-16.xml</path>
+   <path archive="y">Aircraft/bigHexy/Models/bigHexy.xml</path>
    <livery>
     <file type="string"/>
     <name type="string">169FW, 157FS "Unit Flagship"</name>
