@@ -25,7 +25,8 @@ switch lower(vehicleParams.type)
         end
     case "hexarotor"
         if isdir(hexDirName)
-            options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=bigHexy-block-52 --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+            which 'bigHexy'
+            options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=bigHexy-block-52 --aircraft-dir="optimAeroPX4SIL/visualization/bigHexy" --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
         end
     otherwise
         warning("Unknown vehicle for display")
