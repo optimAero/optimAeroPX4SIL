@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<PropertyList>
+  
+  <name>f16config</name>
+  <modal type="bool">false</modal>
+  <layout>vbox</layout>
+  
+  <group>
+    <layout>hbox</layout>
+    
+    <text>
+      <label>Configuration</label>
+      <format>%s Configuration</format>
+      <property>sim/description</property>
+    </text>
+    
+    <empty>
+      <stretch>1</stretch>
+    </empty>
+    
+    <button>
+      <halign>right</halign>
+      <pref-width>20</pref-width>
+      <pref-height>20</pref-height>
+      <legend>X</legend>
+      <key>Esc</key>
+      <binding>
+        <command>dialog-close</command>
+      </binding>
+    </button>
+  </group>
+
+  <hrule/>
+
+  <group>
+    <layout>hbox</layout>
+
+    <group>
+      <layout>vbox</layout>
+
+    <group>
+      <layout>vbox</layout>
+        <button>
+          <legend>Auto start</legend>
+          <binding>
+            <command>nasal</command>
+            <script>start.autostart();</script>
+          </binding>
+        </button>
+
+      <button>
+        <legend>Checklists</legend>
+        <binding>
+          <command>dialog-show</command>
+          <dialog-name>checklist</dialog-name>
+          <offset>1</offset>
+        </binding>
+      </button>
+
+      <button>
+        <legend>Cold and Dark</legend>
+        <binding>
+          <command>nasal</command>
+          <script>start.coldndark();</script>
+        </binding>
+      </button>
+
+      <hrule/>
+
+      <button>
+        <legend>Repair damage</legend>
+        <binding>
+          <command>nasal</command>
+          <script>start.repair();</script>
+        </binding>
+      </button>
+
+       <button>
+        <legend>Repack chute</legend>
+        <binding>
+          <command>nasal</command>
+          <script>
+          if (!getprop("gear/gear[0]/wow")) {
+            screen.log.write("This is only possible on ground.");
+            return;
+          }
+          if (getprop("f16/chute/done")) {
+            setprop("f16/chute/repack", 1);
+            setprop("f16/chute/done", 0);
+            setprop("f16/chute/enable", 0);
+            setprop("f16/chute/force", 2);
+            setprop("f16/chute/fold", 0);
+            screen.log.write("Drag chute repacked.");
+            setprop("f16/chute/repack", 0);
+            f16.chuteLoop.stop();
+          }
+          </script>
+        </binding>
+      </button>
+
+      <button>
+      <row>1</row>
+      <col>1</col>
+      <legend>Call pushback</legend>
+        <binding>
+           <command>dialog-show</command>
+           <dialog-name>pushback</dialog-name>
+           <offset>1</offset>
+        </binding>
+      </button>
+  </group>
+</group>
+
+  <vrule/>
+
+  <group>
+    <layout>vbox</layout>
+    <checkbox>
+      <label>Weapons multiplayer damage</label>
+      <halign>left</halign>
+      <property>payload/armament/msg</property>
+      <live>true</live>
+      <binding>
+          <command>nasal</command>
+          <script>
+            if(getprop("fdm/jsbsim/gear/unit[0]/WOW")) {
+              setprop("payload/armament/msg", !getprop("payload/armament/msg"));
+            }
+            #screen.log.write("Weapons MP damage " ~ (getprop("/payload/armament/msg") ? "ON" : "OFF")  , 0.5, 0.5, 1);</script>
+      </binding>
+    </checkbox>
+  <text><halign>left</halign><label>Enable to allow weapons deal damage over multiplayer.</label></text>
+  <text><halign>left</halign><label>Can only be toggled with wheels on ground.</label></text>
+  <text><halign>left</halign><label>WARNING: You will be able to both inflict and receive</label></text>
+  <text><halign>left</halign><label>damage from compatible aircraft (with Emesary damage system).</label></text>
+  <text><halign>left</halign><label>Once you land or crash you can check your</label></text>
+  <text><halign>left</halign><label>weapon debriefing from the 'Combat event log' menu.</label></text>
+  <text><halign>left</halign><label>There will no longer be visible hit/miss msgs. on screen.</label></text>
+  <text><halign>left</halign><label>Avoid using against players without mutual consent.</label></text>
+  <text><halign>left</halign><label>Never use this with MP player collisions enabled.</label></text>
+  <text><halign>left</halign><label>- Blackout/Redout will always be on.</label></text>
+  <text><halign>left</halign><label>- Simulation rate will be normal.</label></text>
+  <text><halign>left</halign><label>- Emergency altitude increase will be disabled.</label></text>
+  <text><halign>left</halign><label>- Payload window will not be available in air.</label></text>
+  <text><halign>left</halign><label>- Map traffic and pilot list will be disabled.</label></text>
+  </group>
+  </group>
+
+  <hrule/>
+
+  <group>
+    <layout>vbox</layout>
+    <checkbox>
+      <label>Wear newer, more capable 1997 G-suit (Default means 1979)</label>
+      <halign>left</halign>
+      <property>sim/rendering/redout/new</property>
+      <live>true</live>
+        <binding>
+          <command>property-toggle</command>
+          <property>sim/rendering/redout/new</property>
+        </binding>
+    </checkbox>
+
+  <hrule/>
+  
+	  <button>
+		<legend>Recharge JFS accumulators</legend>
+		<binding>
+		  <command>nasal</command>
+		  <script>
+			if (!getprop("gear/gear[0]/wow")) {
+			  screen.log.write("This is only possible on ground.");
+			  return;
+			}
+			eng.accu_1_psi = eng.accu_psi_max;
+			eng.accu_2_psi = eng.accu_psi_max;
+			screen.log.write("10 minutes later: Both JFS accumulators pressurized.");
+		  </script>
+		</binding>
+	  </button>
+
+  <empty><stretch>1</stretch></empty>
+
+    <checkbox>
+      <label>Connect Dash 60 Ground Power Unit</label>
+      <halign>left</halign>
+      <property>fdm/jsbsim/elec/sources/external-pwr</property>
+      <live>true</live>
+        <binding>
+          <command>property-toggle</command>
+          <property>fdm/jsbsim/elec/sources/external-pwr</property>
+        </binding>
+    </checkbox>
+
+  <hrule/>
+
+  <group>
+    <layout>hbox</layout>
+  
+    <text><halign>left</halign><label>Interior engine volume:</label></text>
+    
+    <slider>
+       <halign>left</halign>
+       <property>f16/sound/helmet-damping</property>
+       <min>0</min>
+       <max>1</max>
+       <step>0.025</step>
+       <live>true</live>
+       <vertical>false</vertical>
+       <pref-height>40</pref-height>
+       <pref-width>200</pref-width>
+       <binding>
+          <command>dialog-apply</command>
+       </binding>
+    </slider>
+
+  </group>
+                
+    <hrule/>
+
+    <checkbox>
+        <label>Enable Spectator mode</label>
+        <halign>left</halign>
+        <enable><not><property>/payload/armament/msg</property></not></enable>
+        <property>/payload/armament/spectator</property>
+        <live>true</live>
+        <binding>
+          <command>dialog-apply</command>
+        </binding>
+    </checkbox>
+    <text>
+      <halign>left</halign><label>Shows missile trails, craters, etc. from MP aircraft even when weapons damage is off.</label>
+    </text>
+
+    <hrule/>
+  
+    <checkbox>
+      <label>Activate weapon-follow view</label>
+      <halign>left</halign>
+      <property>/controls/armament/automissileview</property>
+      <live>true</live>
+        <binding>
+          <command>property-toggle</command>
+          <property>/controls/armament/automissileview</property>
+        </binding>
+    </checkbox>
+  <text><halign>left</halign><label>Will auto-switch when ordnance is released.</label></text>
+
+  <hrule/>
+
+    <button>
+      <legend>Reset HUD Max G value</legend>
+      <binding>
+          <command>property-assign</command>
+          <property>f16/avionics/n-reset</property>
+          <value>1</value>
+      </binding>
+    </button>
+
+  <empty><stretch>1</stretch></empty>
+  
+    <checkbox>
+      <label>Enable alternative, Intel graphics-compatible Head Up Display</label>
+      <halign>left</halign>
+      <property>f16/avionics/hud-basic</property>
+      <live>true</live>
+        <binding>
+          <command>property-toggle</command>
+          <property>f16/avionics/hud-basic</property>
+        </binding>
+    </checkbox>
+  <text><halign>left</halign><label>This option will be auto-saved.</label></text>
+
+  <hrule/>
+
+  <text><label>Weathered effects (Experimental)</label></text>
+
+  <group>
+    <layout>hbox</layout>
+
+    <checkbox>
+      <label>Dirt:</label>
+      <halign>left</halign>
+      <property>f16/effects/dirt</property>
+      <live>true</live>
+        <binding>
+          <command>property-toggle</command>
+          <property>f16/effects/dirt</property>
+        </binding>
+    </checkbox>
+  
+  <slider>
+     <halign>left</halign>
+     <property>f16/effects/dirt-fac</property>
+     <min>0</min>
+     <max>0.40</max>
+     <step>0.05</step>
+     <live>true</live>
+     <vertical>false</vertical>
+     <pref-height>40</pref-height>
+     <pref-width>150</pref-width>
+     <binding>
+        <command>dialog-apply</command>
+     </binding>
+  </slider>
+
+  <checkbox>
+      <label>Rust:</label>
+      <halign>left</halign>
+      <property>f16/effects/rust</property>
+      <live>true</live>
+        <binding>
+          <command>property-toggle</command>
+          <property>f16/effects/rust</property>
+        </binding>
+  </checkbox>
+  
+  <slider>
+     <halign>left</halign>
+     <property>f16/effects/rust-mag</property>
+     <min>0.1</min>
+     <max>1</max>
+     <step>0.05</step>
+     <live>true</live>
+     <vertical>false</vertical>
+     <pref-height>40</pref-height>
+     <pref-width>150</pref-width>
+     <binding>
+        <command>dialog-apply</command>
+     </binding>
+  </slider>
+ </group>
+                
+ </group>
+
+</PropertyList>

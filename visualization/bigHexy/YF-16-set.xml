@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+
+<PropertyList include="f16-base.xml">
+
+ <sim>
+  <description>General Dynamics YF-16</description>
+  <long-description>The YF-16 is a 1975 prototype of a 4th generation fighter aircraft with a fly by wire system. Powered by F100-PW-200. The fly-by-wire in this variant offers no spin, nose-slide or deep stall protection.</long-description>
+  <author>Erik Hofman, Martin "Pegasus" Schmitt, Pensacola, Nikolai V. Chr., J Maverick 16, Richard Harrison, Josh Davidson, Martien Van Der P., Jonathan Redpath, Gary Brown, Justin Nicholson, Enrico Castaldi, Timi, Barszczisbad, PH-JAKE, Bat Campion, LJQCN101</author>
+  <status>production</status>
+  <rating>
+    <FDM type="int">5</FDM>
+    <systems type="int">4</systems>
+    <cockpit type="int">4</cockpit>
+    <model type="int">4</model>
+  </rating>
+  <flight-model>jsb</flight-model>
+  <aero>yf16</aero>
+  <variant-id type="int">0</variant-id>
+  <variant-engine type="int">2</variant-engine>
+  <variant-of>f16-block-52</variant-of>
+  <tags>
+      <tag>fighter</tag>
+      <tag>general-dynamics</tag>
+      <tag>1970s</tag>
+      <tag>coldwar</tag>
+      <tag>combat</tag>
+      <tag>low-wing</tag>
+      <tag>hud</tag>
+      <tag>ifr</tag>
+      <tag>prototype</tag>
+      <tag>refuel</tag>
+      <tag>retractable-gear</tag>
+      <tag>supersonic</tag>
+      <tag>tricycle</tag>
+      <tag>afterburner</tag>
+      <tag>jet</tag>
+      <tag>single-engine</tag>
+      <tag>yf-16</tag>
+    </tags>
+
+  <startup>
+   <splash-texture>Aircraft/bigHexy/yf16-splash.png</splash-texture>
+  </startup>
+
+  <previews>
+            <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>gui/splash/yf16-1.png</path>
+            </preview>
+            <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>gui/splash/yf16-2.png</path>
+            </preview>
+            <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>gui/splash/yf16-3.png</path>
+            </preview>
+  </previews>
+
+
+  <model>
+    <f16>
+      <wingmounts type="bool">false</wingmounts>
+      <dragchute type="bool">false</dragchute>
+      <link16 type="bool">false</link16>
+      <cft type="bool">false</cft>
+    </f16>
+   <path archive="y">Aircraft/bigHexy/Models/YF-16.xml</path>
+   <livery>
+    <file type="string"/>
+    <name type="string">YF-16 Prototype</name>
+    <folder type="string">Aircraft/bigHexy/Models/Liveries/yf</folder>
+   </livery>
+   <MFD-color>
+    <text1><!--Main text color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </text1>
+    <text2><!--BIT/SILENT color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </text2>
+    <line1><!--CRM scan lines + lat range + HSD acft, rdr scope color -->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </line1>
+    <line2><!--CRM horizon color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </line2>
+    <line3><!--CRM DLZ path + cursor + wpt + lock info + data-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </line3>
+    <line4><!--CRM EXP color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </line4>
+    <line5><!--HSD radius color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </line5>
+    <bullseye><!--Bullseye color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </bullseye>
+    <betxt><!--Bullseye cursor color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </betxt>
+    <lines><!--HSD lines color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </lines>
+    <lines2><!--Pull Up cue color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </lines2>
+    <circle1><!--HSD red circles + GM Pic color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </circle1>
+    <circle2><!--HSD yellow circles + Lock 2 color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </circle2>
+    <circle3><!--HSD green circles + CRM IFF + WPN RDY color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </circle3>
+    <dot1><!--Lock 1 + cntct blep color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </dot1>
+    <dot2><!-- Radar search targets -->
+      <red type="double">0.50</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.50</blue>
+    </dot2>
+    <dot3><!--Lock 2 color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </dot3>
+    <dot4><!--HSD DL cntct color-->
+      <red type="double">0.01</red>
+      <green type="double">1.00</green>
+      <blue type="double">0.07</blue>
+    </dot4>
+   </MFD-color>
+  </model>
+
+  <menubar>
+   <default>
+    <menu n="101">
+     <label>YF-16</label>
+    </menu>
+   </default>
+  </menubar>
+<!--
+  <help>
+   <title>General Dynamics YF-16</title>
+  </help>-->
+
+ </sim>
+
+ <fdm>
+  <jsbsim>
+   <fcs>
+    <fly-by-wire>
+      <prototype type="bool">true</prototype>
+      <ada189675 type="bool">false</ada189675>
+      <enable-control-c type="bool">false</enable-control-c>
+    </fly-by-wire>
+   </fcs>
+  </jsbsim>
+ </fdm>
+
+ <engines>
+    <engine>
+      <rated-mil-dry type="double">14670</rated-mil-dry>
+    </engine>
+  </engines>
+
+</PropertyList>

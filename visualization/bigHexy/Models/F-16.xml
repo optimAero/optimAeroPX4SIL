@@ -1,0 +1,3067 @@
+﻿<?xml version="1.0"?>
+
+<PropertyList>
+
+ <path>f16.ac</path>
+ <offsets><!--
+  <z-m>0.08</z-m>
+  <pitch-deg>0.7</pitch-deg>-->
+ </offsets>
+
+ <multiplay>
+  <refuel>
+    <offset-x-m type="double">0.1054</offset-x-m>
+    <offset-y-m type="double">0.0</offset-y-m>
+    <offset-z-m type="double">0.6500</offset-z-m>
+    <type type="string">boom</type>
+  </refuel>
+</multiplay>
+
+ <nasal>
+  <load><![CDATA[
+    var self = cmdarg();
+    var id = self.getNode("sim/multiplay/generic/int[9]");
+    var idVal = id.getValue();
+    var folder = "Aircraft/bigHexy/Models/Liveries";
+    if (idVal != nil) {
+      if (idVal == 0) {
+        folder = "Aircraft/bigHexy/Models/Liveries/yf"
+      } elsif (idVal == 1) {
+        folder = "Aircraft/bigHexy/Models/Liveries/Block10"
+      } elsif (idVal == 2) {
+        folder = "Aircraft/bigHexy/Models/Liveries/Block20"
+      } elsif (idVal == 3) {
+        folder = "Aircraft/bigHexy/Models/Liveries/Block30"
+      } elsif (idVal == 4) {
+        folder = "Aircraft/bigHexy/Models/Liveries/Block40"
+      } elsif (idVal == 5) {
+        folder = "Aircraft/bigHexy/Models/Liveries/Block50"
+      } elsif (idVal == 6) {
+        folder = "Aircraft/bigHexy/Models/Liveries/Block60"
+      }
+      self.getNode("sim/variant-id", 1).setIntValue(idVal);
+    }
+    var livery_update = aircraft.livery_update.new(folder, 10);
+
+    
+
+    if (!(left(getprop("sim/version/flightgear"),6) == "2020.3")) {
+        props.globals.getNode("/sim/version/compositor-support", 1).setBoolValue(1);
+    } elsif (left(getprop("sim/version/flightgear"),6) == "2020.3") {
+        props.globals.getNode("/sim/version/compositor-support", 1).setBoolValue(0);
+    }
+
+    # Stores visible over MP:
+    var looping = 1;
+    var str5 = "";
+    var split1 = nil;
+    var split2 = nil;
+    var split3 = nil;
+    var pylon = nil;
+    var type = nil;
+    var count = nil;
+    var set = nil;
+
+    var loop = func {
+      #print("loop");
+      str5 = self.getNode("sim/multiplay/generic/string[5]");
+      if (str5 != nil and str5.getValue() != nil and size(str5.getValue()) > 10) {#print("pass1 "~str5.getValue());
+        split1 = split("++", str5.getValue());
+        if (size(split1) > 1) {#print("pass2");
+          split2 = split("--", split1[0]);
+          split3 = split("--", split1[1]);
+          if (split2 != nil and size(split2)> 1 and split3 != nil and size(split3)> 1) {#print("pass3");
+            pylon = num(split2[0]);
+            type = split2[1];
+            count = num(split3[0]);
+            set = split3[1];
+            self.getNode("payload/armament/station/id-"~pylon~"-type",1).setValue(type);
+            self.getNode("payload/armament/station/id-"~pylon~"-count",1).setIntValue(count);
+            self.getNode("payload/armament/station/id-"~pylon~"-set",1).setValue(set);
+          }
+        }
+      }
+      var red = getprop("rendering/scene/diffuse/red");
+
+      # non-tied property for effect:
+      setprop("rendering/scene/diffuse/red-unbound", red);
+
+      # afterburner density:
+      setprop("sim/multiplay/f16/ab-density",  1-red*0.90);
+
+      # color of afterburner:
+      # *0.5 is to prevent it from getting too white during night
+      setprop("/sim/multiplay/f16/ab-r",  0.75+(0.25-red*0.25)*0.5);#red
+      setprop("/sim/multiplay/f16/ab-g",  0.25+(0.75-red*0.75)*0.5);#green
+      setprop("/sim/multiplay/f16/ab-b",  0.2+(0.4-red*0.4)*0.5);   #blue
+
+      if (looping) settimer(loop, 0.10);
+    }
+
+    loop();
+  ]]></load>
+  <unload><![CDATA[
+   livery_update.stop();
+   looping = 0;
+  ]]></unload>
+ </nasal>
+
+<!-- disable shadows for these objects -->
+
+<!-- start submodels -->
+ <!-- decide which cockpit we select based upon selected livery -->
+
+
+
+<animation>
+  <type>translate</type>
+  <object-name>interior</object-name>
+  <property>fdm/jsbsim/systems/buffeting/outputy</property>
+  <offset-m>0.0</offset-m>
+  <factor>1.0</factor>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>translate</type>
+  <object-name>interior</object-name>
+  <property>fdm/jsbsim/systems/buffeting/outputz</property>
+  <offset-m>0.0</offset-m>
+  <factor>1.0</factor>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+<model>
+  <name>Pilot_ext</name>
+  <path>Aircraft/bigHexy/Models/pilot_externalview.xml</path>
+ </model>
+
+ <animation>
+  <type>select</type>
+  <object-name>Pilot_ext</object-name>
+  <condition>
+    <and>
+      <not>
+          <property>f16/ejected</property>
+      </not>
+      <or>
+        <not>
+          <property>sim/current-view/internal</property><!-- without a leading slash this property wont exist over MP, and so will always default to not internal -->
+        </not>
+        <equals>
+          <property>sim/current-view/name</property>
+          <value type="string">GoPro #1 View</value>
+        </equals>
+        <equals>
+          <property>sim/current-view/name</property>
+          <value type="string">GoPro #2 View</value>
+        </equals>
+        <equals>
+          <property>sim/current-view/name</property>
+          <value type="string">GoPro #3 View</value>
+        </equals>
+      </or>
+    </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Rect</object-name>
+      <object-name>LogoPilotRight</object-name>
+  <condition>
+        <not>
+          <property>sim/current-view/internal</property><!-- without a leading slash this property wont exist over MP, and so will always default to not internal -->
+        </not>
+  </condition>
+ </animation>
+
+
+<!--model>
+  <name>mfd-flir</name>
+  <path>Aircraft/bigHexy/Models/Cockpit/Avionics/MFD/mfd-ext.xml</path>
+  <offsets>
+        <x-m>-2.5856</x-m>
+        <y-m>0.8536</y-m>
+        <z-m>-1.4121</z-m>
+  </offsets>
+ </model-->
+
+
+
+ <animation>
+  <type>rotate</type>
+  <object-name>mfd-flir</object-name>
+  <property>sim/current-view/heading-offset-deg</property>
+  <factor>1.0</factor>
+  <center>
+   <x-m>-2.5856</x-m>
+        <y-m>0.8536</y-m>
+        <z-m>-1.4121</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>mfd-flir</object-name>
+  <property>sim/current-view/pitch-offset-deg</property>
+  <factor>1.0</factor>
+  <center>
+   <x-m>-2.5856</x-m>
+        <y-m>0.8536</y-m>
+        <z-m>-1.4121</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+    <type>spin</type>
+    <object-name>FanRCentre</object-name>
+    <object-name>FanR</object-name>
+    <property>engines/engine[0]/n1</property>
+    <factor>100</factor>
+    <center>
+        <x-m>0.407444</x-m>
+        <y-m>-0.00719</y-m>
+        <z-m>0.022371</z-m>
+    </center>
+    <axis>
+        <x>1</x>
+        <y>0</y>
+        <z>0</z>
+    </axis>
+</animation>
+
+  <animation>
+  <type>scale</type>
+  <object-name>mfd-flir</object-name>
+  <property>sim/current-view/field-of-view-scale</property>
+  <center>
+    <x-m>-2.5856</x-m>
+    <y-m>0.8536</y-m>
+    <z-m>-1.4121</z-m>
+  </center>
+  <x-min>0.00001</x-min>
+  <y-min>0.00001</y-min>
+  <z-min>0.00001</z-min>
+  <x-max>10000</x-max>
+  <y-max>10000</y-max>
+  <z-max>10000</z-max>
+  <x-factor>1</x-factor>
+  <y-factor>0</y-factor>
+  <z-factor>0</z-factor>
+  <!--<x-offset>1.0</x-offset>-->
+  <y-offset>1.0</y-offset>
+  <z-offset>1.0</z-offset>
+  <axis>
+   <x>1.0</x>
+   <y>1.0</y>
+   <z>1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>mfd-flir</object-name>
+  <condition>
+                <equals>
+                    <property>sim/current-view/name</property>
+                    <value>TGP</value>
+                </equals>
+  </condition>
+ </animation>
+
+ <model>
+  <name>irst</name>
+  <path>Aircraft/bigHexy/Models/irst-b60.ac</path>
+  <offsets>
+        <x-m>0</x-m>
+        <y-m>0</y-m>
+        <z-m>0</z-m>
+  </offsets>
+ </model>
+
+ <animation>
+  <type>select</type>
+  <object-name>irst</object-name>
+  <condition>
+                <greater-than-equals>
+                    <property>sim/variant-id</property>
+                    <value>6</value>
+                </greater-than-equals>
+  </condition>
+ </animation>
+
+ <model>
+  <name>ex</name>
+  <path>Aircraft/bigHexy/Models/Effects/explosion.xml</path>
+ </model>
+
+ <model>
+  <name>smoking</name>
+  <path>Aircraft/bigHexy/Models/Effects/damage-smoke.xml</path>
+ </model>
+
+ <model>
+    <path>Effects/contrail/trail.xml</path>
+      <offsets>
+        <x-m>10.0</x-m>
+        <y-m>0.0</y-m>
+        <z-m>0.2</z-m>
+      </offsets>
+  </model>
+
+
+ <!--<model>
+  <name>Cockpit</name>
+  <path>Aircraft/bigHexy/Models/Cockpit/F-16C-40/cockpit.xml</path>
+  <condition>
+   <or>
+    <equals>
+     <property>sim/model/livery/actype</property>
+     <value>F-16C-40</value>
+    </equals>
+    <equals>
+     <property>sim/model/livery/actype</property>
+     <value>F-16C-42</value>
+    </equals>
+   </or>
+  </condition>
+ </model>
+
+ <model>
+  <name>Cockpit</name>
+  <path>Aircraft/bigHexy/Models/Cockpit/F-16C-50/cockpit.xml</path>
+  <condition>
+   <or>
+    <equals>
+     <property>sim/model/livery/actype</property>
+     <value>F-16C-50</value>
+    </equals>
+    <equals>
+     <property>sim/model/livery/actype</property>
+     <value>F-16C-52</value>
+    </equals>
+   </or>
+  </condition>
+ </model>-->
+
+ <model>
+  <name>PW_nozzle</name>
+  <path>Aircraft/bigHexy/Models/nozzle.xml</path>
+  <offsets>
+   <x-m>4.617</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </offsets>
+ </model>
+
+ 
+
+ <animation>
+        <type>scale</type>
+        <object-name>GE_nozzle</object-name>
+        <!--x-factor>0.0</x-factor>
+        <y-factor>1.0</y-factor>
+        <z-factor>1.0</z-factor-->
+        <x-offset>1.0</x-offset>
+        <y-offset>0.82</y-offset>
+        <z-offset>0.82</z-offset>
+        <center>
+           <x-m> 4.61285  </x-m>
+           <y-m> 0   </y-m>
+           <z-m> 0   </z-m>
+        </center>
+    </animation>
+
+ <animation>
+        <type>translate</type>
+        <object-name>GE_nozzle</object-name>
+        <factor>0.0</factor>
+        <offset-m>-7.74</offset-m>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+    <animation>
+        <type>translate</type>
+        <object-name>GE_nozzle</object-name>
+        <factor>0.0</factor>
+        <offset-m>-1.4827</offset-m>
+        <axis>
+            <x>0</x>
+            <y>1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+    <animation>
+        <type>translate</type>
+        <object-name>GE_nozzle</object-name>
+        <factor>0.0</factor>
+        <offset-m>1.25336</offset-m>
+        <axis>
+            <x>0</x>
+            <y>0</y>
+            <z>1</z>
+        </axis>
+    </animation>
+
+
+ <animation>
+  <type>select</type>
+  <object-name>GE_nozzle</object-name>
+  <condition>
+      <equals>
+          <property>sim/multiplay/generic/int[10]</property>
+          <value>0</value>
+      </equals>
+  </condition>
+ </animation>
+
+
+<effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-fuselage</inherits-from>
+      <parameters>
+          <metallic type="float">0.80</metallic>
+          <ambient-factor type="float">0.35</ambient-factor>
+          <rain-enabled type="int">2</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <ambient-correction type="float">0.00</ambient-correction>
+          <reflection-enabled type="int">0</reflection-enabled>
+          <transparent type="int">1</transparent>
+          <render-bin>
+            <bin-number>111</bin-number>
+            <bin-name>DepthSortedBin</bin-name>
+          </render-bin>
+          <opaque type="int">0</opaque>
+      </parameters>
+      <!-- logos -->
+      <object-name>VstabBandLeftAft</object-name>
+      <object-name>VstabBandLeftFront</object-name>
+      <object-name>VstabBandRightAft</object-name>
+      <object-name>VstabBandRightFront</object-name>
+      <object-name>VstabLogoLeftBottom</object-name>
+      <object-name>VstabLogoLeftTop</object-name>
+      <object-name>VstabLogoRightBottom</object-name>
+      <object-name>VstabLogoRightTop</object-name>
+      <object-name>LogoPilotRight</object-name>
+      <object-name>FuselageLogoRight</object-name>
+      <object-name>FuselageLogoLeft</object-name>
+  </effect>
+
+  <animation>
+    <type>noshadow</type>
+    <object-name>WinglogoLeftTop</object-name>
+    <object-name>WinglogoRightBottom</object-name>
+    <object-name>WinglogoRightTop</object-name>
+    <object-name>Rect</object-name>
+    <object-name>VstabBandLeftAft</object-name>
+    <object-name>VstabBandLeftFront</object-name>
+    <object-name>VstabBandRightAft</object-name>
+    <object-name>VstabBandRightFront</object-name>
+    <object-name>VstabLogoLeftBottom</object-name>
+    <object-name>VstabLogoLeftTop</object-name>
+    <object-name>VstabLogoRightBottom</object-name>
+    <object-name>VstabLogoRightTop</object-name>
+    <object-name>LogoPilotRight</object-name>
+    <object-name>FuselageLogoRight</object-name>
+    <object-name>FuselageLogoLeft</object-name>
+    <object-name>CanopyForwardOutside</object-name>
+    <object-name>CanopyBackOutside</object-name>
+    <object-name>CanopyForwardInside</object-name>
+    <object-name>CanopyBackInside</object-name>
+  </animation>
+
+  <animation>
+    <type>select</type>
+      <inherits-from>Effects/model-transparent</inherits-from>
+      <condition>
+        <equals>
+          <property>/sim/rendering/rembrandt/enabled</property>
+          <value>0</value>
+        </equals>
+      </condition>
+      <!-- logos -->
+      <object-name>WinglogoLeftTop</object-name>
+      <object-name>WinglogoRightBottom</object-name>
+      <object-name>WinglogoRightTop</object-name>
+      <object-name>Rect</object-name>
+      <object-name>VstabBandLeftAft</object-name>
+      <object-name>VstabBandLeftFront</object-name>
+      <object-name>VstabBandRightAft</object-name>
+      <object-name>VstabBandRightFront</object-name>
+      <object-name>VstabLogoLeftBottom</object-name>
+      <object-name>VstabLogoLeftTop</object-name>
+      <object-name>VstabLogoRightBottom</object-name>
+      <object-name>VstabLogoRightTop</object-name>
+      <object-name>LogoPilotRight</object-name>
+      <object-name>FuselageLogoRight</object-name>
+      <object-name>FuselageLogoLeft</object-name>
+  </animation>
+
+  <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-fuselage</inherits-from>
+      <parameters>
+          <metallic type="float">0.80</metallic>
+          <ambient-factor type="float">0.0</ambient-factor>
+          <rain-enabled type="int">0</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <reflection-enabled type="int">0</reflection-enabled>
+      </parameters>
+      <!-- fuselage -->
+      <object-name>CanopyFrameInner</object-name>
+    </effect>
+
+  <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-fuselage</inherits-from>
+      <parameters>
+          <metallic type="float">1.00</metallic>
+          <ambient-factor type="float">0.0</ambient-factor>
+          <rain-enabled type="int">0</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <reflection-enabled type="int">1</reflection-enabled>
+      </parameters>
+      <object-name>PitotTube</object-name>
+    </effect>
+
+  <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+      <parameters>
+          <lightmap-enabled type="int">1</lightmap-enabled>
+          <lightmap-multi type="int">1</lightmap-multi>
+          <specular-material-ignore type="int">0</specular-material-ignore><!-- 0 or 1 -->
+      </parameters>
+
+      <object-name>RadarDomeTop</object-name>
+
+
+
+      <object-name>WingTips</object-name>
+
+      <!--<object-name>LeftUpperFlap</object-name>
+      <object-name>LeftLowerFlap</object-name>-->
+
+      <!--<object-name>RightUpperFlap</object-name>
+      <object-name>RightLowerFlap</object-name>-->
+
+      <object-name>LeftUpperAileron</object-name>
+      <object-name>LeftLowerAileron</object-name>
+
+      <object-name>RightUpperAileron</object-name>
+      <object-name>RightLowerAileron</object-name>
+
+  </effect>
+
+<effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+      <parameters>
+          <metallic type="float">0.80</metallic>
+          <ambient-factor type="float">0.35</ambient-factor>
+          <rain-enabled type="int">2</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <ambient-correction type="float">0.00</ambient-correction>
+          <reflection-enabled type="int">0</reflection-enabled>
+          <transparent type="int">1</transparent>
+          <rendering-hint>transparent</rendering-hint>
+      </parameters>
+      <!-- logos -->
+      <object-name>WinglogoLeftTop</object-name>
+      <object-name>WinglogoRightBottom</object-name>
+      <object-name>WinglogoRightTop</object-name>
+      <object-name>Rect</object-name>
+  </effect>
+
+  <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-fuselage</inherits-from>
+      <parameters>
+          <metallic type="float">0.80</metallic>
+          <ambient-factor type="float">0.35</ambient-factor>
+          <rain-enabled type="int">2</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <reflection-enabled type="int">1</reflection-enabled>
+          <reflection-correction type="float">-0.45</reflection-correction>
+          <grain-texture-enabled type="int"><use>f16/effects/rust</use></grain-texture-enabled>
+          <grain-magnification type="float"><use>f16/effects/rust-mag</use></grain-magnification>
+          <dirt-enabled type="int"><use>f16/effects/dirt</use></dirt-enabled>
+          <dirt-factor type="float"><use>f16/effects/dirt-fac</use></dirt-factor>
+      </parameters>
+      <!-- fuselage -->
+
+      <object-name>LeftLowerSpeedbrake</object-name>
+      <object-name>RightLowerSpeedbrake</object-name>
+      <object-name>RightUpperSpeedbrake</object-name>
+      <object-name>LeftUpperSpeedbrake</object-name>
+      <object-name>LeftUpperHorizonTail</object-name>
+      <object-name>LeftLowerHorizonTail</object-name>
+      <object-name>RightUpperHorizonTail</object-name>
+      <object-name>RightLowerHorizonTail</object-name>
+
+      <object-name>irst</object-name>
+
+      <object-name>CanopyFrame</object-name>
+      <object-name>VentralFins</object-name>
+      <object-name>AirIntake</object-name>
+      <object-name>InternalFrontGearDoor</object-name>
+      <object-name>ExternalFrontGearDoor</object-name>
+      <object-name>ExternalRightMainDoor</object-name>
+      <object-name>ExternalLeftMainDoor</object-name>
+      <object-name>RWStation1</object-name>
+      <object-name>RWStation2</object-name>
+      <object-name>LWStation1</object-name>
+      <object-name>LWStation2</object-name>
+      <object-name>RWStation3</object-name>
+      <object-name>LWStation3</object-name>
+      <object-name>Link16Antennas</object-name>
+      <object-name>FrontTire</object-name>
+      <object-name>LeftMainTire</object-name>
+      <object-name>RightMainTire</object-name>
+      <object-name>Poly.002</object-name>
+      <object-name>Tail-antenna</object-name>
+ </effect>
+
+ <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-fuselage</inherits-from>
+      <parameters>
+          <metallic type="float">1.00</metallic>
+          <ambient-factor type="float">0.0</ambient-factor>
+          <rain-enabled type="int">0</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <reflection-enabled type="int">1</reflection-enabled>
+          <reflection-correction type="float">0.50</reflection-correction>
+          <grain-texture-enabled type="int"><use>f16/effects/rust</use></grain-texture-enabled>
+          <grain-magnification type="float"><use>f16/effects/rust-mag</use></grain-magnification>
+          <dirt-enabled type="int"><use>f16/effects/dirt</use></dirt-enabled>
+          <dirt-factor type="float"><use>f16/effects/dirt-fac</use></dirt-factor>
+      </parameters>
+      
+      <!-- gear struts and oleos -->
+
+      <object-name>ArresterHook</object-name>
+      <object-name>FrontAftStrut</object-name>
+      <object-name>FrontLowerStrut</object-name>
+      <object-name>FrontUpperStrut</object-name>
+      <object-name>LeftLowerMainStrut</object-name>
+      <object-name>LeftUpperMainStrut</object-name>
+      <object-name>RightLowerMainStrut</object-name>
+      <object-name>RightUpperMainStrut</object-name>
+      <object-name>LeftInnerStrut</object-name>
+      <object-name>LeftOuterLowerStrut</object-name>
+      <object-name>LeftOuterUpperStrut</object-name>
+      <object-name>RightInnerStrut</object-name>
+      <object-name>RightOuterLowerStrut</object-name>
+      <object-name>RightOuterUpperStrut</object-name>
+ </effect>
+
+ <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-fuselage</inherits-from>
+      <parameters>
+          <specular-material-ignore type="int">0</specular-material-ignore><!-- 0 or 1 -->
+          <metallic type="float">0.80</metallic>
+          <ambient-factor type="float">0.35</ambient-factor>
+          <rain-enabled type="int">2</rain-enabled>
+          <snow-enabled type="int">0</snow-enabled>
+          <reflection-enabled type="int">1</reflection-enabled>
+          <reflection-correction type="float">-0.45</reflection-correction>
+          <grain-texture-enabled type="int"><use>f16/effects/rust</use></grain-texture-enabled>
+          <grain-magnification type="float"><use>f16/effects/rust-mag</use></grain-magnification>
+          <dirt-enabled type="int"><use>f16/effects/dirt</use></dirt-enabled>
+          <dirt-factor type="float"><use>f16/effects/dirt-fac</use></dirt-factor>
+          <lightmap-enabled type="int">1</lightmap-enabled>
+          <lightmap-multi type="int">1</lightmap-multi>
+      </parameters>
+      <!-- tail -->
+
+      <object-name>Tail</object-name>
+      <object-name>RNLAF_Tailroot</object-name>
+      <object-name>USAF_Tailroot</object-name>
+
+      <object-name>Rudder.001</object-name>
+      <object-name>Rudder.002</object-name>
+      <object-name>Rudder.003</object-name>
+      <object-name>Rudder.004</object-name>
+      <object-name>Rudder.005</object-name>
+      <object-name>Rudder.006</object-name>
+      <object-name>Rudder</object-name>
+ </effect>
+
+ <effect>
+      <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-turbine</inherits-from>
+      <object-name>Poly.001</object-name><!-- inner sidewalls of outlet -->
+ </effect>
+
+ <animation>
+  <type>material</type>
+  <object-name>Poly.001</object-name>
+  <emission>
+   <red>  1.0000</red>
+   <green>0.8000</green>
+   <blue> 0.3000</blue>
+   <factor-prop>sim/multiplay/generic/float[22]</factor-prop>
+  </emission>
+ </animation>
+
+ <!-- glass effects, Cylinder.008 removed as HUD is factored out. -->
+ <effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/glass/glass</inherits-from>
+  <parameters>
+    <!--<rendering-hint>transparent</rendering-hint>
+    <transparent>true</transparent>
+    <render-bin>
+      <bin-number>111</bin-number>
+      <bin-name>DepthSortedBin</bin-name>
+    </render-bin>-->
+  </parameters>
+  <object-name>CanopyForwardInside</object-name>
+  <object-name>CanopyBackInside</object-name>
+ </effect>
+
+ <effect>
+  <inherits-from>Effects/model-combined-transparent</inherits-from>
+  <parameters>
+    <rain-enabled>1</rain-enabled>
+    <normalmap-enabled type="int">0</normalmap-enabled>
+    <lightmap-enabled type="int">0</lightmap-enabled>
+    <reflection-enabled type="int">1</reflection-enabled>
+    <reflection-correction type="float">1</reflection-correction>
+    <reflect-map-enabled type="int">0</reflect-map-enabled>
+    <reflection-fresnel type="float">0.3</reflection-fresnel>
+    <reflection-rainbow type="float">0.2</reflection-rainbow>
+    <reflection-noise type="float">0.0</reflection-noise>
+    <reflection-dynamic type="int">1</reflection-dynamic>
+      <texture n= "5" >
+        <type>cubemap</type>
+        <images>
+          <positive-x>Aircraft/Generic/Effects/fgfs-sky2/1.png</positive-x>
+          <negative-x>Aircraft/Generic/Effects/fgfs-sky2/4.png</negative-x>
+          <positive-y>Aircraft/Generic/Effects/fgfs-sky2/2.png</positive-y>
+          <negative-y>Aircraft/Generic/Effects/fgfs-sky2/3.png</negative-y>
+          <positive-z>Aircraft/Generic/Effects/fgfs-sky2/6.png</positive-z>
+          <negative-z>Aircraft/Generic/Effects/fgfs-sky2/5.png</negative-z>
+        </images>
+      </texture>
+    <ambient-correction type="float">0.2</ambient-correction>
+    <transparent>true</transparent>
+    <render-bin>
+      <bin-number>111</bin-number>
+      <bin-name>DepthSortedBin</bin-name>
+    </render-bin>
+  </parameters>
+  <object-name>CanopyForwardOutside</object-name>
+  <object-name>CanopyBackOutside</object-name>
+  <!--<object-name>cylinder.007</object-name>-->       <!-- HUD -->
+ </effect>
+
+ <!-- start effects -->
+ <model>
+  <name>exhaust_smoke</name>
+  <path>Aircraft/bigHexy/Models/Effects/exhaust.xml</path>
+  <offsets>
+   <x-m>4.25</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </offsets>
+ </model>
+
+<!-- the smoke generated when engine is above 96 N2 -->
+ <model>
+  <name>exhaust_smoke</name>
+  <path>Aircraft/bigHexy/Models/Effects/exhaust_smoke.xml</path>
+    <offsets>
+      <x-m>1.7</x-m>
+      <y-m>0.0</y-m>
+      <z-m>-0.4</z-m>
+      </offsets>
+ </model>
+
+ <!-- the "jelly" generated when engine is in reheat -->
+ <model>
+  <name>exhaust_jelly</name>
+  <path>Aircraft/bigHexy/Models/Effects/exhaust_jelly.xml</path>
+    <offsets>
+      <x-m>1.7</x-m>
+      <y-m>0.0</y-m>
+      <z-m>-0.4</z-m>
+      </offsets>
+ </model>
+
+ <model>
+  <name>fli</name>
+  <path>Aircraft/bigHexy/Models/frontLights.xml</path>
+    <offsets>
+      <x-m>0.0</x-m>
+      <y-m>0.0</y-m>
+      <z-m>0.0</z-m>
+      </offsets>
+ </model>
+
+
+ <!-- smokepods -->
+
+<model>
+  <name>machCone</name>
+  <path>Aircraft/bigHexy/Models/Effects/vapour/mach-cone.xml</path>
+ </model>
+
+ <animation>
+    <type>select</type>
+    <object-name>machCone</object-name>
+    <condition>
+      <greater-than>
+        <property>/environment/relative-humidity</property>
+        <value>50</value>
+      </greater-than>
+      <greater-than>
+        <property>/environment/temperature-degc</property>
+        <value>0</value>
+      </greater-than>
+      <greater-than>
+       <property>sim/multiplay/generic/float[16]</property><!-- velocities/mach -->
+       <value>0.98</value>
+      </greater-than>
+      <less-than>
+       <property>sim/multiplay/generic/float[16]</property><!-- velocities/mach -->
+       <value>1.02</value>
+      </less-than>
+      <greater-than>
+       <property>/environment/pressure-inhg</property>
+       <value>22</value>
+      </greater-than>
+    </condition>
+  </animation>
+
+ <model>
+  <name>left-strake-vortex</name>
+  <path>Aircraft/bigHexy/Models/Effects/vapour/strake-vortex.xml</path>
+  <offsets>
+   <x-m>-2.5</x-m>
+   <y-m>-1.0</y-m>
+   <z-m>0.1</z-m>
+  </offsets>
+ </model>
+
+ <model>
+  <name>right-strake-vortex</name>
+  <path>Aircraft/bigHexy/Models/Effects/vapour/strake-vortex.xml</path>
+  <offsets>
+   <x-m>-2.5</x-m>
+   <y-m>1.0</y-m>
+   <z-m>0.0</z-m>
+  </offsets>
+ </model>
+
+ <animation>
+    <type>select</type>
+    <object-name>right-strake-vortex</object-name>
+    <object-name>left-strake-vortex</object-name>
+    <condition>
+       <and>
+          <greater-than>
+            <property>/environment/relative-humidity</property>
+            <value>50</value>
+          </greater-than>
+          <greater-than>
+            <property>/environment/temperature-degc</property>
+            <value>0</value>
+          </greater-than>
+          <greater-than>
+            <property>/environment/pressure-inhg</property>
+            <value>22</value>
+          </greater-than>
+          <greater-than>
+           <property>sim/multiplay/generic/float[17]</property><!-- orientation/alpha-deg -->
+           <value>9.0</value>
+          </greater-than>
+          <greater-than>
+           <property>sim/multiplay/generic/float[3]</property><!-- velocities/airspeed-kt -->
+           <value>160</value>
+          </greater-than>
+       </and>
+    </condition>
+  </animation>
+
+ <model>
+  <name>g-vortexR</name>
+  <path>Aircraft/bigHexy/Models/Effects/vapour/g-vortex.xml</path>
+  <offsets>
+   <x-m>-0.8</x-m>
+   <y-m>0.5</y-m>
+   <z-m>0.0</z-m>
+   <heading-deg>15</heading-deg>
+   <roll-deg>-10</roll-deg>
+  </offsets>
+ </model>
+
+ <model>
+  <name>g-vortexL</name>
+  <path>Aircraft/bigHexy/Models/Effects/vapour/g-vortex.xml</path>
+  <offsets>
+   <x-m>-0.8</x-m>
+   <y-m>-0.5</y-m>
+   <z-m>0.0</z-m>
+   <heading-deg>-15</heading-deg>
+   <roll-deg>10</roll-deg>
+  </offsets>
+ </model>
+
+ <animation>
+    <type>select</type>
+    <object-name>g-vortexL</object-name>
+    <object-name>g-vortexR</object-name>
+      <condition>
+           <and>
+                <greater-than>
+                  <property>/environment/relative-humidity</property>
+                  <value>50</value>
+                </greater-than>
+                <greater-than>
+                  <property>/environment/temperature-degc</property>
+                  <value>0</value>
+                </greater-than>
+                <greater-than>
+                  <property>/environment/pressure-inhg</property>
+                  <value>22</value>
+                </greater-than>
+                <greater-than>
+                 <property>sim/multiplay/generic/float[17]</property><!-- orientation/alpha-deg -->
+                 <value>12.0</value>
+                </greater-than>
+                <greater-than>
+                 <property>sim/multiplay/generic/float[3]</property><!-- velocities/airspeed-kt -->
+                 <value>300</value>
+                </greater-than>
+           </and>
+      </condition>
+  </animation>
+
+  <model>
+    <name>tiptrail-L</name>
+    <path>Aircraft/bigHexy/Models/Effects/tiptrail/tiptrail.xml</path>
+      <offsets>
+        <x-m>2.2</x-m>
+        <y-m>-4.78</y-m>
+        <z-m>0.075</z-m>
+      </offsets>
+  </model>
+
+  <model>
+    <name>tiptrail-R</name>
+    <path>Aircraft/bigHexy/Models/Effects/tiptrail/tiptrail.xml</path>
+      <offsets>
+        <x-m>2.2</x-m>
+        <y-m>4.78</y-m>
+        <z-m>0.075</z-m>
+      </offsets>
+  </model>
+
+ <model>
+  <path>Aircraft/Generic/Effects/tyre-smoke-nose.xml</path>
+  <name>tyre-smoke-n</name>
+  <offsets>
+   <x-m> -3.02153 </x-m>
+    <y-m> -0.03405 </y-m>
+    <z-m> -1.91735 </z-m>
+  </offsets>
+ </model>
+
+  <model>
+   <path>Aircraft/Generic/Effects/tyre-smoke-port.xml</path>
+   <name>tyre-smoke-p</name>
+   <offsets>
+    <x-m> 0.56097 </x-m>
+    <y-m> 1.16952 </y-m>
+    <z-m> -1.79705 </z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <path>Aircraft/Generic/Effects/tyre-smoke-stbd.xml</path>
+   <name>tyre-smoke-s</name>
+   <offsets>
+   <x-m> 0.56097 </x-m>
+    <y-m> -1.18118 </y-m>
+    <z-m> -1.79705 </z-m>
+   </offsets>
+  </model>
+
+  <model>
+  <path>Aircraft/Generic/Effects/rain-nose.xml</path>
+  <name>tyre-rain-n</name>
+  <offsets>
+   <x-m> -3.02153 </x-m>
+    <y-m> -0.03405 </y-m>
+    <z-m> -1.91735 </z-m>
+  </offsets>
+ </model>
+
+  <model>
+   <path>Aircraft/Generic/Effects/rain-port.xml</path>
+   <name>tyre-rain-p</name>
+   <offsets>
+    <x-m> 0.56097 </x-m>
+    <y-m> 1.16952 </y-m>
+    <z-m> -1.79705 </z-m>
+   </offsets>
+  </model>
+
+  <model>
+   <path>Aircraft/Generic/Effects/rain-stbd.xml</path>
+   <name>tyre-rain-s</name>
+   <offsets>
+   <x-m> 0.56097 </x-m>
+    <y-m> -1.18118 </y-m>
+    <z-m> -1.79705 </z-m>
+   </offsets>
+  </model>
+ <!-- end effects -->
+
+ <model>
+  <name>Chocks</name>
+  <path>Aircraft/bigHexy/Models/chocks.xml</path>
+ </model>
+
+<!-- end submodels -->
+
+
+
+
+
+<!-- ===================== START LIGHTING =========================== -->
+  <light>
+  <name>taxi-light</name>
+  <type>spot</type>
+  <position>
+    <x-m>-3.13064</x-m>
+    <y-m>0.307693</y-m>
+    <z-m>-1.23477</z-m>
+  </position>
+  <direction>
+    <pitch-deg>85</pitch-deg>
+    <roll-deg>0</roll-deg>
+    <heading-deg>0</heading-deg>
+  </direction>
+  <ambient>
+    <r>0.03</r>
+    <g>0.03</g>
+    <b>0.03</b>
+    <a>1</a>
+  </ambient>
+  <diffuse>
+    <r>0.95</r>
+    <g>0.9</g>
+    <b>0.9</b>
+    <a>1</a>
+  </diffuse>
+  <specular>
+    <r>0.95</r>
+    <g>0.9</g>
+    <b>0.9</b>
+    <a>1</a>
+  </specular>
+  <attenuation>
+    <c>0.05</c>
+    <l>0.00045</l>
+    <q>0.000075</q>
+  </attenuation>
+  <spot-exponent>30</spot-exponent>
+  <spot-cutoff>30</spot-cutoff>
+  <range-m>100</range-m>
+  <dim-factor>
+    <property>sim/multiplay/generic/bool[46]</property>
+  </dim-factor>
+</light>
+
+<light>
+  <name>land-light</name>
+  <type>spot</type>
+  <position>
+    <x-m>-3.13064</x-m>
+    <y-m>0.307693</y-m>
+    <z-m>-1.23477</z-m>
+  </position>
+  <direction>
+    <pitch-deg>79.86</pitch-deg>
+    <roll-deg>0</roll-deg>
+    <heading-deg>0</heading-deg>
+  </direction>
+  <ambient>
+    <r>0.03</r>
+    <g>0.03</g>
+    <b>0.03</b>
+    <a>1</a>
+  </ambient>
+  <diffuse>
+    <r>0.85</r>
+    <g>0.8</g>
+    <b>0.8</b>
+    <a>1</a>
+  </diffuse>
+  <specular>
+    <r>0.85</r>
+    <g>0.8</g>
+    <b>0.8</b>
+    <a>1</a>
+  </specular>
+  <attenuation>
+    <c>1</c>
+    <l>0.0001</l>
+    <q>0.00000</q>
+  </attenuation>
+  <spot-exponent>1250</spot-exponent>
+  <spot-cutoff>7.5</spot-cutoff>
+  <range-m>250</range-m>
+  <dim-factor>
+    <property>sim/multiplay/generic/bool[47]</property>
+  </dim-factor>
+</light>
+<!-- start position lights -->
+
+ <animation>
+  <type>select</type>
+  <object-name>GreenPosLight1</object-name>
+  <object-name>RedPosLight1</object-name>
+  <object-name>WingRedPosLight</object-name>
+  <object-name>WingGreenPosLight</object-name>
+  <condition>
+   <property>false</property>
+  </condition>
+ </animation>
+
+<model>
+  <name>posleft1</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/pos-left.xml</path>
+  <offsets>
+            <x-m> 1.60236 </x-m>
+            <y-m> -4.55165 </y-m>
+            <z-m> 0.012629 </z-m>
+        </offsets>
+ </model>
+
+ <model>
+  <name>posright1</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/pos-right.xml</path>
+  <offsets>
+            <x-m> 1.60236 </x-m>
+            <y-m> 4.55165 </y-m>
+            <z-m> 0.012629 </z-m>
+        </offsets>
+ </model>
+
+ <model>
+  <name>posleft2</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/pos-left2.xml</path>
+  <offsets>
+            <x-m> -3.36687 </x-m>
+            <y-m> -0.748387 </y-m>
+            <z-m> -0.555937 </z-m>
+        </offsets>
+ </model>
+
+ <model>
+  <name>posright2</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/pos-right2.xml</path>
+  <offsets>
+            <x-m> -3.36687 </x-m>
+            <y-m> 0.748387 </y-m>
+            <z-m> -0.555937 </z-m>
+        </offsets>
+ </model>
+
+  <animation>
+    <type>select</type>
+    <object-name>posleft2</object-name>
+    <object-name>posright2</object-name>
+    <condition>
+      <and>
+        <!--<property>/sim/rendering/shaders/skydome</property>-->
+        <equals>
+        <property>sim/multiplay/generic/bool[40]</property>
+        <value>1</value>
+      </equals>
+      </and>
+    </condition>
+  </animation>
+
+
+
+
+<model>
+  <name>belly</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/belly-light.xml</path>
+  <offsets>
+            <x-m> -1.48466 </x-m><!-- adjusted -0.25 for issue #500 -->
+            <y-m> 0 </y-m>
+            <z-m> -0.848066 </z-m><!-- adjusted 0.014 -->
+        </offsets>
+ </model>
+ <model>
+  <name>spine</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/spine-light.xml</path>
+  <offsets>
+            <x-m> -2.05409 </x-m>
+            <y-m> 0 </y-m>
+            <z-m> 0.849391 </z-m>
+        </offsets>
+ </model>
+ <model>
+  <name>ar-flood</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/ar-flood-light.xml</path>
+  <offsets>
+            <x-m> -2.05409 </x-m>
+            <y-m> 0 </y-m>
+            <z-m> 0.849391 </z-m>
+        </offsets>
+ </model>
+ <model>
+  <name>tailmounted-flood</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/tailmounted-flood-light.xml</path>
+  <offsets>
+            <x-m> 4.17987 </x-m>
+            <y-m> 0 </y-m>
+            <z-m> 2.5925 </z-m>
+        </offsets>
+ </model>
+ <model>
+  <name>tl</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/tail-light.xml</path>
+  <offsets>
+            <x-m> 5.50707 </x-m>
+            <y-m> 0 </y-m>
+            <z-m> 1.13691 </z-m>
+        </offsets>
+ </model>
+ <model>
+  <name>tl2</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/tail-light.xml</path>
+  <offsets>
+            <x-m> 5.05444 </x-m>
+            <y-m> 0 </y-m>
+            <z-m> 0.855577 </z-m>
+        </offsets>
+ </model>
+
+<animation>
+    <type>select</type>
+    <object-name>belly</object-name>
+    <object-name>spine</object-name>
+    <condition>
+      <!--<property>/sim/rendering/shaders/skydome</property>-->
+      <equals>
+        <property>sim/multiplay/generic/bool[41]</property>
+        <value>1</value>
+      </equals>
+    </condition>
+  </animation>
+
+<animation>
+    <type>select</type>
+    <object-name>ar-flood</object-name>
+    <condition>
+      <!--<property>/sim/rendering/shaders/skydome</property>-->
+      <equals>
+        <property>sim/multiplay/generic/bool[49]</property>
+        <value>1</value>
+      </equals>
+    </condition>
+  </animation>
+
+<animation>
+    <type>select</type>
+    <object-name>tailmounted-flood</object-name>
+    <condition>
+      <!--<property>/sim/rendering/shaders/skydome</property>-->
+      <equals>
+        <property>sim/multiplay/generic/bool[49]</property>
+        <value>1</value>
+      </equals>
+    </condition>
+  </animation>
+
+  <animation>
+    <type>select</type>
+    <object-name>tl</object-name>
+    <condition>
+      <!--<property>/sim/rendering/shaders/skydome</property>-->
+      <equals>
+        <property>sim/multiplay/generic/bool[42]</property>
+        <value>1</value>
+      </equals>
+    </condition>
+  </animation>
+
+  <animation>
+    <type>select</type>
+    <object-name>tl2</object-name>
+    <condition>
+      <!--<property>/sim/rendering/shaders/skydome</property>-->
+      <equals>
+        <property>sim/multiplay/generic/bool[43]</property>
+        <value>1</value>
+      </equals>
+    </condition>
+  </animation>
+
+
+<!-- flash causes this not to work, since flash is what we use during flight
+     we'll disable steady/off for now
+ <animation>
+  <type>select</type>
+  <object-name>pos_lights_lit</object-name>
+  <condition>
+   <not><property>controls/lighting/ext-lighting-panel/pos-lights-flash</property></not>
+   <or>
+   <equals>
+    <property>controls/lighting/ext-lighting-panel/wing-tail</property>
+    <value>2.0</value>
+   </equals>
+   <equals>
+    <property>controls/lighting/ext-lighting-panel/wing-tail</property>
+    <value>0.0</value>
+   </equals>
+   </or>
+   <property>controls/lighting/ext-lighting-panel/master</property>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>pos_lights_unlit</object-name>
+  <condition>
+   <or>
+    <equals>
+     <property>controls/lighting/ext-lighting-panel/wing-tail</property>
+     <value>1.0</value>
+    </equals>
+    <not><property>controls/lighting/ext-lighting-panel/master</property></not>
+   </or>
+  </condition>
+ </animation>
+-->
+<!-- end position lights -->
+
+
+<!-- start formation lights -->
+ <animation>
+  <name>Fformation_lights</name>
+  <type>select</type>
+  <object-name>LowFormationLlight</object-name>
+  <object-name>FwdFormationLight</object-name>
+  <condition><and>
+    <not>
+    <property>/sim/rendering/shaders/skydome</property>
+  </not>
+     <equals>
+        <property>sim/multiplay/generic/bool[41]</property>
+        <value>1</value>
+      </equals>
+  </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <name>F-16A-MLU-rnlaf_formation_lights</name>
+  <type>select</type>
+  <object-name>AftPosLight2</object-name>
+  <condition>
+    <not>
+    <property>/sim/rendering/shaders/skydome</property>
+  </not>
+    <equals>
+        <property>sim/multiplay/generic/bool[42]</property>
+        <value>1</value>
+      </equals>
+  </condition>
+ </animation>
+
+ <animation>
+  <name>F-16C_formation_lights</name>
+  <type>select</type>
+  <object-name>AftPosLight1</object-name>
+  <condition><and>
+    <not>
+    <property>/sim/rendering/shaders/skydome</property>
+  </not>
+    <equals>
+        <property>sim/multiplay/generic/bool[43]</property>
+        <value>1</value>
+      </equals>
+  </and>
+  </condition>
+ </animation>
+<!-- end formation lights -->
+
+ <model>
+  <name>strobe</name>
+  <path>Aircraft/bigHexy/Models/Effects/lights/strobe.xml</path>
+  <offsets>
+   <x-m>5.3</x-m>
+   <y-m>0.0</y-m>
+   <z-m>3.2</z-m>
+  </offsets>
+ </model>
+
+<!-- start fuselage lights -->
+
+  <model>
+    <name>fuselage-left-light</name>
+    <path>Aircraft/bigHexy/Models/Effects/lights/fuselage-light.xml</path>
+    <offsets>
+      <x-m> 3.45 </x-m>
+      <y-m>-0.95 </y-m>
+      <z-m> 0.22 </z-m>
+    </offsets>
+  </model>
+
+  <model>
+    <name>fuselage-right-light</name>
+    <path>Aircraft/bigHexy/Models/Effects/lights/fuselage-light.xml</path>
+    <offsets>
+      <x-m> 3.45 </x-m>
+      <y-m> 0.95 </y-m>
+      <z-m> 0.22 </z-m>
+    </offsets>
+  </model>
+
+  <animation>
+    <type>select</type>
+    <object-name>fuselage-left-light</object-name>
+    <object-name>fuselage-right-light</object-name>
+    <condition>
+      <!--<property>/sim/rendering/shaders/skydome</property>-->
+      <equals>
+        <property>sim/multiplay/generic/bool[48]</property>
+        <value>1</value>
+      </equals>
+    </condition>
+  </animation>
+
+<!-- end fuselage lights -->
+
+<!-- ===================== END LIGHTING =========================== -->
+
+<!-- fuselage animations -->
+ <animation>
+  <type>rotate</type>
+<!--
+  <object-name>CanopyBackInside</object-name>
+  <object-name>CanopyBackOutside</object-name>
+-->
+  <object-name>CanopyFrame</object-name>
+  <object-name>CanopyFrameInner</object-name>
+  <object-name>CanopyForwardInside</object-name>
+  <object-name>CanopyForwardOutside</object-name>
+ <property>canopy/position-norm</property>
+  <factor>30.0</factor>
+  <center>
+   <x-m>-3.30</x-m>
+   <y-m>0</y-m>
+   <z-m>0.6</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>CanopyFrame</object-name>
+  <object-name>CanopyFrameInner</object-name>
+  <object-name>CanopyForwardInside</object-name>
+  <object-name>CanopyForwardOutside</object-name>
+  <condition>
+    <not>
+    <property>canopy/not-serviceable</property>
+  </not>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>ArresterHook</object-name>
+  <property>gear/tailhook/position-norm</property>
+  <factor>57.175</factor>              <!-- (tailhook-pos-max-deg - tailhook-pos-min-deg) -->
+  <center>
+   <x-m>2.58</x-m>
+   <y-m>0</y-m>
+   <z-m>-0.73</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Fan</object-name>
+  <condition>
+   <less-than>
+    <property>sim/multiplay/generic/short[5]</property>
+    <value>1</value>
+   </less-than>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>FanSpinning</object-name>
+  <condition>
+   <greater-than>
+    <property>sim/multiplay/generic/short[5]</property>
+    <value>1</value>
+   </greater-than>
+  </condition>
+ </animation>
+
+<!--
+ <animation>
+  <type>rotate</type>
+  <object-name>fan</object-name>
+  <object-name>fan_spinning</object-name>
+  <property>sim/multiplay/generic/short[5]</property>
+  <factor>27</factor>
+  <center>
+   <x-m>0.596828</x-m>
+   <y-m>0.00300605</y-m>
+   <z-m>0.0184392</z-m>
+  </center>
+  <axis>
+   <x>1.0</x>
+   <y>0.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+-->
+
+ <animation>
+  <type>select</type>
+  <object-name>InternalFlame</object-name>
+  <condition>
+   <property>sim/multiplay/generic/bool[39]</property>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>material</type>
+<!--  <condition>
+    <equals>
+      <property>/sim/rendering/rembrandt/enabled</property>
+      <value>0</value>
+    </equals>
+  </condition>-->
+  <object-name>InternalFlame</object-name>
+  <transparency>
+   <alpha-prop>sim/multiplay/generic/float[19]</alpha-prop>
+   <factor>0.75</factor>
+   <offset>0</offset>
+  </transparency>
+  <!--<emission>
+   <red>  0.0100</red>
+   <green>0.0050</green>
+   <blue> 0.0039</blue>
+   <factor-prop>sim/multiplay/generic/short[5]</factor-prop>
+  </emission>-->
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Turbine</object-name>
+  <condition>
+   <property>nop</property>
+  </condition>
+ </animation>
+
+ <model>
+  <name>outlet</name>
+  <path>Aircraft/bigHexy/Models/outlet.xml</path>
+</model>
+
+  <animation>
+  <type>material</type>
+  <condition>
+    <equals>
+      <property>/sim/rendering/rembrandt/enabled</property>
+      <value>0</value>
+    </equals>
+  </condition>
+  <object-name>Turbine</object-name>
+  <emission>
+   <red>  0.0100</red>
+   <green>0.0050</green>
+   <blue> 0.0039</blue>
+   <factor-prop>sim/multiplay/generic/short[5]</factor-prop>
+  </emission>
+ </animation>
+
+   <animation>
+  <type>material</type>
+  <condition>
+    <equals>
+      <property>/sim/rendering/rembrandt/enabled</property>
+      <value>0</value>
+    </equals>
+  </condition>
+  <object-name>InternalFlame</object-name>
+  <emission>
+   <red>0.01</red>
+   <green>0.01</green>
+   <blue>0.01</blue>
+   <factor-prop>sim/multiplay/generic/short[5]</factor-prop>
+  </emission>
+ </animation>
+
+ <model>
+  <name>AB_FlamePW</name>
+  <path>Aircraft/bigHexy/Models/Effects/afterburner-pw.xml</path>
+  <offsets>
+   <x-m>5.43</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </offsets>
+ </model>
+
+ <animation>
+  <type>select</type>
+  <object-name>AB_FlamePW</object-name>
+  <condition>
+   <property>sim/multiplay/generic/bool[39]</property>
+   <equals>
+   <property>sim/multiplay/generic/int[10]</property>
+   <value>2</value>
+   </equals>
+  </condition>
+ </animation>
+
+  <model>
+  <name>AB_FlameGE</name>
+  <path>Aircraft/bigHexy/Models/Effects/afterburner-ge.xml</path>
+  <offsets>
+   <x-m>5.36</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </offsets>
+ </model>
+
+ <animation>
+  <type>select</type>
+  <object-name>AB_FlameGE</object-name>
+  <condition>
+   <property>sim/multiplay/generic/bool[39]</property>
+   <equals>
+   <property>sim/multiplay/generic/int[10]</property>
+   <value>0</value>
+   </equals>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>ExternalFlame</object-name>
+  <condition>
+   <property>sim/multiplay/generic/float[2]</property>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>translate</type>
+  <object-name>ExternalFlame</object-name>
+  <property>sim/multiplay/generic/float[0]</property>
+  <offset-m>-4.0</offset-m>
+  <factor>4.0</factor>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+
+ <effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+  <parameters>
+    <specular-material-ignore type="int">0</specular-material-ignore><!-- 0 or 1 -->
+    <rotation-rad><use>surface-positions/rightrad</use></rotation-rad>
+     <rotation-x1>1.71989</rotation-x1>
+     <rotation-y1>3.5817</rotation-y1>
+     <rotation-z1>0.073898</rotation-z1>
+     <rotation-x2>1.3266</rotation-x2>
+     <rotation-y2>1.0652</rotation-y2>
+     <rotation-z2>0.170853</rotation-z2>
+  </parameters>
+  <object-name>RightUpperFlap</object-name>
+  <object-name>RightLowerFlap</object-name>
+</effect>
+
+<!--effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+  <parameters>
+    <specular-material-ignore type="int">0</specular-material-ignore>
+    <rotation-rad><use>surface-positions/rightrad2</use></rotation-rad>
+     <rotation-x1>1.71989</rotation-x1>
+     <rotation-y1>3.5817</rotation-y1>
+     <rotation-z1>0.073898</rotation-z1>
+     <rotation-x2>1.3266</rotation-x2>
+     <rotation-y2>1.0652</rotation-y2>
+     <rotation-z2>0.170853</rotation-z2>
+  </parameters>
+  <object-name>RightUpperAileron</object-name>
+  <object-name>RightLowerAileron</object-name>
+</effect-->
+
+ <effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+  <parameters>
+    <specular-material-ignore type="int">0</specular-material-ignore><!-- 0 or 1 -->
+    <rotation-rad><use>surface-positions/leftrad</use></rotation-rad>
+     <rotation-x1>1.71989</rotation-x1>
+     <rotation-y1>-3.5817</rotation-y1>
+     <rotation-z1>0.073898</rotation-z1>
+     <rotation-x2>1.3266</rotation-x2>
+     <rotation-y2>-1.0652</rotation-y2>
+     <rotation-z2>0.170853</rotation-z2>
+  </parameters>
+  <object-name>LeftUpperFlap</object-name>
+  <object-name>LeftLowerFlap</object-name>
+</effect>
+
+<!--effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+  <parameters>
+    <specular-material-ignore type="int">0</specular-material-ignore>
+    <rotation-rad><use>surface-positions/leftrad2</use></rotation-rad>
+     <rotation-x1>1.71989</rotation-x1>
+     <rotation-y1>-3.5817</rotation-y1>
+     <rotation-z1>0.073898</rotation-z1>
+     <rotation-x2>1.3266</rotation-x2>
+     <rotation-y2>-1.0652</rotation-y2>
+     <rotation-z2>0.170853</rotation-z2>
+  </parameters>
+  <object-name>LeftUpperAileron</object-name>
+  <object-name>LeftLowerAileron</object-name>
+</effect-->
+
+<effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+  <parameters>
+    <specular-material-ignore type="int">0</specular-material-ignore><!-- 0 or 1 -->
+    <rotation-rad><use>surface-positions/radlefl</use></rotation-rad>
+     <rotation-x1>-0.813197</rotation-x1>
+     <rotation-y1>-1.41659</rotation-y1>
+     <rotation-z1>0.078991</rotation-z1>
+     <rotation-x2>1.29425</rotation-x2>
+     <rotation-y2>-4.58845</rotation-y2>
+     <rotation-z2>-0.006551</rotation-z2>
+  </parameters>
+  <object-name>LeftUpperLef</object-name>
+  <object-name>LeftLowerLef</object-name>
+</effect>
+
+<effect>
+  <inherits-from>Aircraft/bigHexy/Models/Effects/fuselage/model-combined-wings</inherits-from>
+  <parameters>
+    <specular-material-ignore type="int">0</specular-material-ignore><!-- 0 or 1 -->
+    <rotation-rad><use>surface-positions/radlefr</use></rotation-rad>
+     <rotation-x1>-0.813197</rotation-x1>
+     <rotation-y1>1.41659</rotation-y1>
+     <rotation-z1>0.078991</rotation-z1>
+     <rotation-x2>1.29425</rotation-x2>
+     <rotation-y2>4.58845</rotation-y2>
+     <rotation-z2>-0.006551</rotation-z2>
+  </parameters>
+  <object-name>RightUpperLef</object-name>
+  <object-name>RightLowerLef</object-name>
+</effect>
+
+<!--animation>
+  <type>rotate</type>
+  <object-name>RightUpperAileron</object-name>
+  <object-name>RightLowerAileron</object-name>
+  <property>surface-positions/right-aileron-pos-norm</property>
+  <condition>
+    <not>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+        <property>/sim/rendering/shaders/quality-level</property>
+        <property>/sim/rendering/shaders/model</property>
+      </and>
+    </not>
+  </condition>
+  <factor>21.5</factor>
+  <center>
+   <x-m>1.815</x-m>
+   <y-m>4.11</y-m>
+   <z-m>0.05</z-m>
+  </center>
+  <axis>
+   <x>0.167465</x>
+   <y>0.985090</y>
+   <z>-0.039404</z>
+  </axis>
+ </animation-->
+
+ <!--animation>
+  <type>rotate</type>
+  <object-name>LeftUpperAileron</object-name>
+  <object-name>LeftLowerAileron</object-name>
+  <condition>
+    <not>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+        <property>/sim/rendering/shaders/quality-level</property>
+        <property>/sim/rendering/shaders/model</property>
+      </and>
+    </not>
+  </condition>
+  <property>surface-positions/left-aileron-pos-norm</property>
+  <factor>21.5</factor>
+  <axis>
+   <x1-m>1.71989</x1-m>
+   <y1-m>-3.5817</y1-m>
+   <z1-m>0.073898</z1-m>
+   <x2-m>1.3266</x2-m>
+   <y2-m>-1.0652</y2-m>
+   <z2-m>0.170853</z2-m>
+  </axis>
+ </animation-->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightUpperFlap</object-name>
+  <object-name>RightLowerFlap</object-name>
+  <condition>
+    <not>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+        <property>/sim/rendering/shaders/quality-level</property>
+        <property>/sim/rendering/shaders/model</property>
+      </and>
+    </not>
+  </condition>
+  <property>sim/multiplay/generic/float[6]</property>
+  <factor>20.0</factor>
+  <center>
+   <x-m>1.54</x-m>
+   <y-m>2.35</y-m>
+   <z-m>0.12</z-m>
+  </center>
+  <axis>
+   <x>0.150157</x>
+   <y>0.987872</y>
+   <z>-0.039515</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftUpperFlap</object-name>
+  <object-name>LeftLowerFlap</object-name>
+  <condition>
+    <not>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+        <property>/sim/rendering/shaders/quality-level</property>
+        <property>/sim/rendering/shaders/model</property>
+      </and>
+    </not>
+  </condition>
+  <property>sim/multiplay/generic/float[5]</property>
+  <factor>20.0</factor>
+  <center>
+   <x-m>1.54</x-m>
+   <y-m>-2.35</y-m>
+   <z-m>0.12</z-m>
+  </center>
+  <axis>
+   <x>0.150157</x>
+   <y>-0.987872</y>
+   <z>-0.039515</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightUpperLef</object-name>
+  <object-name>RightLowerLef</object-name>
+  <condition>
+    <not>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+        <property>/sim/rendering/shaders/quality-level</property>
+        <property>/sim/rendering/shaders/model</property>
+      </and>
+    </not>
+  </condition>
+  <property>surface-positions/flap-pos-norm</property>
+  <factor>-1</factor>
+  <center>
+   <x-m>0.24</x-m>
+   <y-m>3.0</y-m>
+   <z-m>0.035</z-m>
+  </center>
+  <axis>
+   <x>0.550908</x>
+   <y>0.834232</y>
+   <z>-0.023610</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftUpperLef</object-name>
+  <object-name>LeftLowerLef</object-name>
+  <condition>
+    <not>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+        <property>/sim/rendering/shaders/quality-level</property>
+        <property>/sim/rendering/shaders/model</property>
+      </and>
+    </not>
+  </condition>
+  <property>surface-positions/flap-pos-norm</property>
+  <center>
+   <x-m>0.24</x-m>
+   <y-m>-3.0</y-m>
+   <z-m>0.035</z-m>
+  </center>
+  <axis>
+   <x>0.549345</x>
+   <y>-0.834983</y>
+   <z>-0.031988</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Rudder</object-name>
+  <object-name>Rudder.001</object-name>
+  <object-name>Rudder.002</object-name>
+  <object-name>Rudder.003</object-name>
+  <object-name>Rudder.004</object-name>
+  <object-name>Rudder.005</object-name>
+  <object-name>Rudder.006</object-name>
+  <object-name>VstabBandLeftAft</object-name>
+  <object-name>VstabBandRightAft</object-name>
+  <property>surface-positions/rudder-pos-norm</property>
+  <factor>30</factor>
+  <center>
+   <x-m>4.915</x-m>
+   <y-m>0.0</y-m>
+   <z-m>2.095</z-m>
+  </center>
+  <axis>
+   <x>0.547371</x>
+   <y>0.0</y>
+   <z>0.836890</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightUpperHorizonTail</object-name>
+  <object-name>RightLowerHorizonTail</object-name>
+  <property>sim/multiplay/generic/float[4]</property>
+  <factor>57.3</factor>
+  <center>
+   <x-m>4.36</x-m>
+   <y-m>1.965</y-m>
+   <z-m>-0.1</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.981645</y>
+   <z>-0.190720</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftUpperHorizonTail</object-name>
+  <object-name>LeftLowerHorizonTail</object-name>
+  <property>surface-positions/elevator-pos-norm</property>
+  <factor>57.3</factor>
+  <center>
+   <x-m>4.36</x-m>
+   <y-m>-1.965</y-m>
+   <z-m>-0.1</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-0.981645</y>
+   <z>-0.190720</z>
+  </axis>
+ </animation>
+
+<!-- ============== START GEAR ================== -->
+
+ <!-- front -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>InternalFrontGearDoor</object-name>
+  <object-name>ExternalFrontGearDoor</object-name>
+  <object-name>fli</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>420</factor>
+  <offset-deg>-100</offset-deg>
+  <min-deg>-91</min-deg>
+  <max-deg>0</max-deg>
+  <center>
+   <x-m>-2.5</x-m>
+   <y-m>0.28</y-m>
+   <z-m>-0.805</z-m>
+  </center>
+  <axis>
+   <x>0.999843</x>
+   <y>0.015871</y>
+   <z>0.007935</z>
+  </axis>
+ </animation>
+
+
+
+ <animation>
+  <type>translate</type>
+  <object-name>FrontTire</object-name>
+  <object-name>FrontLowerStrut</object-name>
+  <object-name>tyre-smoke-n</object-name>
+  <object-name>tyre-rain-n</object-name>
+  <property>gear/gear/compression-norm</property>
+  <factor>0.25</factor>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+
+
+ <animation>
+  <type>rotate</type>
+  <object-name>FrontTire</object-name>
+  <object-name>FrontLowerStrut</object-name>
+  <property>sim/multiplay/generic/float[7]</property>
+  <factor>-32</factor>
+  <center>
+   <x-m>-2.97</x-m>
+   <y-m>0.0</y-m>
+   <z-m>0.0</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>FrontTire</object-name>
+  <object-name>FrontLowerStrut</object-name>
+  <object-name>FrontUpperStrut</object-name>
+  <object-name>FrontAftStrut</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>112</factor>
+  <offset-deg>-112</offset-deg>
+  <center>
+   <x-m>-2.97</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-0.805</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>FrontAftStrut</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>-120</factor>
+  <offset-deg>120</offset-deg>
+  <center>
+   <x-m>-2.97</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-1.17</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>FrontTire</object-name>
+  <object-name>FrontLowerStrut</object-name>
+  <property>gear/gear[0]/position-norm</property>
+  <factor>90</factor>
+  <offset-deg>-90</offset-deg>
+  <center>
+   <x-m>-2.97</x-m>
+   <y-m>0.0</y-m>
+   <z-m>-0.805</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+   <!-- spinning wheel calc
+
+     radius = 1.91735 - 1.68517 = 0.23218
+     circum = 2*pi*radius = 1.4588
+     factor = 1/circum * 60 = 0.6318 * 60 = 41.1288
+
+     -->
+<animation>
+    <type>spin</type>
+    <object-name>FrontTire</object-name>
+    <condition>
+        <property>gear/gear[0]/wow</property>
+    </condition>
+    <property>rotors/main/blade[0]/position-deg</property><!-- gear/gear[0]/rollspeed-ms -->
+    <factor>41.1288</factor>
+    <center>
+        <x-m>-3.02035</x-m>
+        <y-m>-0.029114</y-m>
+        <z-m>-1.68664</z-m>
+    </center>
+    <axis>
+        <x>0</x>
+        <y>-1</y>
+        <z>0</z>
+    </axis>
+</animation>
+
+
+ <!-- right gear -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>ExternalRightMainDoor</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>460</factor>
+  <min-deg>0</min-deg>
+  <max-deg>95</max-deg>
+  <center>
+   <x-m>-0.755</x-m>
+   <y-m>0.76</y-m>
+   <z-m>-0.43</z-m>
+  </center>
+  <axis>
+   <x>1.0</x>
+   <y>0.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ 
+
+  <animation>
+  <type>rotate</type>
+  <object-name>RightOuterLowerStrut</object-name>
+  <object-name>RightOuterUpperStrut</object-name>
+  <property>gear/gear[1]/compression-norm</property>
+  <factor>-10</factor>
+  <center>
+   <x-m>0.56</x-m>
+   <y-m>1.10</y-m>
+   <z-m>-1.42</z-m>
+  </center>
+  <axis>
+   <x>0.995037</x>
+   <y>0.099504</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightMainTire</object-name>
+  <object-name>RightMainStrut</object-name>
+  <object-name>RightUpperMainStrut</object-name>
+  <object-name>RightLowerMainStrut</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>95</factor>
+  <offset-deg>-95</offset-deg>
+  <center>
+   <x-m>0.64</x-m>
+   <y-m>0.44</y-m>
+   <z-m>-0.66</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-0.868243</y>
+   <z>-0.496139</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightUpperMainStrut</object-name>
+  <object-name>RightLowerMainStrut</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>55</factor>
+  <offset-deg>-55</offset-deg>
+  <center>
+   <x-m>0.62</x-m>
+   <y-m>0.92</y-m>
+   <z-m>-1.34</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>-0.868243</y>
+   <z>-0.496139</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightUpperMainStrut</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>-205</factor>
+  <offset-deg>205</offset-deg>
+  <max-deg>180</max-deg>
+  <center>
+   <x-m>0.005</x-m>
+   <y-m>0.61</y-m>
+   <z-m>-1.055</z-m>
+  </center>
+  <axis>
+   <x>0.147442</x>
+   <y>-0.884651</y>
+   <z>-0.442327</z>
+  </axis>
+ </animation>
+
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightMainTire</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>90</factor>
+  <offset-deg>-90</offset-deg>
+  <center>
+   <x-m>0.62</x-m>
+   <y-m>1.12</y-m>
+   <z-m>0.0</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>-1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightMainTire</object-name>
+  <object-name>RightInnerStrut</object-name>
+  <object-name>RightOuterLowerStrut</object-name>
+  <object-name>RightOuterUpperStrut</object-name>
+  <object-name>RightUpperMainStrut</object-name>
+  <object-name>RightLowerMainStrut</object-name>
+  <object-name>tyre-smoke-p</object-name>
+  <object-name>tyre-rain-p</object-name>
+  <property>gear/gear[1]/compression-norm</property>
+  <factor>20</factor>
+  <center>
+   <x-m>0.0</x-m>
+   <y-m>0.41</y-m>
+   <z-m>-0.57</z-m>
+  </center>
+  <axis>
+   <x>0.943612</x>
+   <y>0.262974</y>
+   <z>0.201098</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>translate</type>
+  <object-name>RightOuterUpperStrut</object-name>
+  <property>gear/gear[1]/compression-norm</property>
+  <factor>0.2</factor>
+  <axis>
+     <x1-m> 0.573735  </x1-m>
+     <y1-m> 0.995678  </y1-m>
+     <z1-m> -1.13778 </z1-m>
+     <x2-m> 0.608042    </x2-m>
+     <y2-m> 0.589913    </y2-m>
+     <z2-m> -0.436789   </z2-m>
+  </axis>
+ </animation>
+
+   <!-- spinning wheel calc
+
+     radius = 1.80323 - 1.51444 = 0.28879
+     circum = 2*pi*radius = 1.8145
+     factor = 1/circum * 60 = 0.6318 * 60 = 33.0666
+
+     -->
+<animation>
+    <type>spin</type>
+    <object-name>RightMainTire</object-name>
+    <condition>
+        <property>gear/gear[1]/wow</property>
+    </condition>
+    <property>rotors/main/blade[1]/position-deg</property><!-- gear/gear[0]/rollspeed-ms -->
+    <factor>33.0666</factor>
+    <axis>
+     <x1-m>0.563844</x1-m>
+     <y1-m> 1.27316</y1-m>
+     <z1-m>-1.51444</z1-m>
+     <x2-m>  0.562878 </x2-m>
+     <y2-m>  1.1289 </y2-m>
+     <z2-m> -1.48814 </z2-m>
+  </axis>
+</animation>
+
+
+ <!-- left gear -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>ExternalLeftMainDoor</object-name>
+  <property>gear/gear[1]/position-norm</property>
+  <factor>460</factor>
+  <min-deg>0</min-deg>
+  <max-deg>95</max-deg>
+  <center>
+   <x-m>-0.755</x-m>
+   <y-m>-0.76</y-m>
+   <z-m>-0.43</z-m>
+  </center>
+  <axis>
+   <x>-1.0</x>
+   <y>0.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftOuterLowerStrut</object-name>
+  <object-name>LeftOuterUpperStrut</object-name>
+  <property>gear/gear[2]/compression-norm</property>
+  <factor>10</factor>
+  <center>
+   <x-m>0.56</x-m>
+   <y-m>-1.10</y-m>
+   <z-m>-1.42</z-m>
+  </center>
+  <axis>
+   <x>0.995037</x>
+   <y>-0.099504</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ 
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftMainTire</object-name>
+  <object-name>LeftMainStrut</object-name>
+  <object-name>LeftUpperMainStrut</object-name>
+  <object-name>LeftLowerMainStrut</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-95</factor>
+  <offset-deg>95</offset-deg>
+  <center>
+   <x-m>0.64</x-m>
+   <y-m>-0.44</y-m>
+   <z-m>-0.66</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.868243</y>
+   <z>-0.496139</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftUpperMainStrut</object-name>
+  <object-name>LeftLowerMainStrut</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-55</factor>
+  <offset-deg>55</offset-deg>
+  <center>
+   <x-m>0.62</x-m>
+   <y-m>-0.92</y-m>
+   <z-m>-1.34</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.868243</y>
+   <z>-0.496139</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftMainTire</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>-90</factor>
+  <offset-deg>90</offset-deg>
+  <center>
+   <x-m>0.62</x-m>
+   <y-m>-1.12</y-m>
+   <z-m>0.0</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>0.0</y>
+   <z>-1.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftMainTire</object-name>
+  <object-name>LeftInnerStrut</object-name>
+  <object-name>LeftOuterLowerStrut</object-name>
+  <object-name>LeftOuterUpperStrut</object-name>
+  <object-name>LeftUpperMainStrut</object-name>
+  <object-name>LeftLowerMainStrut</object-name>
+  <object-name>tyre-smoke-s</object-name>
+  <object-name>tyre-rain-s</object-name>
+  <property>gear/gear[2]/compression-norm</property>
+  <factor>-20</factor>
+  <center>
+   <x-m>0.0</x-m>
+   <y-m>-0.41</y-m>
+   <z-m>-0.57</z-m>
+  </center>
+  <axis>
+   <x>0.943612</x>
+   <y>-0.262974</y>
+   <z>0.201098</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>translate</type>
+  <object-name>LeftOuterUpperStrut</object-name>
+  <property>gear/gear[2]/compression-norm</property>
+  <factor>0.2</factor>
+  <axis>
+     <x1-m> 0.573735  </x1-m>
+     <y1-m> -0.995678  </y1-m>
+     <z1-m> -1.13778 </z1-m>
+     <x2-m> 0.608042    </x2-m>
+     <y2-m> -0.589913    </y2-m>
+     <z2-m> -0.436789   </z2-m>
+  </axis>
+ </animation>
+
+  <!-- spinning wheel calc
+
+     radius = 1.80323 - 1.51444 = 0.28879
+     circum = 2*pi*radius = 1.8145
+     factor = 1/circum * 60 = 0.6318 * 60 = 33.0666
+
+     -->
+<animation>
+    <type>spin</type>
+    <object-name>LeftMainTire</object-name>
+    <condition>
+        <property>gear/gear[2]/wow</property>
+    </condition>
+    <property>rotors/main/blade[2]/position-deg</property><!-- gear/gear[0]/rollspeed-ms -->
+    <factor>-33.0666</factor>
+    <axis>
+     <x1-m>0.563844</x1-m>
+     <y1-m>-1.27316</y1-m>
+     <z1-m>-1.51444</z1-m>
+     <x2-m>  0.562878 </x2-m>
+     <y2-m> -1.1289 </y2-m>
+     <z2-m> -1.48814 </z2-m>
+  </axis>
+</animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftUpperMainStrut</object-name>
+  <property>gear/gear[2]/position-norm</property>
+  <factor>205</factor>
+  <offset-deg>-205</offset-deg>
+  <min-deg>-180</min-deg>
+  <center>
+   <x-m>0.005</x-m>
+   <y-m>-0.61</y-m>
+   <z-m>-1.055</z-m>
+  </center>
+  <axis>
+   <x>0.147442</x>
+   <y>0.884651</y>
+   <z>-0.442327</z>
+  </axis>
+ </animation>
+
+
+
+<!-- ============== END GEAR ================== -->
+
+
+  <model>
+  <name>brakeL</name>
+  <path>Aircraft/bigHexy/Models/InnerBrakeLower.xml</path>
+ </model>
+
+ <model>
+  <name>brakeU</name>
+  <path>Aircraft/bigHexy/Models/InnerBrakeUpper.xml</path>
+ </model>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightUpperSpeedbrake</object-name>
+  <property>surface-positions/speedbrake-pos-norm</property>
+  <factor>-60</factor>
+  <center>
+   <x-m>4.55</x-m>
+   <y-m>-0.88</y-m>
+   <z-m>0.15</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>-0.04545</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>RightLowerSpeedbrake</object-name>
+  <property>surface-positions/speedbrake-pos-norm</property>
+  <factor>60</factor>
+  <center>
+   <x-m>4.55</x-m>
+   <y-m>-0.88</y-m>
+   <z-m>0.08</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>-0.0454</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftUpperSpeedbrake</object-name>
+  <property>surface-positions/speedbrake-pos-norm</property>
+  <factor>-60</factor>
+  <center>
+   <x-m>4.55</x-m>
+   <y-m>0.88</y-m>
+   <z-m>0.15</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0454</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>LeftLowerSpeedbrake</object-name>
+  <property>surface-positions/speedbrake-pos-norm</property>
+  <factor>60</factor>
+  <center>
+   <x-m>4.55</x-m>
+   <y-m>0.88</y-m>
+   <z-m>0.08</z-m>
+  </center>
+  <axis>
+   <x>0.0</x>
+   <y>1.0</y>
+   <z>0.0454</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>FrontTire</object-name>
+  <object-name>FrontLowerStrut</object-name>
+  <object-name>FrontUpperStrut</object-name>
+  <object-name>FrontAftStrut</object-name>
+  <object-name>InternalFrontGearDoor</object-name>
+  <condition>
+   <not>
+   <equals>
+    <property>gear/gear[0]/position-norm</property>
+    <value>0</value>
+   </equals>
+   </not>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>LeftMainTire</object-name>
+  <object-name>LeftMainStrut</object-name>
+  <object-name>LeftUpperMainStrut</object-name>
+  <object-name>LeftLowerMainStrut</object-name>
+  <condition>
+   <not>
+   <equals>
+    <property>gear/gear[2]/position-norm</property>
+    <value>0</value>
+   </equals>
+   </not>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>RightMainTire</object-name>
+  <object-name>RightMainStrut</object-name>
+  <object-name>RightUpperMainStrut</object-name>
+  <object-name>RightLowerMainStrut</object-name>
+  <condition>
+   <not>
+   <equals>
+    <property>gear/gear[1]/position-norm</property>
+    <value>0</value>
+   </equals>
+   </not>
+  </condition>
+ </animation>
+
+ <!-- layout selection -->
+ <animation>
+  <type>select</type>
+  <object-name>USAF_Tailroot</object-name>
+  <condition>
+   <not>
+    <property>sim/multiplay/generic/bool[36]</property>
+   </not>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>RNLAF_Tailroot</object-name>
+  <object-name>Chute</object-name>
+  <condition>
+   <property>sim/multiplay/generic/bool[36]</property>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Link16Antennas</object-name>
+  <condition>
+   <property>sim/model/f16/link16</property>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>Tail-antenna</object-name>
+  <condition>
+          <or>
+            <equals>
+                <property>sim/variant-id</property>
+                <value>3</value>
+            </equals>
+            <equals>
+                <property>sim/variant-id</property>
+                <value>4</value>
+            </equals>
+            <equals>
+                <property>sim/variant-id</property>
+                <value>5</value>
+            </equals>
+            <equals>
+                <property>sim/variant-id</property>
+                <value>6</value>
+            </equals>
+          </or>
+        </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>LWStation3</object-name>
+  <condition>
+    <and>
+    <not>
+     <equals>
+        <property>payload/armament/station/id-1-set</property>
+        <value>Empty</value>
+      </equals>
+    </not>
+  </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>RWStation3</object-name>
+  <condition>
+    <and>
+    <not>
+     <equals>
+        <property>payload/armament/station/id-7-set</property>
+        <value>Empty</value>
+      </equals>
+    </not>
+  </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>LWStation2</object-name>
+  <condition>
+    <and>
+    <not>
+     <equals>
+        <property>payload/armament/station/id-2-set</property>
+        <value>Empty</value>
+      </equals>
+    </not>
+  </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>LWStation1</object-name>
+  <condition>
+    <and>
+    <not>
+     <equals>
+        <property>payload/armament/station/id-3-set</property>
+        <value>Empty</value>
+      </equals>
+    </not>
+  </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>RWStation1</object-name>
+  <condition>
+    <and>
+    <not>
+     <equals>
+        <property>payload/armament/station/id-5-set</property>
+        <value>Empty</value>
+      </equals>
+    </not>
+  </and>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <object-name>RWStation2</object-name>
+  <condition>
+    <and>
+    <not>
+     <equals>
+        <property>payload/armament/station/id-6-set</property>
+        <value>Empty</value>
+      </equals>
+    </not>
+  </and>
+  </condition>
+ </animation>
+
+ <model>
+    <name>tip-pay</name>
+    <path>Aircraft/bigHexy/Models/Armament/loads-tip.xml</path>
+ </model>
+
+ <model>
+  <name>outer-pay</name>
+    <path>Aircraft/bigHexy/Models/Armament/loads-outer.xml</path>
+ </model>
+
+ <model>
+  <name>middle-pay</name>
+    <path>Aircraft/bigHexy/Models/Armament/loads-middle.xml</path>
+ </model>
+
+ <model>
+  <name>inner-pay</name>
+    <path>Aircraft/bigHexy/Models/Armament/loads-inner.xml</path>
+ </model>
+
+ <model>
+  <name>pay</name>
+    <path>Aircraft/bigHexy/Models/Armament/loads.xml</path>
+ </model>
+
+ <animation>
+    <type>translate</type>
+    <object-name>tip-pay</object-name>
+    <object-name>posright1</object-name>
+    <object-name>posleft1</object-name>
+    <condition>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+      </and>
+    </condition>
+    <property>sim/systems/wingflexer/z-m-tip</property><!-- can be: tip, outer, middle or inner -->
+    <factor>1</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>translate</type>
+    <object-name>outer-pay</object-name>
+    <object-name>LWStation3</object-name>
+    <object-name>RWStation3</object-name>
+    <condition>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+      </and>
+    </condition>
+    <property>sim/systems/wingflexer/z-m-outer</property><!-- can be: tip, outer, middle or inner -->
+    <factor>1</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>translate</type>
+    <condition>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+      </and>
+    </condition>
+    <object-name>middle-pay</object-name>
+    <object-name>LWStation2</object-name>
+    <object-name>RWStation2</object-name>
+    <property>sim/systems/wingflexer/z-m-middle</property><!-- can be: tip, outer, middle or inner -->
+    <factor>1</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>translate</type>
+    <condition>
+      <and>
+        <not>
+            <property>sim/rendering/rembrandt/enabled</property>
+        </not>
+      </and>
+    </condition>
+    <object-name>inner-pay</object-name>
+    <object-name>LWStation1</object-name>
+    <object-name>RWStation1</object-name>
+    <property>sim/systems/wingflexer/z-m-inner</property><!-- can be: tip, outer, middle or inner -->
+    <factor>1</factor>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+
+ <!-- livery selection -->
+ <animation>
+  <type>material</type>
+  <!--<object-name>ArresterHook</object-name>
+  <object-name>CanopyFrame</object-name>
+  <object-name>ExternalFrontGearDoor</object-name>
+  <object-name>ExternalLeftMainDoor</object-name>
+  <object-name>ExternalRightMainDoor</object-name>
+  <object-name>InternalFrontGearDoor</object-name>
+  <object-name>LeftLowerAileron</object-name>
+  <object-name>LeftLowerFlap</object-name>
+  <object-name>LeftLowerHorizonTail</object-name>
+  <object-name>LeftLowerLef</object-name>
+  <object-name>LeftLowerSpeedbrake</object-name>
+  <object-name>LeftUpperAileron</object-name>
+  <object-name>LeftUpperFlap</object-name>
+  <object-name>LeftUpperHorizonTail</object-name>
+  <object-name>LeftUpperLef</object-name>
+  <object-name>LeftUpperSpeedbrake</object-name>
+  <object-name>LWStation1</object-name>
+  <object-name>LWStation2</object-name>
+  <object-name>LWStation3</object-name>
+  <object-name>RadarDomeTop</object-name>
+  <object-name>RightLowerAileron</object-name>
+  <object-name>RightLowerFlap</object-name>
+  <object-name>RightLowerHorizonTail</object-name>
+  <object-name>RightLowerLef</object-name>
+  <object-name>RightLowerSpeedbrake</object-name>
+  <object-name>RightUpperAileron</object-name>
+  <object-name>RightUpperFlap</object-name>
+  <object-name>RightUpperHorizonTail</object-name>
+  <object-name>RightUpperLef</object-name>
+  <object-name>RightUpperSpeedbrake</object-name>
+  <object-name>RNLAF_Tailroot</object-name>
+  <object-name>Rudder</object-name>
+  <object-name>Rudder.001</object-name>
+  <object-name>Rudder.002</object-name>
+  <object-name>Rudder.003</object-name>
+  <object-name>Rudder.004</object-name>
+  <object-name>Rudder.005</object-name>
+  <object-name>Rudder.006</object-name>
+  <object-name>RWStation1</object-name>
+  <object-name>RWStation2</object-name>
+  <object-name>RWStation3</object-name>
+  <object-name>Tail</object-name>
+  <object-name>USAF_Tailroot</object-name>
+  <object-name>VentralFins</object-name>
+  <object-name>WingTips</object-name>
+  <object-name>AftPosLight1</object-name>
+  <object-name>Chute</object-name>
+  <object-name>Fan</object-name>
+  <object-name>FanSpinning</object-name>
+  <object-name>FlashLightProtector</object-name>
+  <object-name>FwdFormationLight</object-name>
+  <object-name>Link16Antennas</object-name>
+  <object-name>Poly.001</object-name>
+  <object-name>Poly.002</object-name>
+  <object-name>Turbine</object-name>-->
+  <object-name>Fuselage</object-name>
+  <object-name>irst</object-name>
+  <object-name>PitotTube</object-name>
+  <!--<object-name>FrontTire</object-name>
+  <object-name>LeftMainTire</object-name>
+  <object-name>RightMainTire</object-name>-->
+  <!--<object-name>LandingGear</object-name>-->
+  <property-base>sim/model/livery</property-base>
+  <texture-prop>texture</texture-prop>
+  <texture>f16.png</texture>
+ </animation>
+
+ <animation>
+  <type>material</type>
+  <object-name>Fuselage</object-name>
+  <object-name>irst</object-name>
+  <specular>
+   <red>  1.0000</red>
+   <green>1.0000</green>
+   <blue> 1.0000</blue>
+   <factor-prop>sim/model/livery-specular</factor-prop>
+  </specular>
+ </animation>
+
+ <!--animation>
+  <type>material</type>
+  <object-name>Fuselage</object-name>
+  <object-name>irst</object-name>
+  <diffuse>
+   <red>  1.0000</red>
+   <green>1.0000</green>
+   <blue> 1.0000</blue>
+   <factor-prop>f16/scene/diffuse</factor-prop>
+  </diffuse>
+  <ambient>
+   <red>  1.0000</red>
+   <green>1.0000</green>
+   <blue> 1.0000</blue>
+   <factor-prop>f16/scene/ambient</factor-prop>
+  </ambient>
+  <specular>
+   <red>  1.0000</red>
+   <green>1.0000</green>
+   <blue> 1.0000</blue>
+   <factor-prop>f16/scene/specular</factor-prop>
+  </specular>
+  <shininess-prop>f16/scene/shininess</shininess-prop>
+ </animation-->
+
+ <animation>
+  <type>material</type>
+  <object-name>Logos</object-name>
+  <property-base>sim/model/livery-logo</property-base>
+  <texture-prop>texture</texture-prop>
+  <texture>f16trans.png</texture>
+ </animation>
+
+<model>
+ <name>Pushback</name>
+ <path>Models/Airport/Pushback/Military.xml</path>
+ <offsets>
+  <x-m>-2.98081</x-m>
+  <y-m>0</y-m>
+  <z-m>-1.9683</z-m>
+ </offsets>
+</model>
+
+<!-- Visible up to 10km (6 miles) -->
+<!--
+ <animation>
+  <type>range</type>
+  <min-m>0</min-m>
+  <max-m>10000</max-m>
+ </animation>
+-->
+
+  <model>
+    <path>Aircraft/Generic/marker.xml</path>
+  </model>
+
+</PropertyList>
