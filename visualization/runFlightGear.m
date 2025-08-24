@@ -23,7 +23,7 @@ switch lower(vehicleParams.type)
             options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=f16-block-52 --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
         end
     case "hexarotor"
-        options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=bigHexy-block-52 --aircraft-dir="visualization/bigHexy" --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+        options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=bigHexy --aircraft-dir="visualization/bigHexy" --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
     otherwise
         warning("Unknown vehicle for display")
 end
