@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<PropertyList include="bigHexy.xml">
+<PropertyList include="Models/bigHexy.xml">
 
  <sim>
   <description>optimAero Big-Hexy Hexacopter | Palledrone</description>
@@ -173,12 +173,6 @@
     </menu>
    </default>
   </menubar>
-<!--
-  <help>
-   <title>General Dynamics F-16 Fighting Falcon</title>
-  </help>-->
-
-  <checklists include="gui/checklists-b40.xml"/>
 
  </sim>
 
