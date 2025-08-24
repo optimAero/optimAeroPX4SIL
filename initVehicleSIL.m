@@ -140,6 +140,14 @@ setUpActuators
 % set up winds
 setUpEnvironment
 
+% If no failureType selected, disable joystick failure injection
+if strcmpi(opts.failureType,"none")
+    modelName = 'VehicleSilSimulation';
+    jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
+    load_system(modelName);
+    set_param(jsBlockPath, 'JoystickID', 'None');
+end
+
 % Check failure type
 try
     if strcmpi(vehicleParams.type,"F-16")
@@ -151,6 +159,7 @@ catch
     error("The selected failure type does not match the selected vehicle. Failure type must be an enum from " + ...
         "EnumHexFailureType.m or EnumF16FailureType.m")
 end
+
 
 % Save all workspace variables and push them to base workspace
 save('workspace')
