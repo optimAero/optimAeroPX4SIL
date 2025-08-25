@@ -16,16 +16,30 @@
     <model type="int">4</model>
   </rating>
   <flight-model>jsb</flight-model>
-  <aero>f16b52</aero>
   <variant-id type="int">5</variant-id>
   <variant-engine type="int">2</variant-engine>
   <tags>
       <tag>bigHexy</tag>
+      <tag>Palledrone</tag>
+      <tag>optimAero</tag>
     </tags>
 
   <startup>
-   <splash-texture>Aircraft/bigHexy/f16-splash.png</splash-texture>
+   <splash-texture>Aircraft/bigHexy/bigHexySplash.png</splash-texture>
   </startup>
+
+<previews>
+            <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>bigHexySplash.png</path>
+            </preview>
+              <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>bigHexySplash2.png</path>
+            </preview>
+  </previews>
 
   <previews>
             <preview>
@@ -145,35 +159,6 @@
     </dot4>
    </MFD-color>
   </model>
-
-  <menubar>
-   <default>
-    <menu n="101">
-     <label>F-16CJ Block 52</label>
-       <item n="8">
-          <label>--- Block options ---</label>
-          <enabled>false</enabled>
-        </item>
-        <item n="9">
-          <label>Payload presets</label>
-          <binding>
-            <command>dialog-show</command>
-            <dialog-name>payload-b50</dialog-name>
-          </binding>
-      </item>
-      <item n="10">
-          <label>Program target</label>
-          <enabled type="bool">true</enabled>
-          <name>programGPS</name>
-          <binding>
-              <command>dialog-show</command>
-              <dialog-name>programGPS</dialog-name>
-          </binding>
-      </item>
-    </menu>
-   </default>
-  </menubar>
-
  </sim>
 
  <fdm>
