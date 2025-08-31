@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Copyright (c) 2011  Stuart Buchanan
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PropertyList>
+
+    <key n="80">
+        <name>P</name>
+        <desc>Toggle panel</desc>
+        <binding>
+            <command>property-toggle</command>
+            <property>/sim/panel/visibility</property>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/sim/current-view/heading-offset-deg</property>
+            <value type="double">0.0</value>
+        </binding>
+    </key>
+
+    <key n="76">
+        <name>L</name>
+        <desc>Decrease Panel lighting</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>controls/lighting/instruments-norm</property>
+            <step>-0.1</step>
+            <min>0</min>
+            <max>1.0</max>
+            <wrap>0</wrap>
+        </binding>
+    </key>
+
+    <key n="79">
+        <name>O</name>
+        <desc>Toggle Dome Lighting</desc>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.toggle_domelight()</script>
+        </binding>
+    </key>
+
+    <key n="70">
+        <name>F</name>
+        <desc>Toggle flashlight</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.toggle_flashlight()</script>
+        </binding>
+    </key>
+
+    <key n="102">
+        <name>f</name>
+        <desc>Toggle flashlight</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.toggle_flashlight()</script>
+        </binding>
+    </key>
+
+    <key n="108">
+        <name>l</name>
+        <desc>Increase Panel lighting</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>controls/lighting/instruments-norm</property>
+            <step>0.1</step>
+            <min>0</min>
+            <max>1.0</max>
+            <wrap>0</wrap>
+        </binding>
+    </key>
+
+    <key n="123">
+        <name>{</name>
+        <desc>Decrease Magneto on Selected Engine</desc>
+        <binding>
+            <command>property-adjust</command>
+            <property>/controls/switches/magnetos</property>
+            <step>-1</step>
+            <min>0</min>
+            <max>3</max>
+        </binding>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.click("magneto-back")</script>
+        </binding>
+    </key>
+
+    <key n="125">
+        <name>}</name>
+        <desc>Increase Magneto on Selected Engine</desc>
+        <binding>
+            <command>property-adjust</command>
+            <property>/controls/switches/magnetos</property>
+            <step>1</step>
+            <min>0</min>
+            <max>3</max>
+        </binding>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.click("magneto-forward")</script>
+        </binding>
+    </key>
+
+    <key n="114">
+        <name>r</name>
+        <desc>Water Rudders Up</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/water-rudder</property>
+            <value type="bool">false</value>
+        </binding>
+    </key>
+
+    <key n="82">
+        <name>R</name>
+        <desc>Water Rudders Down</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/water-rudder</property>
+            <value type="bool">true</value>
+        </binding>
+    </key>
+    
+    <key n="66">
+        <name>B</name>
+        <desc>Parking Brakes</desc>
+        <binding>
+            <command>property-toggle</command>
+            <property>/sim/model/c172p/brake-parking</property>
+        </binding>
+    </key>
+
+    <key n="121">
+        <name>y</name>
+        <desc>Show/hide yokes</desc>
+        <binding>
+            <command>property-toggle</command>
+            <property>sim/model/hide-yoke</property>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>sim/model/c172p/cockpit/control-lock-placed</property>
+            <value>false</value>
+        </binding>
+    </key>
+
+    <key n="265">
+        <name>F9</name>
+        <desc>Popup Fuel and Payload Settings dialog</desc>
+        <binding>
+            <command>nasal</command>
+            <script>gui.showWeightDialog()</script>
+        </binding>
+    </key>
+
+    <key n="81">
+        <name>Q</name>
+        <desc>Reset to default view</desc>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.reset_view(0)</script>
+        </binding>
+    </key>
+
+    <key n="113">
+        <name>q</name>
+        <desc>Reset to saved seat view</desc>
+        <binding>
+            <command>nasal</command>
+            <script>c172p.reset_view(1)</script>
+        </binding>
+    </key>
+
+    <key n="51">
+        <name>Alt+3</name>
+        <desc>Seat Down</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/y-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/y-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+        </mod-alt>
+    </key>
+    <key n="361">
+        <name>Alt+pgdn</name>
+        <desc>Seat Down</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/y-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/y-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+        </mod-alt>
+    </key>
+
+    <key n="57">
+        <name>Alt+9</name>
+        <desc>Seat Up</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/y-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/y-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+        </mod-alt>
+    </key>
+    <key n="360">
+        <name>Alt+pgup</name>
+        <desc>Seat Up</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/y-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/y-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.15</min>
+                <max type="double">0.25</max>
+          </binding>
+      </mod-alt>
+    </key>
+
+    <key n="56">
+        <name>Alt+8</name>
+        <desc>Seat Forward</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/z-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/z-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+        </mod-alt>
+    </key>
+    <key n="357">
+        <name>Alt+8</name>
+        <desc>Seat Forward</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/z-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/z-offset-m</property>
+                <step type="double">-0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+        </mod-alt>
+    </key>
+
+    <key n="50">
+        <name>Alt+2</name>
+        <desc>Seat Back</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/z-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/z-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+        </mod-alt>
+    </key>
+    <key n="359">
+        <name>Alt+2</name>
+        <desc>Seat Back</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/z-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/z-offset-m</property>
+                <step type="double">0.005</step>
+                <min type="double">0.31</min>
+                <max type="double">0.41</max>
+            </binding>
+        </mod-alt>
+    </key>
+
+    <key n="54">
+        <name>Alt+6</name>
+        <desc>Seat Pitch Down</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/pitch-offset-deg</property>
+                <step type="double">-1</step>
+                <min type="double">-17</min>
+                <max type="double">-0</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/pitch-offset-deg</property>
+                <step type="double">-1</step>
+                <min type="double">-17</min>
+                <max type="double">-0</max>
+            </binding>
+        </mod-alt>
+    </key>
+    <key n="358">
+        <name>Alt+6</name>
+        <desc>Seat Pitch Down</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/pitch-offset-deg</property>
+                <step type="double">-1</step>
+                <min type="double">-17</min>
+                <max type="double">-0</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/pitch-offset-deg</property>
+                <step type="double">-1</step>
+                <min type="double">-17</min>
+                <max type="double">-0</max>
+            </binding>
+        </mod-alt>
+    </key>
+
+    <key n="52">
+        <name>Alt+4</name>
+        <desc>Seat Pitch Up</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/pitch-offset-deg</property>
+                <step type="double">1</step>
+                <min type="double">-17</min>
+                <max type="double">0</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/pitch-offset-deg</property>
+                <step type="double">1</step>
+                <min type="double">-17</min>
+                <max type="double">0</max>
+            </binding>
+        </mod-alt>
+    </key>
+    <key n="356">
+        <name>Alt+4</name>
+        <desc>Seat Pitch Up</desc>
+        <mod-alt>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>nasal</command>
+                <script>c172p.update_view();</script>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/user/pitch-offset-deg</property>
+                <step type="double">1</step>
+                <min type="double">-17</min>
+                <max type="double">0</max>
+            </binding>
+            <binding>
+                <condition>
+                    <equals>
+                        <property>sim/current-view/view-number</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+                <command>property-adjust</command>
+                <property>sim/current-view/pitch-offset-deg</property>
+                <step type="double">1</step>
+                <min type="double">-17</min>
+                <max type="double">0</max>
+            </binding>
+        </mod-alt>
+    </key>
+
+</PropertyList>
