@@ -12,85 +12,13 @@
 
     
     <params>
-        <gear>
-            <nose-rollspeed-ms>engines/engine[7]/rpm</nose-rollspeed-ms>
-            <left-rollspeed-ms>engines/engine[7]/n1</left-rollspeed-ms>
-            <right-rollspeed-ms>engines/engine[7]/n2</right-rollspeed-ms>
-        </gear>
-        <gear-amphibious>
-            <front-left-compression-ft>engines/engine[3]/n1</front-left-compression-ft>
-            <front-left-position-norm>engines/engine[3]/n2</front-left-position-norm>
-            <front-left-rollspeed-ms>engines/engine[3]/rpm</front-left-rollspeed-ms>
-            <front-right-compression-ft>engines/engine[4]/n1</front-right-compression-ft>
-            <front-right-position-norm>engines/engine[4]/n2</front-right-position-norm>
-            <front-right-rollspeed-ms>engines/engine[4]/rpm</front-right-rollspeed-ms>
-            <rear-left-compression-ft>engines/engine[5]/n1</rear-left-compression-ft>
-            <rear-left-position-norm>engines/engine[5]/n2</rear-left-position-norm>
-            <rear-left-rollspeed-ms>engines/engine[5]/rpm</rear-left-rollspeed-ms>
-            <rear-right-compression-ft>engines/engine[6]/n1</rear-right-compression-ft>
-            <rear-right-position-norm>engines/engine[6]/n2</rear-right-position-norm>
-            <rear-right-rollspeed-ms>engines/engine[6]/rpm</rear-right-rollspeed-ms>
-        </gear-amphibious>
-
-        <water-rudder-norm>sim/multiplay/generic/float[5]</water-rudder-norm>
         <engine>
             <rpm>engines/engine[2]/rpm</rpm>
-            <crashed>sim/multiplay/generic/int[3]</crashed>
         </engine>
-
-        <securing>
-            <pitot-cover>sim/model/c172p/securing/pitot-cover-visible</pitot-cover>
-            <chocks>sim/model/c172p/securing/chock-visible</chocks>
-            <cowl-plugs>sim/model/c172p/securing/cowl-plugs-visible</cowl-plugs>
-            <tiedowns>
-                <left>
-                    <visible>sim/model/c172p/securing/tiedownL-visible</visible>
-                </left>
-                <right>
-                    <visible>sim/model/c172p/securing/tiedownR-visible</visible>
-                </right>
-                <tail>
-                    <visible>sim/model/c172p/securing/tiedownT-visible</visible>
-                </tail>
-            </tiedowns>
-        </securing>
-
-        <!-- TODO To be made MP properties in the future when we get passengers or dual-control -->
-        <controls>
-            <throttle>/controls/engines/current-engine/throttle</throttle>
-            <altstaticair>/controls/engines/current-engine/altstaticair</altstaticair>
-            <mixture>/controls/engines/current-engine/mixture</mixture>
-            <carb-heat>/controls/engines/current-engine/carb-heat</carb-heat>
-            <parking-lever>/sim/model/c172p/cockpit/parking-lever</parking-lever>
-            <carb-heat-animation>/sim/model/c172p/cockpit/carb-heat-animation</carb-heat-animation>
-            <primer-lever-animation>/sim/model/c172p/cockpit/primer-lever-animation</primer-lever-animation>
-            <water-rudder-animation>/sim/model/c172p/cockpit/water-rudder-animation</water-rudder-animation>
-        </controls>
-        <air-vents>
-            <front-left>/controls/climate-control/overhead-vent-front-left</front-left>
-            <front-right>/controls/climate-control/overhead-vent-front-right</front-right>
-        </air-vents>
     </params>
 
     <!-- exterior effects -->
     <!-- Normal shader effect. Separate effects required for each normal map and dirt texture -->
-    <effect>
-        <inherits-from>Effects/exterior/dirt-leading-edge</inherits-from>
-        <object-name>wing_leading_edge_left</object-name>
-        <object-name>wing_leading_edge_right</object-name>
-        <object-name>wing_leading_edge_center</object-name>
-    </effect>
-    <effect>
-        <inherits-from>Effects/exterior/dirt-wing</inherits-from>
-        <object-name>flaps</object-name>
-        <object-name>leftaileron</object-name>
-        <object-name>rightaileron</object-name>
-        <object-name>wing_left</object-name>
-        <object-name>wing_center</object-name>
-        <object-name>wing_right</object-name>
-        <object-name>PitotTube</object-name>
-        <object-name>courtesyoff</object-name>
-    </effect>
     <effect>
         <inherits-from>Effects/exterior/dirt-fuselage</inherits-from>
         <object-name>NoseWheelStrut</object-name>
@@ -151,33 +79,6 @@
     </effect>
 
     <effect>
-        <inherits-from>Effects/exterior/bumpspec</inherits-from>
-        <object-name>oilcompartment</object-name>
-        <object-name>OilCap</object-name>
-        <object-name>wing_0</object-name>
-        <object-name>wing_1Ledge</object-name>
-        <object-name>wing_1Redge</object-name>
-        <object-name>FuelCapPort</object-name>
-        <object-name>FuelCapStarboard</object-name>
-        <object-name>fuelportstarport</object-name>
-        <object-name>fuelportstarboard</object-name>
-        <object-name>fuelcompartment</object-name>
-        <object-name>lighttaxi</object-name>
-        <object-name>lightlanding</object-name>
-    </effect>
-
-    <effect>
-        <inherits-from>Effects/exterior/dirt-tail</inherits-from>
-        <object-name>elevatorleft</object-name>
-        <object-name>elevatorright</object-name>
-        <object-name>elevatortrim</object-name>
-        <object-name>hstab</object-name>
-        <object-name>rudder_1</object-name>
-        <object-name>vstab</object-name>
-        <object-name>RearNavLight</object-name>
-    </effect>
-
-    <effect>
         <inherits-from>Effects/model-transparent</inherits-from>
         <object-name>strobe1</object-name>
         <object-name>strobe2</object-name>
@@ -185,71 +86,6 @@
         <object-name>BeaconOff</object-name>
         <object-name>Propeller.Fast</object-name>
     </effect>
-
-    <effect>
-        <inherits-from>Effects/exterior/exterior-glass-reflection</inherits-from>
-        <object-name>glas</object-name>
-        <object-name>leftwindow</object-name>
-        <object-name>rightwindow</object-name>
-        <object-name>landinglightcover</object-name>
-    </effect>
-
-    <!-- Specularity fix -->
-    <animation>
-        <type>material</type>
-        <object-name>LeftWheelStrut</object-name>
-        <object-name>RightWheelStrut</object-name>
-        <object-name>LeftWheelBrake</object-name>
-        <object-name>RightWheelBrake</object-name>
-        <object-name>baggagedoorexterior</object-name>
-        <object-name>elevatorleft</object-name>
-        <object-name>elevatorright</object-name>
-        <object-name>elevatortrim</object-name>
-        <object-name>fairing1</object-name>
-        <object-name>fairing2</object-name>
-        <object-name>fairing3</object-name>
-        <object-name>Axle</object-name>
-        <object-name>flaps</object-name>
-        <object-name>fuselage</object-name>
-        <object-name>fuselage_cowling</object-name>
-        <object-name>fuselage_cowling_top</object-name>
-        <object-name>hstab</object-name>
-        <object-name>leftaileron</object-name>
-        <object-name>leftdoor</object-name>
-        <object-name>rightaileron</object-name>
-        <object-name>rightdoor</object-name>
-        <object-name>rudder_1</object-name>
-        <object-name>vstab</object-name>
-        <object-name>wing_left</object-name>
-        <object-name>wing_center</object-name>
-        <object-name>wing_right</object-name>
-        <object-name>wing_leading_edge_left</object-name>
-        <object-name>wing_leading_edge_right</object-name>
-        <object-name>wing_leading_edge_center</object-name>
-        <object-name>wing_1Ledge</object-name>
-        <object-name>wing_1Redge</object-name>
-        <object-name>Spinner</object-name>
-        <object-name>radi_box</object-name>
-        <object-name>ruddercableports</object-name>
-        <object-name>ruddercablelefthinge</object-name>
-        <object-name>ruddercablerighthinge</object-name>
-        <object-name>oildoor</object-name>
-        <object-name>vent</object-name>
-        <object-name>airvent</object-name>
-        <object-name>fuelvent</object-name>
-        <object-name>Antenna_ADF</object-name>
-        <shininess>116</shininess>
-        <specular>
-            <r>1</r>
-            <g>1</g>
-            <b>1</b>
-        </specular>
-        <ambient>
-            <r>1</r>
-            <g>1</g>
-            <b>1</b>
-        </ambient>
-    </animation>
 
     <!-- Specularity fix -->
     <animation>
@@ -538,98 +374,6 @@
             <y>0.0</y>
             <z>0.0</z>
         </axis>
-    </animation>
-    <animation>
-        <type>material</type>
-        <!--global type="bool">true</global-->
-        <object-name>RightWheelStrut</object-name>
-        <object-name>LeftWheelStrut</object-name>
-        <object-name>fairing1</object-name>
-        <object-name>fairing2</object-name>
-        <object-name>fairing3</object-name>
-        <object-name>fuselage</object-name>
-        <object-name>fuselage_cowling</object-name>
-        <object-name>fuselage_cowling_top</object-name>
-        <object-name>charniere1</object-name>
-        <object-name>charniere2</object-name>
-        <object-name>charniere3</object-name>
-        <object-name>charniere4</object-name>
-        <object-name>leftdoor</object-name>
-        <object-name>leftdoorhandle</object-name>
-        <object-name>rightdoor</object-name>
-        <object-name>rightdoorhandle</object-name>
-        <object-name>baggagedoorexterior</object-name>
-        <object-name>baggagedoorhandle</object-name>
-        <object-name>Spinner</object-name>
-        <object-name>Propeller</object-name>
-        <object-name>PropellerCowlPlugs</object-name>
-        <object-name>LeftNavLight</object-name>
-        <object-name>RightNavLight</object-name>
-        <object-name>radi_box</object-name>
-        <object-name>ruddercableports</object-name>
-        <object-name>windowframeleftext</object-name>
-        <object-name>windowframerightext</object-name>
-        <object-name>oildoor</object-name>
-        <object-name>vent</object-name>
-        <object-name>handle</object-name>
-        <object-name>airvent</object-name>
-        <object-name>TransponderAntenna</object-name>
-        <object-name>MarkerAntenna</object-name>
-        <object-name>Antenna_ADF</object-name>
-        <object-name>Antenna_VOR</object-name>
-        <object-name>VHFAntenna</object-name>
-        <object-name>ELTAntenna</object-name>
-        <!-- damage mod -->
-        <object-name>RightWheelStrutBKD</object-name>
-        <object-name>LeftWheelStrutBKD</object-name>
-        <object-name>RightNavLight_C</object-name>
-        <object-name>LeftNavLight_C</object-name>
-        <object-name>RightNavLight_D</object-name>
-        <object-name>LeftNavLight_D</object-name>
-        <object-name>fairing1D</object-name>
-        <object-name>fairing2D</object-name>
-        <object-name>fairing3D</object-name>
-        <object-name>PropellerD</object-name>
-        <object-name>SpinnerD</object-name>
-        <property-base>sim/model/livery/</property-base>
-        <texture-prop>texture</texture-prop>
-        <texture>fuselage.png </texture>
-    </animation>
-    <animation>
-        <type>material</type>
-        <!--global type="bool">true</global-->
-        <object-name>wing_left</object-name>
-        <object-name>wing_center</object-name>
-        <object-name>wing_right</object-name>
-        <object-name>wing_leading_edge_left</object-name>
-        <object-name>wing_leading_edge_right</object-name>
-        <object-name>wing_leading_edge_center</object-name>
-        <object-name>flaps</object-name>
-        <object-name>rightaileron</object-name>
-        <object-name>leftaileron</object-name>
-        <object-name>wing_1Ledge</object-name>
-        <object-name>wing_1Redge</object-name>
-        <object-name>courtesyoff</object-name>
-
-        <!-- damage mod -->
-        <object-name>wing_right_C</object-name>
-        <object-name>rightaileron_C</object-name>
-        <object-name>wing_leading_edge_right_C</object-name>
-        <object-name>wing_left_C</object-name>
-        <object-name>leftaileron_C</object-name>
-        <object-name>wing_leading_edge_left_C</object-name>
-        <object-name>wing_center_broke_left</object-name>
-        <object-name>wing_center_broke_right</object-name>
-        <object-name>wing_left_D</object-name>
-        <object-name>leftaileron_D</object-name>
-        <object-name>wing_leading_edge_left_D</object-name>
-        <object-name>wing_right_D</object-name>
-        <object-name>rightaileron_D</object-name>
-        <object-name>wing_leading_edge_right_D</object-name>
-
-        <property-base>sim/model/liverywing/</property-base>
-        <texture-prop>texture</texture-prop>
-        <texture>wing.png</texture>
     </animation>
 
 
