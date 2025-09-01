@@ -106,3 +106,4 @@ ignoreFolder/
 # But do not ignore .xml files inside visualization/
 !visualization/*.xml
 !visualization/c172p/*.xml
+!visualization/c172p/Models/*.xml
