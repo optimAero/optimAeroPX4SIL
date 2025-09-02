@@ -171,7 +171,7 @@
     </effect>
 
 
-    <!-- Props Not Damaged -->
+    <!-- Prop 1 Spinning -->
     <animation>
         <type>select</type>
         <object-name>PropellerOne</object-name>
@@ -179,7 +179,7 @@
              <and>
                 <less-than>
                     <property alias="/params/engine/rpm"/>
-                    <value>500</value>
+                    <value>50000</value>
                 </less-than>
                 <not>
                     <property alias="/params/securing/cowl-plugs"/>
@@ -189,42 +189,6 @@
                 </not>
             </and>
         </condition>
-    </animation>
-    <animation>
-        <type>select</type>
-        <object-name>Spinner</object-name>
-        <condition>
-            <not>
-                <property alias="/params/engine/crashed"/>
-            </not>
-        </condition>
-    </animation>
-    <animation>
-        <type>select</type>
-        <object-name>Propeller.Fast</object-name>
-        <nopreview/>
-        <condition>
-            <and>
-                <greater-than>
-                    <property alias="/params/engine/rpm"/>
-                    <value>400</value>
-                </greater-than>
-                <not>
-                    <property alias="/params/securing/cowl-plugs"/>
-                </not>
-                <not>
-                    <property alias="/params/engine/crashed"/>
-                </not>
-            </and>
-        </condition>
-    </animation>
-    <animation>
-        <type>blend</type>
-        <object-name>Propeller.Fast</object-name>
-        <property alias="/params/engine/rpm"/>
-        <factor>0.0004</factor>
-        <max>0.5</max>
-        <min>0.0</min>
     </animation>
     <animation>
         <type>spin</type>
@@ -243,16 +207,185 @@
             <z>1.0</z>
         </axis>
     </animation>
+
+    <!-- Prop 2 Spinning -->
+    <animation>
+        <type>select</type>
+        <object-name>PropellerTwo</object-name>
+        <condition>
+             <and>
+                <less-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>50000</value>
+                </less-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
     <animation>
         <type>spin</type>
-        <object-name>Propeller.Fast</object-name>
+        <object-name>PropellerTwo</object-name>
         <object-name>Spinner</object-name>
         <property alias="/params/engine/rpm"/>
-        <factor>-0.001</factor>
+        <factor>-1</factor>
+        <center>
+            <x-m>0</x-m>
+            <y-m>2.0</y-m>
+            <z-m>0</z-m>
+        </center>
+        <axis>
+            <x>0.0</x>
+            <y>0.0</y>
+            <z>1.0</z>
+        </axis>
+    </animation>
+
+    <!-- Prop 3 Spinning -->
+    <animation>
+        <type>select</type>
+        <object-name>PropellerThree</object-name>
+        <condition>
+             <and>
+                <less-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>50000</value>
+                </less-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
+    <animation>
+        <type>spin</type>
+        <object-name>PropellerThree</object-name>
+        <object-name>Spinner</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>-1</factor>
+        <center>
+            <x-m>1.732</x-m>
+            <y-m>1.0</y-m>
+            <z-m>0</z-m>
+        </center>
+        <axis>
+            <x>0.0</x>
+            <y>0.0</y>
+            <z>1.0</z>
+        </axis>
+    </animation>
+
+        <!-- Prop 4 Spinning -->
+    <animation>
+        <type>select</type>
+        <object-name>PropellerFour</object-name>
+        <condition>
+             <and>
+                <less-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>50000</value>
+                </less-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
+    <animation>
+        <type>spin</type>
+        <object-name>PropellerFour</object-name>
+        <object-name>Spinner</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>-1</factor>
         <center>
             <x-m>-1.732</x-m>
-            <y-m>1.4</y-m>
-            <z-m>-1</z-m>
+            <y-m>1.0</y-m>
+            <z-m>0</z-m>
+        </center>
+        <axis>
+            <x>0.0</x>
+            <y>0.0</y>
+            <z>1.0</z>
+        </axis>
+    </animation>
+
+    <!-- Prop 5 Spinning -->
+    <animation>
+        <type>select</type>
+        <object-name>PropellerFive</object-name>
+        <condition>
+             <and>
+                <less-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>50000</value>
+                </less-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
+    <animation>
+        <type>spin</type>
+        <object-name>PropellerFive</object-name>
+        <object-name>Spinner</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>-1</factor>
+        <center>
+            <x-m>0</x-m>
+            <y-m>-2.0</y-m>
+            <z-m>0</z-m>
+        </center>
+        <axis>
+            <x>0.0</x>
+            <y>0.0</y>
+            <z>1.0</z>
+        </axis>
+    </animation>
+
+
+    <!-- Prop 6 Spinning -->
+    <animation>
+        <type>select</type>
+        <object-name>PropellerSix</object-name>
+        <condition>
+             <and>
+                <less-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>50000</value>
+                </less-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
+    <animation>
+        <type>spin</type>
+        <object-name>PropellerSix</object-name>
+        <object-name>Spinner</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>-1</factor>
+        <center>
+            <x-m>1.732</x-m>
+            <y-m>-1.0</y-m>
+            <z-m>0</z-m>
         </center>
         <axis>
             <x>0.0</x>
