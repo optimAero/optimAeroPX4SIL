@@ -105,3 +105,4 @@ ignoreFolder/
 *.xml
 # But do not ignore .xml files inside visualization/
 !visualization/
+!visualization/**/*.xml
