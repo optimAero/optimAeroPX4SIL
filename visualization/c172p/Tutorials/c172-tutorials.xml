@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <tutorial include="preflight.xml"/>
+    <tutorial include="startup.xml"/>
+    <tutorial include="taxiing.xml"/>
+    <tutorial include="runup.xml"/>
+    <tutorial include="radios.xml"/>
+    <tutorial include="altimeter.xml"/>
+    <tutorial include="takeoff.xml"/>
+    <tutorial include="landing.xml"/>
+    <tutorial include="securing.xml"/>
+    <tutorial include="pattern.xml"/>
+    <tutorial include="engine-failure.xml"/>
+    <tutorial include="amphibious-takeoff.xml"/>
+    <tutorial include="amphibious-landing.xml"/>
+    <tutorial include="amphibious-night.xml"/>
+
+</PropertyList>

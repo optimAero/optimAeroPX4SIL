@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+
+<!--
+ This file is part of FlightGear, the free flight simulator
+ http://www.flightgear.org/
+
+ Copyright (C) 2009 Torsten Dreyer, Torsten (at) t3r _dot_ de
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as
+ published by the Free Software Foundation; either version 2 of the
+ License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
+-->
+
+<PropertyList>
+
+    <path>EGT.ac</path>
+
+    <effect>
+        <inherits-from>../../../../Effects/interior/lm-egtr</inherits-from>
+        <object-name>Needle</object-name>
+        <object-name>Bug</object-name>
+        <object-name>Knob</object-name>
+    </effect>
+
+    <effect>
+        <inherits-from>../../../../Effects/interior/lm-egt</inherits-from>
+        <object-name>Face</object-name>
+        <object-name>Front</object-name>
+        <object-name>Case</object-name>
+    </effect>
+
+    <params>
+        <value>/engines/active-engine/egt-norm</value>
+        <bug>engines/engine[0]/egt-bug-norm</bug>
+    </params>
+
+    <animation>
+        <type>material</type>
+        <object-name>Needle</object-name>
+        <object-name>Bug</object-name>
+        <object-name>Knob</object-name>
+        <object-name>Face</object-name>
+        <object-name>Case</object-name>
+        <condition>
+            <not>
+                <property>/sim/rendering/shaders/skydome</property>
+            </not>
+        </condition>
+        <emission>
+            <red-prop>/sim/model/material/instruments/default-red-combined-factor</red-prop>
+            <green-prop>/sim/model/material/instruments/default-green-combined-factor</green-prop>
+            <blue-prop>/sim/model/material/instruments/default-blue-combined-factor</blue-prop>
+        </emission>
+    </animation>
+
+    <animation>
+        <type>material</type>
+        <object-name>Front</object-name>
+        <condition>
+            <not>
+                <property>/sim/rendering/shaders/skydome</property>
+            </not>
+        </condition>
+        <emission>
+            <red-prop>/sim/model/c172p/lighting/rgb-ra-r-factor</red-prop>
+            <green-prop>/sim/model/c172p/lighting/rgb-ra-g-factor</green-prop>
+            <blue-prop>/sim/model/c172p/lighting/rgb-ra-b-factor</blue-prop>
+        </emission>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>Needle</object-name>
+        <property alias="../../params/value"/>
+        <factor>-90.0</factor>
+        <axis>
+            <x>1.0</x>
+            <y>0.0</y>
+            <z>0.0</z>
+        </axis>
+        <center>
+            <x-m>-0.37262</x-m>
+            <y-m>-0.13261</y-m>
+            <z-m>-0.11616</z-m>
+        </center>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>Bug</object-name>
+        <object-name>Knob</object-name>
+        <property alias="../../params/bug"/>
+        <factor>-90.0</factor>
+        <axis>
+            <x>1.0</x>
+            <y>0.0</y>
+            <z>0.0</z>
+        </axis>
+        <center>
+            <x-m>-0.37097</x-m>
+            <y-m>-0.13261</y-m>
+            <z-m>-0.11616</z-m>
+        </center>
+    </animation>
+
+    <animation>
+        <type>knob</type>
+        <object-name>Knob</object-name>
+        <action>
+            <repeatable>true</repeatable>
+            <binding>
+                <command>property-adjust</command>
+                <property alias="../../../../params/bug"/>
+                <factor>0.01</factor>
+                <min>0.0</min>
+                <max>1.0</max>
+                <wrap>0</wrap>
+            </binding>
+        </action>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>egt-bug-norm</tooltip-id>
+                <label>EGT Bug: %.2f</label>
+                <property alias="/params/bug"/>
+            </binding>
+        </hovered>
+    </animation>
+
+</PropertyList>

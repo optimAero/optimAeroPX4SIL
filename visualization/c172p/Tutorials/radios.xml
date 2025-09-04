@@ -1,0 +1,396 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <name>Radio Tuning</name>
+
+    <description>
+    Radios are used both for communication, and also for navigation.
+
+This tutorial will teach you how to tune the radio of the aircraft to pick up
+the ATIS - Automatic Terminal Information Service. This is broadcast by all
+but the smallest airports and provides information on the current ground-level
+weather, the altimeter setting and the runway in use.
+    </description>
+    
+    <nasal>
+        <script>
+            c172p.repair_damage();
+            electrical.reset_battery_and_circuit_breakers();
+            c172p.click("engine-repair", 6.0);
+            c172p.dialog_battery_reload();
+            setprop("/engines/active-engine/oil-level", sim/model/c172p/engine_flag_0 ? 7 : 8);
+            setprop("/engines/active-engine/carb_ice", 0.0);
+            setprop("/fdm/jsbsim/engine/damage-level", 0.0);
+        </script>
+    </nasal>
+
+    <audio-dir>Tutorials/startup</audio-dir>
+    <timeofday>morning</timeofday>
+    <presets>
+        <airport-id>PHTO</airport-id>
+        <on-ground>1</on-ground>
+        <altitude-ft>-9999</altitude-ft>
+        <latitude-deg>19.71731272</latitude-deg>
+        <longitude-deg>-155.0597483</longitude-deg>
+        <heading-deg>125</heading-deg>
+        <airspeed-kt>0</airspeed-kt>
+        <glideslope-deg>0</glideslope-deg>
+        <offset-azimuth-deg>0</offset-azimuth-deg>
+        <offset-distance-nm>0</offset-distance-nm>
+        <airport-requested>true</airport-requested>
+        <runway-requested>false</runway-requested>
+        <parking-requested>false</parking-requested>
+    </presets>
+
+    <step>
+        <set>
+            <property>/sim/model/c172p/brake-parking</property>
+            <value>1</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-bat</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-avionics</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/controls/flight/flaps</property>
+            <value>0.0</value>
+        </set>
+        <set>
+            <property>/controls/switches/magnetos</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>/controls/engines/current-engine/throttle</property>
+            <value>0.0</value>
+        </set>
+        <set>
+            <property>/engines/active-engine/running</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/instrumentation/adf/frequencies/selected-khz</property>
+            <value>367</value>
+        </set>
+        <set>
+            <property>/instrumentation/comm[0]/volume</property>
+            <value>0.8</value>
+        </set>
+        <set>
+            <property>/instrumentation/comm[0]/frequencies/standby-mhz</property>
+            <value>118.1</value>
+        </set>
+        <set>
+            <property>/instrumentation/comm[1]/frequencies/selected-mhz</property>
+            <value>123.5</value>
+        </set>
+        <set>
+            <property>/environment/weather-scenario</property>
+            <value>Fair weather</value>
+        </set>
+        <set>
+            <property>/controls/flight/elevator-trim</property>
+            <value>0.17</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/cockpit/control-lock-placed</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/cockpit/control-lock-visible</property>
+            <value>false</value>
+        </set>
+        <message>In this lesson, you'll learn how to tune the radio to the ATIS of Hilo Intl,
+            which is the nearest one with ATIS.</message>
+        <view>
+            <heading-offset-deg>0.0</heading-offset-deg>
+            <pitch-offset-deg>-12</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.21</x-offset-m>
+            <y-offset-m>0.19</y-offset-m>
+            <field-of-view>73.6</field-of-view>
+        </view>
+        <wait>10</wait>
+    </step>
+
+    <step>
+        <message>First you need to power the aircraft by switching the battery on.</message>
+        <view>
+        <heading-offset-deg>9.2</heading-offset-deg>
+            <pitch-offset-deg>-24.3</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.4</x-offset-m>
+            <y-offset-m>-0.1</y-offset-m>
+            <z-offset-m>0.2</z-offset-m>
+            <field-of-view>48.4</field-of-view>
+        </view>
+
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>true</value>
+        </set>
+
+        <marker>
+            <x-m>-0.3124</x-m>
+            <y-m>-0.4083</y-m>
+            <z-m>-0.1917</z-m>
+            <scale>2.0909</scale>
+        </marker>
+        <error>
+            <message>We now power the radio-stack, so you have to switch the battery on.</message>
+            <condition>
+                <not>
+                    <property>/controls/switches/master-bat</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>/controls/switches/master-bat</property>
+            </condition>
+        </exit>
+    </step>
+
+     <step>
+        <message>Then switch the master avionics on to start the radio stack</message>
+        <view>
+            <heading-offset-deg>12.2</heading-offset-deg>
+            <pitch-offset-deg>-35.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.3</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>35.0</field-of-view>
+        </view>
+        <marker>
+            <x-m>-0.3500</x-m>
+            <y-m>-0.3233</y-m>
+            <z-m>-0.2261</z-m>
+            <scale>1.3688</scale>
+        </marker>
+
+        <error>
+            <message>Flip the master avionics switch...</message>
+            <condition>
+                <equals>
+                    <property>/controls/switches/master-avionics</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </error>
+
+        <exit>
+            <condition>
+                <equals>
+                    <property>/controls/switches/master-avionics</property>
+                    <value>1</value>
+                </equals>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>The radio is in the middle of the center console.</message>
+        <view>
+            <heading-offset-deg>0.0</heading-offset-deg>
+            <pitch-offset-deg>-12</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.21</x-offset-m>
+            <y-offset-m>0.19</y-offset-m>
+            <field-of-view>73.6</field-of-view>
+        </view>
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>false</value>
+        </set>
+        <wait>5</wait>
+    </step>
+
+    <step>
+        <message>There are 4 radios on this aircraft - two for communication (COMM1, COMM2) and two for navigation (NAV1, NAV2).
+      Each radio has an active frequency and a standby frequency.
+      We tune the radio by changing the standby frequency, and then swapping the active and standby. </message>
+        <wait>10</wait>
+    </step>
+
+    <step>
+        <message>To change the standby frequency, click on the highlighted knob.</message>
+        <view>
+            <heading-offset-deg>339.4</heading-offset-deg>
+            <pitch-offset-deg>-14.5</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>14.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>0.0000</x-m>
+            <y-m>-0.0537</y-m>
+            <z-m>0.1545</z-m>
+            <scale>0.4215</scale>
+        </marker>
+    </step>
+
+    <step>
+        <message>The outer knob changes the number on the left of the decimal place. The inner knob changes the number on the right of the decimal place.
+    The left mouse button increases the value, while the middle button decreases it. Alternatively, you can use your mouse wheel.</message>
+        <view>
+            <heading-offset-deg>336.3</heading-offset-deg>
+            <pitch-offset-deg>-13.9</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>14.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3347</x-m>
+            <y-m>0.0909</y-m>
+            <z-m>0.0712</z-m>
+            <scale>1.0661</scale>
+        </marker>
+    </step>
+
+    <step>
+        <message>Set the standby frequency to 126.4 MHz. This is the ATIS frequency for Hilo Intl Airport, and is printed on sectional charts.</message>
+         <view>
+            <heading-offset-deg>336.3</heading-offset-deg>
+            <pitch-offset-deg>-13.9</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>14.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3347</x-m>
+            <y-m>0.0909</y-m>
+            <z-m>0.0712</z-m>
+            <scale>1.0661</scale>
+        </marker>
+
+        <exit>
+            <condition>
+                <equals>
+                    <property>/instrumentation/comm/frequencies/standby-mhz</property>
+                    <value>126.40</value>
+                </equals>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Now, switch the active and standby frequencies by pressing the swap button so the active frequency is 126.4 MHz.</message>
+        <view>
+            <heading-offset-deg>339.4</heading-offset-deg>
+            <pitch-offset-deg>-14.5</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>14.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>0.0000</x-m>
+            <y-m>-0.0537</y-m>
+            <z-m>0.1545</z-m>
+            <scale>0.4215</scale>
+        </marker>
+
+        <exit>
+            <condition>
+                <equals>
+                    <property>/instrumentation/comm[0]/frequencies/selected-mhz</property>
+                    <value>126.4</value>
+                </equals>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>We need to set the COMM1 output to our headset using the audio panel.
+    Use your left mouse button to drag the COMM1 switch upwards if it is not already in that position.</message>
+        <view>
+            <heading-offset-deg>336.5</heading-offset-deg>
+            <pitch-offset-deg>-10.1</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>14.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3494</x-m>
+            <y-m>0.0909</y-m>
+            <z-m>0.1406</z-m>
+            <scale>0.5702</scale>
+        </marker>
+
+        <exit>
+            <condition>
+                <not>
+                    <equals>
+                        <property>/instrumentation/kma20/com1</property>
+                        <value>0</value>
+                    </equals>
+                </not>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Listen to the ATIS message. If you cannot hear it, look at the Sound Configuration dialog on the File menu.
+      It will tell you the current weather conditions, the runway in use, and the altimeter setting.</message>
+    </step>
+
+    <step>
+        <message>Once you've heard it, you can switch it off by swapping the frequency back to standby, or toggling off the audio panel.
+      Switch off the audio panel by setting the switch to the middle position.</message>
+        <view>
+            <heading-offset-deg>336.3</heading-offset-deg>
+            <pitch-offset-deg>-10.7</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>14.6</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3494</x-m>
+            <y-m>0.0909</y-m>
+            <z-m>0.1398</z-m>
+            <scale>0.5207</scale>
+        </marker>
+
+        <exit>
+            <condition>
+                <equals>
+                    <property>/instrumentation/kma20/com1</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Great job. COMM2 is located immediately below COMM1 in the radio stack, and is tuned in the same way.
+      The NAV radios work in exactly the same way, except they use a different frequency
+      range, and their output goes to the navigational instruments.</message>
+    </step>
+
+</PropertyList>

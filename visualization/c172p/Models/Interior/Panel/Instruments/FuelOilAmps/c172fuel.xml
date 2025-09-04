@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <path>c172fuel.ac</path>
+
+    <effect>
+        <inherits-from>../../../../Effects/interior/lm-fuelr</inherits-from>
+        <object-name>LeftFuelNeedle</object-name>
+        <object-name>RightFuelNeedle</object-name>
+    </effect>
+
+    <effect>
+        <inherits-from>../../../../Effects/interior/lm-fuel</inherits-from>
+        <object-name>Face</object-name>
+        <object-name>Case</object-name>
+    </effect>
+
+    <animation>
+        <type>material</type>
+        <object-name>Face</object-name>
+        <object-name>LeftFuelNeedle</object-name>
+        <object-name>RightFuelNeedle</object-name>
+        <object-name>Case</object-name>
+        <condition>
+            <not>
+                <property>/sim/rendering/shaders/skydome</property>
+            </not>
+        </condition>
+        <emission>
+            <red-prop>/sim/model/material/instruments/default-red-combined-factor</red-prop>
+            <green-prop>/sim/model/material/instruments/default-green-combined-factor</green-prop>
+            <blue-prop>/sim/model/material/instruments/default-blue-combined-factor</blue-prop>
+        </emission>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>LeftFuelNeedle</object-name>
+        <property>consumables/fuel/tank[0]/indicated-level-gal_us</property>
+        <interpolation>
+            <entry>
+                <ind>0</ind>
+                <dep>-29</dep>
+            </entry>
+            <entry>
+                <ind>5</ind>
+                <dep>-18</dep>
+            </entry>
+            <entry>
+                <ind>10</ind>
+                <dep>-7</dep>
+            </entry>
+            <entry>
+                <ind>15</ind>
+                <dep>5</dep>
+            </entry>
+            <entry>
+                <ind>20</ind>
+                <dep>16</dep>
+            </entry>
+            <entry>
+                <ind>24</ind>
+                <dep>27</dep>
+            </entry>
+        </interpolation>
+        <center>
+            <x-m>-0.36316</x-m>
+            <y-m>-0.4207</y-m>
+            <z-m> 0.00388</z-m>
+        </center>
+        <axis>
+            <x>-1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>RightFuelNeedle</object-name>
+        <property>consumables/fuel/tank[1]/indicated-level-gal_us</property>
+        <interpolation>
+            <entry>
+                <ind>0</ind>
+                <dep>-29</dep>
+            </entry>
+            <entry>
+                <ind>5</ind>
+                <dep>-18</dep>
+            </entry>
+            <entry>
+                <ind>10</ind>
+                <dep>-7</dep>
+            </entry>
+            <entry>
+                <ind>15</ind>
+                <dep>5</dep>
+            </entry>
+            <entry>
+                <ind>20</ind>
+                <dep>16</dep>
+            </entry>
+            <entry>
+                <ind>24</ind>
+                <dep>27</dep>
+            </entry>
+        </interpolation>
+        <center>
+            <x-m>-0.36316</x-m>
+            <y-m>-0.39034</y-m>
+            <z-m> 0.00388</z-m>
+        </center>
+        <axis>
+            <x>-1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+</PropertyList>

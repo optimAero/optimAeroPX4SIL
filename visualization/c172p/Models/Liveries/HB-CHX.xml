@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <sim>
+        <model>
+            <livery>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/older-liveries/fuselage.HB-CHX.png</texture>
+            </livery>
+            <liverytail>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/older-liveries/tail.HB-CHX.png</texture>
+            </liverytail>
+            <liverywing>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/older-liveries/wing.HB-CHX.png</texture>
+            </liverywing>
+            <liveryprop>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/OH-CTL/prop.png</texture>
+            </liveryprop>
+            <liveryfloat>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/D-EEQA/floats.png</texture>
+            </liveryfloat>
+            <liveryinterior>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/D-EEQA/interior.png</texture>
+            </liveryinterior>
+            <liverypanel>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>Liveries/D-EEQA/panel.png</texture>
+            </liverypanel>
+            <liveryparts>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>panel_parts.png</texture>
+            </liveryparts>
+            <liveryinstrumentsai>
+                <name type="string">HB-CHX</name>
+                <index type="int">13</index>
+                <texture>AI.png</texture>
+            </liveryinstrumentsai>
+            <c172p>
+                <immat>false</immat>
+                <immat-on-panel>false</immat-on-panel>
+                <fairing1>false</fairing1>
+                <fairing2>false</fairing2>
+                <fairing3>false</fairing3>
+            </c172p>
+        </model>
+    </sim>
+</PropertyList>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <model>
+    <path>40in_prop_CW.ac</path>
+    <object-name>Propeller</object-name>   <!-- Add this line -->
+    <offsets>
+      <x-m>0.0</x-m>
+      <y-m>2.0</y-m>
+      <z-m>0.4</z-m>
+    </offsets>
+  </model>
+</PropertyList>
