@@ -138,22 +138,6 @@
         </engine>
 
     </engines>
-  <nasal>
-      <c172p>
-          <file>Nasal/c172p.nas</file>
-          <file>Nasal/engine.nas</file>
-          <file>Nasal/particle-effects-manager.nas</file>
-          <!-- Damage Mod -->
-          <file>Nasal/physics.nas</file>
-      </c172p>
-
-  </nasal>
-  
-   <params>
-        <engine>
-            <rpm>engines/engine[2]/rpm</rpm>
-        </engine>
-    </params>
 
     <!-- exterior effects -->
     <!-- Normal shader effect. Separate effects required for each normal map and dirt texture -->
@@ -178,7 +162,7 @@
         <condition>
              <and>
                 <less-than>
-                    <property alias="/params/engine/rpm"/>
+                    <property>/engines/engine[1]/rpm</property>
                     <value>50000</value>
                 </less-than>
                 <not>
@@ -194,7 +178,7 @@
         <type>spin</type>
         <object-name>PropellerOne</object-name>
         <object-name>Spinner</object-name>
-        <property alias="/params/engine/rpm"/>
+        <property>/engines/engine[1]/rpm</property>
         <factor>-1</factor>
         <center>
             <x-m>-1.732</x-m>
@@ -215,7 +199,7 @@
         <condition>
              <and>
                 <less-than>
-                    <property alias="/params/engine/rpm"/>
+                    <property>/engines/engine[2]/rpm</property>
                     <value>50000</value>
                 </less-than>
                 <not>
@@ -231,7 +215,7 @@
         <type>spin</type>
         <object-name>PropellerTwo</object-name>
         <object-name>Spinner</object-name>
-        <property alias="/params/engine/rpm"/>
+        <property>/engines/engine[2]/rpm</property>
         <factor>-1</factor>
         <center>
             <x-m>0</x-m>
@@ -252,7 +236,7 @@
         <condition>
              <and>
                 <less-than>
-                    <property alias="/params/engine/rpm"/>
+                    <property>/engines/engine[3]/rpm</property>
                     <value>50000</value>
                 </less-than>
                 <not>
@@ -268,7 +252,7 @@
         <type>spin</type>
         <object-name>PropellerThree</object-name>
         <object-name>Spinner</object-name>
-        <property alias="/params/engine/rpm"/>
+        <property>/engines/engine[3]/rpm</property>
         <factor>-1</factor>
         <center>
             <x-m>1.732</x-m>
@@ -289,7 +273,7 @@
         <condition>
              <and>
                 <less-than>
-                    <property alias="/params/engine/rpm"/>
+                    <property>/engines/engine[4]/rpm</property>
                     <value>50000</value>
                 </less-than>
                 <not>
@@ -305,7 +289,7 @@
         <type>spin</type>
         <object-name>PropellerFour</object-name>
         <object-name>Spinner</object-name>
-        <property alias="/params/engine/rpm"/>
+        <property>/engines/engine[4]/rpm</property>
         <factor>-1</factor>
         <center>
             <x-m>-1.732</x-m>
@@ -326,7 +310,7 @@
         <condition>
              <and>
                 <less-than>
-                    <property alias="/params/engine/rpm"/>
+                    <property>/engines/engine[5]/rpm</property>
                     <value>50000</value>
                 </less-than>
                 <not>
@@ -342,7 +326,7 @@
         <type>spin</type>
         <object-name>PropellerFive</object-name>
         <object-name>Spinner</object-name>
-        <property alias="/params/engine/rpm"/>
+        <property>/engines/engine[5]/rpm</property>
         <factor>-1</factor>
         <center>
             <x-m>0</x-m>
@@ -364,7 +348,7 @@
         <condition>
              <and>
                 <less-than>
-                    <property alias="/params/engine/rpm"/>
+                    <property>/engines/engine[6]/rpm</property>
                     <value>50000</value>
                 </less-than>
                 <not>
@@ -380,7 +364,7 @@
         <type>spin</type>
         <object-name>PropellerSix</object-name>
         <object-name>Spinner</object-name>
-        <property alias="/params/engine/rpm"/>
+        <property>/engines/engine[6]/rpm</property>
         <factor>-1</factor>
         <center>
             <x-m>1.732</x-m>

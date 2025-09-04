@@ -23,7 +23,6 @@
     <!-- Read-Only Properties                                           -->
     <!-- ============================================================== -->
 
-
     <filter>
         <name>Engine RPM</name>
         <type>gain</type>
@@ -43,5 +42,6 @@
             <property>/engines/active-engine/rpm</property>
         </output>
     </filter>
+
 
 </PropertyList>
