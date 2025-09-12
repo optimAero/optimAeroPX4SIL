@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Copyright (c) 2015 onox
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PropertyList>
+
+    <!--
+        Note: Properties in /systems/electrical/ are computed by
+        Nasal/electrical.nas during replay, thus do not need to be
+        recorded.
+    -->
+
+    <logic>
+        <name>Lighting Landing On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/landing-lights</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/landing-lights</property>
+                    <value>20.0</value>
+                </greater-than>
+                <not-equals>
+                    <property>/sim/model/c172p/damage/left-wing</property>
+                    <value>1</value>
+                </not-equals>
+                <not>
+                    <property>/fdm/jsbsim/crash</property>
+                </not>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/landing</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>Lighting Taxi On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/taxi-light</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/taxi-light</property>
+                    <value>20.0</value>
+                </greater-than>
+                <not-equals>
+                    <property>/sim/model/c172p/damage/left-wing</property>
+                    <value>1</value>
+                </not-equals>
+                <not>
+                    <property>/fdm/jsbsim/crash</property>
+                </not>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/taxi</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>ALS Lighting Landing</name>
+        <input>
+            <and>
+                <property>/sim/current-view/internal</property>
+                <property>/sim/model/c172p/lighting/landing</property>
+            </and>
+        </input>
+        <output>
+            <property>/sim/rendering/als-secondary-lights/use-landing-light</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>ALS Lighting Taxi</name>
+        <input>
+            <and>
+                <property>/sim/current-view/internal</property>
+                <property>/sim/model/c172p/lighting/taxi</property>
+            </and>
+        </input>
+        <output>
+            <property>/sim/rendering/als-secondary-lights/use-alt-landing-light</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>ALS Lighting Exterior Landing</name>
+        <input>
+            <and>
+                <not>
+                    <property>/sim/current-view/internal</property>
+                </not>
+                <property>/sim/model/c172p/lighting/landing</property>
+            </and>
+        </input>
+        <output>
+            <property>/sim/rendering/als-secondary-lights/use-landing-light-ext</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>ALS Lighting Exterior Taxi</name>
+        <input>
+            <and>
+                <not>
+                    <property>/sim/current-view/internal</property>
+                </not>
+                <property>/sim/model/c172p/lighting/taxi</property>
+            </and>
+        </input>
+        <output>
+            <property>/sim/rendering/als-secondary-lights/use-taxi-light-ext</property>
+        </output>
+    </logic>
+
+    <filter>
+        <name>Light Map Flood Red</name>
+        <type>gain</type>
+        <gain>1.2</gain>
+        <input>
+            <condition>
+                <and>
+                    <less-than>
+                        <property>/systems/electrical/outputs/cabin-lights</property>
+                        <value>31.5</value>
+                    </less-than>
+                    <greater-than>
+                        <property>/systems/electrical/outputs/cabin-lights</property>
+                        <value>20.0</value>
+                    </greater-than>
+                    <greater-than>
+                        <property>/controls/switches/dome-red</property>
+                        <value>0</value>
+                    </greater-than>
+                </and>
+            </condition>
+            <expression>
+                <product>
+                    <property>/controls/lighting/instruments-norm</property>
+                    <table>
+                        <property>/rendering/scene/diffuse/red</property>
+                        <entry><ind>0.0</ind><dep>1.0</dep></entry>
+                        <entry><ind>1.0</ind><dep>0.75</dep></entry>
+                    </table>
+                </product>
+            </expression>
+        </input>
+        <output>
+           <property>/sim/model/lightmap/flood/factor</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>Light Map Dome White</name>
+        <type>gain</type>
+        <gain>1.0</gain>
+        <input>
+            <condition>
+                <and>
+                    <less-than>
+                        <property>/systems/electrical/outputs/cabin-lights</property>
+                        <value>31.5</value>
+                    </less-than>
+                    <greater-than>
+                        <property>/systems/electrical/outputs/cabin-lights</property>
+                        <value>20.0</value>
+                    </greater-than>
+                    <equals>
+                        <property>/controls/switches/dome-white</property>
+                        <value>1.0</value>
+                    </equals>
+                </and>
+            </condition>
+            <expression>
+                <table>
+                    <property>/controls/lighting/dome-white-norm</property>
+                    <entry><ind>0.0</ind><dep>.5</dep></entry>
+                    <entry><ind>1.0</ind><dep>.85</dep></entry>
+                </table>
+            </expression>
+        </input>
+        <output>
+           <property>/sim/model/lightmap/dome/factor</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>Courtesy Dome White</name>
+        <type>gain</type>
+        <gain>1.0</gain>
+        <input>
+            <condition>
+                <and>
+                    <less-than>
+                        <property>/systems/electrical/outputs/cabin-lights</property>
+                        <value>31.5</value>
+                    </less-than>
+                    <greater-than>
+                        <property>/systems/electrical/outputs/cabin-lights</property>
+                        <value>20.0</value>
+                    </greater-than>
+                    <equals>
+                        <property>/controls/switches/dome-white</property>
+                        <value>1.0</value>
+                    </equals>
+                </and>
+            </condition>
+            <value>1</value>
+        </input>
+        <output>
+           <property>/sim/model/lighting/courtesy/factor</property>
+        </output>
+    </filter>
+
+    <logic>
+        <name>Lighting Beacon On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/beacon</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/beacon</property>
+                    <value>20.0</value>
+                </greater-than>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/beacon/enabled</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>Lighting Strobe On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/strobe</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/strobe</property>
+                    <value>20.0</value>
+                </greater-than>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/strobes/enabled</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>Lighting Navigation On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/nav-lights</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/nav-lights</property>
+                    <value>20.0</value>
+                </greater-than>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/nav-lights</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>Lighting Navigation Ground Spots On/Off Left</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/nav-lights</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/nav-lights</property>
+                    <value>20.0</value>
+                </greater-than>
+                <not-equals>
+                    <property>/sim/model/c172p/damage/left-wing</property>
+                    <value>1</value>
+                </not-equals>
+                <not>
+                    <property>/fdm/jsbsim/crash</property>
+                </not>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/nav-lights/left-on</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>Lighting Navigation Ground Spots On/Off Right</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/nav-lights</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/nav-lights</property>
+                    <value>20.0</value>
+                </greater-than>
+                <not-equals>
+                    <property>/sim/model/c172p/damage/right-wing</property>
+                    <value>1</value>
+                </not-equals>
+                <not>
+                    <property>/fdm/jsbsim/crash</property>
+                </not>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/nav-lights/right-on</property>
+        </output>
+    </logic>
+
+    <filter>
+        <name>Inst Red Factor</name>
+        <type>gain</type>
+        <gain>0.010</gain>
+        <input>
+            <condition>
+                <greater-than>
+                    <property>/controls/lighting/radio-norm</property>
+                    <value>0.0</value>
+                </greater-than>
+            </condition>
+            <expression>
+                <sum>
+                    <property>/sim/model/c172p/lighting/comm0</property>
+                    <property>/sim/model/c172p/lighting/comm1</property>
+                    <property>/sim/model/c172p/lighting/adf</property>
+                </sum>
+            </expression>
+        </input>
+        <input>
+            <condition>
+                <and>
+                    <equals>
+                        <property>/controls/lighting/radio-norm</property>
+                        <value>0.0</value>
+                    </equals>
+                    <property>/sim/model/c172p/lighting/comm0-power</property>
+                    <property>/sim/model/c172p/lighting/comm1-power</property>
+                    <property>/instrumentation/adf[0]/operable</property>
+                </and>
+            </condition>
+            <value>3.0</value>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/inst-r-norm</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>Inst Blue Factor</name>
+        <type>gain</type>
+        <gain>0.006</gain>
+        <input>
+            <condition>
+                <greater-than>
+                    <property>/controls/lighting/radio-norm</property>
+                    <value>0.0</value>
+                </greater-than>
+            </condition>
+            <expression>
+                <sum>
+                    <property>/sim/model/c172p/lighting/comm0</property>
+                    <property>/sim/model/c172p/lighting/comm1</property>
+                    <property>/sim/model/c172p/lighting/adf</property>
+                </sum>
+            </expression>
+        </input>
+        <input>
+            <condition>
+                <and>
+                    <equals>
+                        <property>/controls/lighting/radio-norm</property>
+                        <value>0.0</value>
+                    </equals>
+                    <property>/sim/model/c172p/lighting/comm0-power</property>
+                    <property>/sim/model/c172p/lighting/comm1-power</property>
+                    <property>/instrumentation/adf[0]/operable</property>
+                </and>
+            </condition>
+            <value>3.0</value>
+        </input>   
+        <output>
+            <property>/sim/model/c172p/lighting/inst-g-norm</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>Inst Green Factor</name>
+        <type>gain</type>
+        <gain>0.006</gain>
+        <input>
+            <condition>
+                <greater-than>
+                    <property>/controls/lighting/radio-norm</property>
+                    <value>0.0</value>
+                </greater-than>
+            </condition>
+            <expression>
+                <sum>
+                    <property>/sim/model/c172p/lighting/comm0</property>
+                    <property>/sim/model/c172p/lighting/comm1</property>
+                    <property>/sim/model/c172p/lighting/adf</property>
+                </sum>
+            </expression>
+        </input>
+        <input>
+            <condition>
+                <and>
+                    <equals>
+                        <property>/controls/lighting/radio-norm</property>
+                        <value>0.0</value>
+                    </equals>
+                    <property>/sim/model/c172p/lighting/comm0-power</property>
+                    <property>/sim/model/c172p/lighting/comm1-power</property>
+                    <property>/instrumentation/adf[0]/operable</property>
+                </and>
+            </condition>
+            <value>3.0</value>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/inst-b-norm</property>
+        </output>
+    </filter>
+
+    <!-- Reduce the red glow from the digits of the radio stack
+         if the instrument lighting is at 100 %.
+    -->
+    <filter>
+        <name>Inst Gain As Function Of Instrument Lighting</name>
+        <type>gain</type>
+        <input>
+            <expression>
+                <table>
+                    <property>/sim/model/material/instruments/integral-factor</property>
+                    <entry><ind>0.0</ind><dep>1.0</dep></entry>
+                    <entry><ind>1.0</ind><dep>0.9</dep></entry>
+                </table>
+            </expression>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/inst-gain</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>RGB Red Factor from radio stack</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/ra-r-r</property>
+            <scale>
+                <property>/sim/model/material/instruments/integral-factor</property>
+            </scale>
+            <offset>
+                <property>/sim/model/c172p/lighting/inst-r-norm</property>
+                <scale>
+                    <property>/sim/model/c172p/lighting/inst-gain</property>
+                </scale>
+            </offset>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-r-r-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Green Factor from radio stack</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/ra-g-r</property>
+            <scale>
+                <property>/sim/model/material/instruments/integral-factor</property>
+            </scale>
+            <offset>
+                <property>/sim/model/c172p/lighting/inst-g-norm</property>
+                <scale>
+                    <property>/sim/model/c172p/lighting/inst-gain</property>
+                </scale>
+            </offset>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-g-r-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Blue Factor from radio stack</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/ra-b-r</property>
+            <scale>
+                <property>/sim/model/material/instruments/integral-factor</property>
+            </scale>
+            <offset>
+                <property>/sim/model/c172p/lighting/inst-b-norm</property>
+                <scale>
+                    <property>/sim/model/c172p/lighting/inst-gain</property>
+                </scale>
+            </offset>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-b-r-factor</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>RGB Red Factor from post lights</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/ra-r-p</property>
+            <scale>
+                <property>/sim/model/material/instruments/factor</property>
+            </scale>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-r-p-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Green Factor from post lights</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/ra-g-p</property>
+            <scale>
+                <property>/sim/model/material/instruments/factor</property>
+            </scale>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-g-p-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Blue Factor from post lights</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/ra-b-p</property>
+            <scale>
+                <property>/sim/model/material/instruments/factor</property>
+            </scale>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-b-p-factor</property>
+        </output>
+    </filter>
+
+    <filter>
+        <name>RGB Red Factor from flood lights</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/flood-red</property>
+            <scale>
+                <property>/sim/model/c172p/lighting/flood-default</property>
+            </scale>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/flood-proc-red-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Green Factor flood lights</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/flood-green</property>
+            <scale>
+                <property>/sim/model/c172p/lighting/flood-default</property>
+            </scale>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/flood-proc-green-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Blue Factor flood lights</name>
+        <type>gain</type>
+        <input>
+            <property>/sim/model/c172p/lighting/flood-blue</property>
+            <scale>
+                <property>/sim/model/c172p/lighting/flood-default</property>
+            </scale>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/flood-proc-blue-factor</property>
+        </output>
+    </filter>
+
+    <!-- Output used for ALS residual-ambience and default renderer ambience (material animations) cabin only -->
+    <filter>
+        <name>RGB Red Factor combined</name>
+        <type>gain</type>
+        <input>
+            <expression>
+                <sum>
+                    <!-- simulates radio ambient lighting -->
+                    <property>/sim/model/c172p/lighting/rgb-ra-r-r-factor</property>
+                    <!-- simulates post ambient lighting -->
+                    <property>/sim/model/c172p/lighting/rgb-ra-r-p-factor</property>
+                    <!-- simulates dome lighting -->
+                    <property>/sim/model/c172p/lighting/dome-default</property>
+                    <!-- simulates flood lighting -->
+                    <property>/sim/model/c172p/lighting/flood-proc-red-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/rgb-ra-r-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Green Factor combined</name>
+        <type>gain</type>
+        <input>
+            <expression>
+                <sum>
+                    <property>/sim/model/c172p/lighting/rgb-ra-g-r-factor</property>
+                    <property>/sim/model/c172p/lighting/rgb-ra-g-p-factor</property>
+                    <property>/sim/model/c172p/lighting/dome-default</property>
+                    <property>/sim/model/c172p/lighting/flood-proc-green-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <output>
+             <property>/sim/model/c172p/lighting/rgb-ra-g-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Blue Factor combined</name>
+        <type>gain</type>
+        <input>
+            <expression>
+                <sum>
+                    <property>/sim/model/c172p/lighting/rgb-ra-b-r-factor</property>
+                    <property>/sim/model/c172p/lighting/rgb-ra-b-p-factor</property>
+                    <property>/sim/model/c172p/lighting/dome-default</property>
+                    <property>/sim/model/c172p/lighting/flood-proc-blue-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <output>
+             <property>/sim/model/c172p/lighting/rgb-ra-b-factor</property>
+        </output>
+    </filter>
+
+    <!-- Output used for default renderer overhead lighting (material animations) on panel guages only -->
+    <filter>
+        <name>RGB Red Factor default renderer guages combined</name>
+        <type>gain</type>
+        <input>
+            <condition>
+                <not>
+                    <property>/sim/rendering/shaders/skydome</property>
+                </not>
+                <greater-than-equals>
+                    <property>/sim/model/c172p/lighting/dome-proc</property>
+                    <property>/sim/model/material/instruments/factor</property>
+                </greater-than-equals>
+            </condition>
+            <expression>
+                <sum>
+                    <product>
+                        <property>/sim/model/c172p/lighting/dome-proc</property>
+                        <value>1.0</value>
+                    </product>
+                    <property>/sim/model/c172p/lighting/flood-proc-red-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <input>
+            <condition>
+                <not>
+                    <property>/sim/rendering/shaders/skydome</property>
+                </not>
+                <greater-than>
+                    <property>/sim/model/material/instruments/factor</property>
+                    <property>/sim/model/c172p/lighting/dome-proc</property>
+                </greater-than>
+            </condition>
+            <expression>
+                <sum>
+                    <product>
+                        <property>/sim/model/material/instruments/factor</property>
+                        <value>1.0</value>
+                    </product>
+                    <property>/sim/model/c172p/lighting/flood-proc-red-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <output>
+            <property>/sim/model/material/instruments/default-red-combined-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Green Factor default renderer guages combined</name>
+        <type>gain</type>
+        <input>
+            <condition>
+                <not>
+                    <property>/sim/rendering/shaders/skydome</property>
+                </not>
+                <greater-than-equals>
+                    <property>/sim/model/c172p/lighting/dome-proc</property>
+                    <property>/sim/model/material/instruments/factor</property>
+                </greater-than-equals>
+            </condition>
+            <expression>
+                <sum>
+                    <product>
+                        <property>/sim/model/c172p/lighting/dome-proc</property>
+                        <value>0.8</value>
+                    </product>
+                    <property>/sim/model/c172p/lighting/flood-proc-green-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <input>
+            <condition>
+                <not>
+                    <property>/sim/rendering/shaders/skydome</property>
+                </not>
+                <greater-than>
+                    <property>/sim/model/material/instruments/factor</property>
+                    <property>/sim/model/c172p/lighting/dome-proc</property>
+                </greater-than>
+            </condition>
+            <expression>
+                <sum>
+                    <product>
+                        <property>/sim/model/material/instruments/factor</property>
+                        <value>0.8</value>
+                    </product>
+                    <property>/sim/model/c172p/lighting/flood-proc-green-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <output>
+             <property>/sim/model/material/instruments/default-green-combined-factor</property>
+        </output>
+    </filter>
+    <filter>
+        <name>RGB Blue Factor default renderer guages combined</name>
+        <type>gain</type>
+        <input>
+            <condition>
+                <not>
+                    <property>/sim/rendering/shaders/skydome</property>
+                </not>
+                <greater-than-equals>
+                    <property>/sim/model/c172p/lighting/dome-proc</property>
+                    <property>/sim/model/material/instruments/factor</property>
+                </greater-than-equals>
+            </condition>
+            <expression>
+                <sum>
+                    <product>
+                        <property>/sim/model/c172p/lighting/dome-proc</property>
+                        <value>0.5</value>
+                    </product>
+                    <property>/sim/model/c172p/lighting/flood-proc-blue-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <input>
+            <condition>
+                <not>
+                    <property>/sim/rendering/shaders/skydome</property>
+                </not>
+                <greater-than>
+                    <property>/sim/model/material/instruments/factor</property>
+                    <property>/sim/model/c172p/lighting/dome-proc</property>
+                </greater-than>
+            </condition>
+            <expression>
+                <sum>
+                    <product>
+                        <property>/sim/model/material/instruments/factor</property>
+                        <value>0.5</value>
+                    </product>
+                    <property>/sim/model/c172p/lighting/flood-proc-blue-factor</property>
+                </sum>
+            </expression>
+        </input>
+        <output>
+             <property>/sim/model/material/instruments/default-blue-combined-factor</property>
+        </output>
+    </filter>
+
+    <!-- Used for default renderer overhead lighting (material animations) -->
+    <filter>
+        <type>gain</type>
+        <gain>.125</gain>
+        <input>/sim/model/lightmap/dome/factor</input>
+        <output>/sim/model/c172p/lighting/dome-default</output>
+    </filter>
+
+    <filter>
+        <type>gain</type>
+        <gain>.175</gain>
+        <input>/sim/model/lightmap/flood/factor</input>
+        <output>/sim/model/c172p/lighting/flood-default</output>
+    </filter>
+
+    <!-- Used for ALS procedural lights -->
+    <filter>
+        <type>gain</type>
+        <gain>.25</gain>
+        <input>/sim/model/lightmap/dome/factor</input>
+        <output>/sim/model/c172p/lighting/dome-proc</output>
+    </filter>
+    <filter>
+        <type>gain</type>
+        <gain>.2</gain>
+        <input>/sim/model/lightmap/flood/factor</input>
+        <output>/sim/model/c172p/lighting/flood-proc</output>
+    </filter>
+    <filter>
+        <type>gain</type>
+        <gain>.25</gain>
+        <input>/sim/model/lighting/courtesy/factor</input>
+        <output>/sim/model/c172p/lighting/courtesy-proc</output>
+    </filter>
+    <filter>
+        <type>gain</type>
+        <gain>.35</gain>
+        <input>
+            <expression>
+                <product>
+                    <table>
+                        <property>/sim/model/material/instruments/factor</property>
+                        <entry><ind>0.0</ind><dep>0.0</dep></entry>
+                        <entry><ind>0.7</ind><dep>0.1</dep></entry>
+                        <entry><ind>1.0</ind><dep>1.0</dep></entry>
+                    </table>
+                    <difference>
+                        <value>1.6</value>
+                        <property>/rendering/scene/diffuse/red</property>
+                    </difference>
+                </product>
+            </expression>
+            <min>0.0</min>
+            <max>1.0</max>
+        </input>
+        <output>/sim/model/c172p/lighting/instrument-proc</output>
+    </filter>
+
+    <filter>
+        <name>Interior Glass Glare Factor Dome</name>
+        <type>gain</type>
+        <gain>1</gain>
+        <input>
+            <expression>
+                <sum>
+                    <table>
+                        <property>/sim/model/lightmap/dome/factor</property>
+                        <entry><ind>0.0</ind><dep>0.1</dep></entry>
+                        <entry><ind>0.3</ind><dep>0.2</dep></entry>
+                        <entry><ind>1.0</ind><dep>0.9</dep></entry>
+                    </table>
+                    <property>/rendering/scene/diffuse/red</property>
+                </sum>
+            </expression>
+            <min>0.1</min>
+            <max>0.9</max>
+        </input>
+        <output>/sim/model/lightmap/dome/factor-glassglare</output>
+    </filter>
+    <filter>
+        <name>Interior Glass Glare Factor Post</name>
+        <type>gain</type>
+        <gain>1</gain>
+        <input>
+            <expression>
+                <sum>
+                    <table>
+                        <property>/controls/lighting/instruments-norm</property>
+                        <entry><ind>0.0</ind><dep>0.0</dep></entry>
+                        <entry><ind>0.7</ind><dep>0.05</dep></entry>
+                        <entry><ind>1.0</ind><dep>0.1</dep></entry>
+                    </table>
+                    <property>/rendering/scene/diffuse/red</property>
+                </sum>
+            </expression>
+            <min>0.0</min>
+            <max>0.1</max>
+        </input>
+        <output>/sim/model/lightmap/post/factor-glassglare</output>
+    </filter>
+    <filter>
+        <name>Interior Glass Glare Factor Flood</name>
+        <type>gain</type>
+        <gain>1</gain>
+        <input>
+            <expression>
+                <sum>
+                    <table>
+                        <property>/controls/lighting/instruments-norm</property>
+                        <entry><ind>0.0</ind><dep>0.0</dep></entry>
+                        <entry><ind>0.7</ind><dep>0.025</dep></entry>
+                        <entry><ind>1.0</ind><dep>0.05</dep></entry>
+                    </table>
+                    <property>/rendering/scene/diffuse/red</property>
+                </sum>
+            </expression>
+            <min>0.0</min>
+            <max>0.3</max>
+        </input>
+        <output>/sim/model/lightmap/flood/factor-glassglare</output>
+    </filter>
+    <filter>
+        <name>Interior Glass Glare Factor Combined</name>
+        <type>gain</type>
+        <gain>1</gain>
+        <input>
+            <expression>
+                <sum>
+                   <property>/sim/model/lightmap/dome/factor-glassglare</property>
+                   <property>/sim/model/lightmap/post/factor-glassglare</property>
+                   <property>/sim/model/lightmap/flood/factor-glassglare</property>
+                </sum>
+            </expression>
+            <min>0.1</min>
+            <max>0.9</max>
+        </input>
+        <output>/sim/model/lightmap/combined/factor-glassglare</output>
+    </filter>
+
+    <logic>
+        <name>Amphibious Panel Lights On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>/systems/electrical/outputs/gear-select</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/gear-select</property>
+                    <value>20.0</value>
+                </greater-than>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/gear-select</property>
+        </output>
+    </logic>
+
+    <logic>
+        <name>Amphibious Advisory Lights On/Off</name>
+        <input>
+            <and>
+                <less-than>
+                    <property>systems/electrical/outputs/gear-advisory</property>
+                    <value>31.5</value>
+                </less-than>
+                <greater-than>
+                    <property>/systems/electrical/outputs/gear-advisory</property>
+                    <value>20.0</value>
+                </greater-than>
+            </and>
+        </input>
+        <output>
+            <property>/sim/model/c172p/lighting/gear-advisory</property>
+        </output>
+    </logic>
+
+    <filter>
+        <name>Gear Glare Dim</name>
+        <type>gain</type>
+        <gain>1</gain>
+        <input>
+            <condition>
+                <and>
+                    <property>/controls/lighting/gearled</property>
+                    <property>/sim/model/c172p/lighting/gear-advisory</property>
+                </and>
+            </condition>
+            <value>.35</value>
+        </input>
+        <input>
+            <condition>
+                <and>
+                    <equals>
+                        <property>/controls/lighting/gearled</property>
+                        <value>0</value>
+                    </equals>
+                    <property>/sim/model/c172p/lighting/gear-select</property>
+                </and>
+            </condition>
+            <value>.175</value>
+        </input>
+        <output>
+            <property>/controls/lighting/factor-ledglare</property>
+        </output>
+    </filter>
+    <filter>
+        <name>Gear Led Dim</name>
+        <type>gain</type>
+        <gain>1</gain>
+        <input>
+            <condition>
+                <and>
+                    <property>/controls/lighting/gearled</property>
+                    <property>/sim/model/c172p/lighting/gear-select</property>
+                </and>
+            </condition>
+            <value>1</value>
+        </input>
+        <input>
+            <condition>
+                <and>
+                    <equals>
+                        <property>/controls/lighting/gearled</property>
+                        <value>0</value>
+                    </equals>
+                    <property>/sim/model/c172p/lighting/gear-select</property>
+                </and>
+            </condition>
+            <value>.35</value>
+        </input>
+        <output>
+            <property>/controls/lighting/factor-led</property>
+        </output>
+    </filter>
+
+</PropertyList>

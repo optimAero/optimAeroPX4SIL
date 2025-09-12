@@ -1,0 +1,926 @@
+<PropertyList>
+
+    <name>Securing Aircraft</name>
+
+    <description>
+After landing you need to secure the aircraft.
+
+This tutorial will take you through that process.
+
+    </description>
+	
+    <nasal>
+        <script>
+            c172p.repair_damage();
+            electrical.reset_battery_and_circuit_breakers();
+            c172p.click("engine-repair", 6.0);
+            c172p.dialog_battery_reload();
+            setprop("/engines/active-engine/oil-level", sim/model/c172p/engine_flag_0 ? 7 : 8);
+            setprop("/engines/active-engine/carb_ice", 0.0);
+            setprop("/fdm/jsbsim/engine/damage-level", 0.0);
+        </script>
+    </nasal>
+
+    <presets>
+        <airport-id>PHTO</airport-id>
+        <on-ground>1</on-ground>
+        <altitude-ft>-9999</altitude-ft>
+        <latitude-deg>19.71731272</latitude-deg>
+        <longitude-deg>-155.0597483</longitude-deg>
+        <heading-deg>125</heading-deg>
+        <airspeed-kt>0</airspeed-kt>
+        <glideslope-deg>0</glideslope-deg>
+        <offset-azimuth-deg>0</offset-azimuth-deg>
+        <offset-distance-nm>0</offset-distance-nm>
+        <airport-requested>true</airport-requested>
+        <runway-requested>false</runway-requested>
+        <parking-requested>false</parking-requested>
+    </presets>
+
+    <step>
+        <set>
+            <property>/instrumentation/adf/frequencies/selected-khz</property>
+            <value>332</value> <!-- PAHOA NDB -->
+        </set>
+        <set>
+            <property>/environment/weather-scenario</property>
+            <value>Fair weather</value>
+        </set>
+        <set>
+            <property>instrumentation/altimeter/setting-inhg</property>
+            <value>29.95</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/brake-parking</property>
+            <value>1</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-bat</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-alt</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-avionics</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/flight/flaps</property>
+            <value>0.0</value>
+        </set>
+        <set>
+            <property>/controls/flight/elevator-trim</property>
+            <value>-0.17</value>
+        </set>
+        <set>
+            <property>/controls/switches/magnetos</property>
+            <value>3</value>
+        </set>
+        <set>
+            <property>/controls/engines/current-engine/throttle</property>
+            <value>0.2</value>
+        </set>
+        <set>
+            <property>/controls/engines/engine/primer</property>
+            <value>4</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/chock</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/tiedownL-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/tiedownR-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/tiedownT-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/pitot-cover-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/cockpit/control-lock-placed</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/cockpit/control-lock-visible</property>
+            <value>false</value>
+        </set>
+        <nasal>
+            <script>
+                setprop("/controls/engines/current-engine/mixture", 1.0);
+                setprop("/controls/switches/starter", 1);
+            </script>
+        </nasal>
+        <message></message>
+        <view>
+            <heading-offset-deg>0.0</heading-offset-deg>
+            <pitch-offset-deg>-12</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.21</x-offset-m>
+            <y-offset-m>0.19</y-offset-m>
+            <field-of-view>73.6</field-of-view>
+        </view>
+    </step>
+
+    <step>
+        <message>We're almost done. But before we're finished you need to shut down the engine and secure the aircraft.</message>
+        <set>
+            <property>/sim/model/c172p/brake-parking</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-alt</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-bat</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/switches/master-avionics</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/lighting/beacon</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/lighting/nav-lights</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/lighting/strobe</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/lighting/taxi-light</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/lighting/landing-lights</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/controls/anti-ice/pitot-heat</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/controls/flight/flaps</property>
+            <value>0.0</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/engine_flag_0</property>
+            <value>1</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/engine_flag_1</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>/controls/engines/active-engine</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/bushkit_flag_0</property>
+            <value>1</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/bushkit_flag_1</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/bushkit_flag_2</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/bushkit_flag_3</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>sim/model/c172p/bushkit_flag_4</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>fdm/jsbsim/bushkit</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>/engines/active-engine/running</property>
+            <value>true</value>
+        </set>
+        <set>
+            <property>/controls/engines/current-engine/throttle</property>
+            <value>0.2</value>
+        </set>
+        <set>
+            <property>/controls/engines/current-engine/mixture</property>
+            <value>1</value>
+        </set>
+        <set>
+            <property>/sim/model/door-positions/baggageDoor/position-norm</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>/sim/model/door-positions/leftDoor/position-norm</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>/sim/model/door-positions/rightDoor/position-norm</property>
+            <value>0</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/chock</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/cowl-plugs-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/tiedownL-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/tiedownR-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/tiedownT-visible</property>
+            <value>false</value>
+        </set>
+        <set>
+            <property>/sim/model/c172p/securing/pitot-cover-visible</property>
+            <value>false</value>
+        </set>
+        <wait>10</wait>
+
+    </step>
+
+    <step>
+        <set>
+            <property>/controls/switches/starter</property>
+            <value>false</value>
+        </set>
+        <message>Set the parking brake.</message>
+        <view>
+            <heading-offset-deg>1.0</heading-offset-deg>
+            <pitch-offset-deg>-38.8</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>50.1</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>0.0000</x-m>
+            <y-m>-0.2033</y-m>
+            <z-m>-0.0471</z-m>
+            <scale>1.5950</scale>
+        </marker>
+        <error>
+            <message>You need to set the parking brake or the aircraft may roll away!</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/brake-parking</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/brake-parking</property>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Set the throttle below 1000 RPM.</message>
+        <view>
+            <heading-offset-deg>347.6</heading-offset-deg>
+            <pitch-offset-deg>-34.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.3</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>62.3</field-of-view>
+        </view>
+        <marker>
+            <x-m>-0.3342</x-m>
+            <y-m>-0.0027</y-m>
+            <z-m>-0.2289</z-m>
+            <scale>3.1156</scale>
+        </marker>
+        <error>
+            <message>The engine speed is too high. Reduce the throttle!</message>
+            <condition>
+                <greater-than-equals>
+                    <property>/engines/active-engine/rpm</property>
+                    <value>1000</value>
+                </greater-than-equals>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <less-than>
+                    <property>/engines/active-engine/rpm</property>
+                    <value>1000</value>
+                </less-than>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Switch off the avionics.</message>
+        <view>
+            <heading-offset-deg>4.9</heading-offset-deg>
+            <pitch-offset-deg>-28.1</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.3</x-offset-m>
+            <y-offset-m>-0.1</y-offset-m>
+            <z-offset-m>0.2</z-offset-m>
+            <field-of-view>48.4</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3600</x-m>
+            <y-m>-0.3255</y-m>
+            <z-m>-0.2354</z-m>
+            <scale>1.1711</scale>
+        </marker>
+        <error>
+            <message>Now switch off the avionics!</message>
+            <condition>
+                <property>/controls/switches/master-avionics</property>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <not>
+                    <property>/controls/switches/master-avionics</property>
+                </not>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Set the mixture to CUTOFF (pulled full out)</message>
+        <view>
+            <heading-offset-deg>330.3</heading-offset-deg>
+            <pitch-offset-deg>-37.8</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.0</x-offset-m>
+            <y-offset-m>-0.1</y-offset-m>
+            <z-offset-m>0.0</z-offset-m>
+            <field-of-view>77.0</field-of-view>
+        </view>
+        <marker>
+            <x-m>-0.3000</x-m>
+            <y-m>0.0800</y-m>
+            <z-m>-0.2050</z-m>
+            <scale>3.0000</scale>
+        </marker>
+        <error>
+            <message>To stop the engine, you have to pull the mixture lever full out.</message>
+            <condition>
+                <greater-than>
+                    <property>/controls/engines/current-engine/mixture</property>
+                    <value>0</value>
+                </greater-than>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <equals>
+                    <property>/controls/engines/current-engine/mixture</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Now you can switch off the ignition.</message>
+        <view>
+            <heading-offset-deg>8.1</heading-offset-deg>
+            <pitch-offset-deg>-28.8</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.3</x-offset-m>
+            <y-offset-m>-0.1</y-offset-m>
+            <z-offset-m>0.2</z-offset-m>
+            <field-of-view>49.6</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3500</x-m>
+            <y-m>-0.3600</y-m>
+            <z-m>-0.2436</z-m>
+            <scale>2.0000</scale>
+        </marker>
+        <error>
+            <message>Switch off the ignition.</message>
+            <condition>
+                <greater-than>
+                    <property>/controls/switches/magnetos</property>
+                    <value>0</value>
+                </greater-than>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <equals>
+                    <property>/controls/switches/magnetos</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Switch off all lights and the pitot heat.</message>
+        <view>
+            <heading-offset-deg>358.1</heading-offset-deg>
+            <pitch-offset-deg>-26.9</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>-0.1</y-offset-m>
+            <z-offset-m>0.0</z-offset-m>
+            <field-of-view>61.0</field-of-view>
+        </view>
+        <marker>
+            <x-m>-0.2149</x-m>
+            <y-m>0.0777</y-m>
+            <z-m>-0.2066</z-m>
+            <scale>1.1322</scale>
+        </marker>
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>true</value>
+        </set>
+        <error>
+            <message>Switch off the Beacon light!</message>
+            <condition>
+                <property>/controls/lighting/beacon</property>
+            </condition>
+        </error>
+        <error>
+            <message>Switch off the Landing light!</message>
+            <condition>
+                <property>/controls/lighting/landing-lights</property>
+            </condition>
+        </error>
+        <error>
+            <message>Switch off the Nav lights!</message>
+            <condition>
+                <property>/controls/lighting/nav-lights</property>
+            </condition>
+        </error>
+        <error>
+            <message>Switch off the Strobe lights!</message>
+            <condition>
+                <property>/controls/lighting/strobe</property>
+            </condition>
+        </error>
+        <error>
+            <message>Switch off the Taxi light!</message>
+            <condition>
+                <property>/controls/lighting/taxi-light</property>
+            </condition>
+        </error>
+        <error>
+            <message>Switch off the Pitot Heat!</message>
+            <condition>
+                <property>/controls/anti-ice/pitot-heat</property>
+            </condition>
+        </error>
+        <exit>
+            <and>
+                <not>
+                    <property>/controls/lighting/beacon</property>
+                </not>
+                <not>
+                    <property>/controls/lighting/landing-lights</property>
+                </not>
+                <not>
+                    <property>/controls/lighting/nav-lights</property>
+                </not>
+                <not>
+                    <property>/controls/lighting/strobe</property>
+                </not>
+                <not>
+                    <property>/controls/lighting/taxi-light</property>
+                </not>
+                <not>
+                    <property>/controls/anti-ice/pitot-heat</property>
+                </not>
+            </and>
+        </exit>
+    </step>
+
+    <step>
+        <message>Switch off the alternator.</message>
+        <view>
+            <heading-offset-deg>12.2</heading-offset-deg>
+            <pitch-offset-deg>-35.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.3</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>35.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3375</x-m>
+            <y-m>-0.4142</y-m>
+            <z-m>-0.1887</z-m>
+            <scale>1.6333</scale>
+        </marker>
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>true</value>
+        </set>
+        <error>
+            <message>Click the alternator master to switch it off.</message>
+            <condition>
+                    <property>/controls/switches/master-alt</property>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <not>
+                    <property>/controls/switches/master-alt</property>
+                </not>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Switch off the battery master, too.</message>
+        <view>
+            <heading-offset-deg>12.2</heading-offset-deg>
+            <pitch-offset-deg>-35.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.2</x-offset-m>
+            <y-offset-m>0.3</y-offset-m>
+            <z-offset-m>0.4</z-offset-m>
+            <field-of-view>35.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.3000</x-m>
+            <y-m>-0.3858</y-m>
+            <z-m>-0.1619</z-m>
+            <scale>1.9333</scale>
+        </marker>
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>true</value>
+        </set>
+        <error>
+            <message>Click the battery master to switch it off.</message>
+            <condition>
+                <property>/controls/switches/master-bat</property>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <not>
+                    <property>/controls/switches/master-bat</property>
+                </not>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <set>
+            <property>/sim/model/hide-yoke</property>
+            <value>false</value>
+        </set>
+        <message>Place the control lock.</message>
+        <view>
+            <heading-offset-deg>53.4</heading-offset-deg>
+            <pitch-offset-deg>-42.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>0.0</x-offset-m>
+            <y-offset-m>0.1</y-offset-m>
+            <z-offset-m>0.0</z-offset-m>
+            <field-of-view>68.4</field-of-view>
+        </view>
+        <marker>
+            <x-m>-0.2450</x-m>
+            <y-m>-0.4483</y-m>
+            <z-m>-0.4750</z-m>
+            <scale>4.0000</scale>
+        </marker>
+        <error>
+            <message>Finally, you have to place the control lock!</message>
+            <condition>
+                <not>
+                    <property>/sim/model/c172p/cockpit/control-lock-visible</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <and>
+                    <property>/sim/model/c172p/cockpit/control-lock-placed</property>
+                    <property>/sim/model/c172p/cockpit/control-lock-visible</property>
+                </and>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>In the cockpit we're finished. Now open the door.</message>
+        <view>
+            <heading-offset-deg>59.4</heading-offset-deg>
+            <pitch-offset-deg>-49.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-0.1</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>0.2</z-offset-m>
+            <field-of-view>67.4</field-of-view>
+        </view>
+        <marker>
+            <x-m>-0.0201</x-m>
+            <y-m>-0.4496</y-m>
+            <z-m>-0.2327</z-m>
+            <scale>2.3427</scale>
+        </marker>
+        <error>
+            <message>Open the door!</message>
+            <condition>
+                <less-than>
+                    <property>/sim/model/door-positions/leftDoor/position-norm</property>
+                    <value>0.8</value>
+                </less-than>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <greater-than>
+                    <property>/sim/model/door-positions/leftDoor/position-norm</property>
+                    <value>0.8</value>
+                </greater-than>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Close the door.</message>
+        <view>
+            <heading-offset-deg>328.8</heading-offset-deg>
+            <pitch-offset-deg>-20.9</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-1.3</x-offset-m>
+            <y-offset-m>0.2</y-offset-m>
+            <z-offset-m>1.1</z-offset-m>
+            <field-of-view>85.0</field-of-view>
+        </view>
+        <marker>
+            <x-m>0.12517</x-m>
+            <y-m>-0.82538</y-m>
+            <z-m>-0.10231</z-m>
+            <scale>4.3427</scale>
+        </marker>
+        <error>
+            <message>Close the door!</message>
+            <condition>
+                <greater-than>
+                    <property>/sim/model/door-positions/leftDoor/position-norm</property>
+                    <value>0.4</value>
+                </greater-than>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <less-than>
+                    <property>/sim/model/door-positions/leftDoor/position-norm</property>
+                    <value>0.4</value>
+                </less-than>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Put the pitot tube cover.</message>
+        <view>
+            <heading-offset-deg>140.0</heading-offset-deg>
+            <pitch-offset-deg>3.9</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-1.0</x-offset-m>
+            <y-offset-m>0.4</y-offset-m>
+            <z-offset-m>-1.0</z-offset-m>
+            <field-of-view>85.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.2000</x-m>
+            <y-m>-1.5190</y-m>
+            <z-m>0.3900</z-m>
+            <scale>3.1983</scale>
+        </marker>
+        <error>
+            <message>To protect the Pitot tube, you have to cover it!</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/securing/pitot-cover-visible</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/securing/pitot-cover-visible</property>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Attach the left tiedown.</message>
+        <view>
+            <heading-offset-deg>140.0</heading-offset-deg>
+            <pitch-offset-deg>-13.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-1.7</x-offset-m>
+            <y-offset-m>0.4</y-offset-m>
+            <z-offset-m>-0.8</z-offset-m>
+            <field-of-view>85.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-0.0066</x-m>
+            <y-m>-2.1793</y-m>
+            <z-m>0.3661</z-m>
+            <scale>2.5537</scale>
+        </marker>
+        <error>
+            <message>You have to secure the aircraft with the tiedowns!</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/securing/tiedownL-visible</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/securing/tiedownL-visible</property>
+            </condition>
+        </exit>
+    </step>
+    
+    <step>
+        <message>Attach the rear tiedown.</message>
+        <view>
+            <heading-offset-deg>323.3</heading-offset-deg>
+            <pitch-offset-deg>0.5</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>-1.0</x-offset-m>
+            <y-offset-m>-0.6</y-offset-m>
+            <z-offset-m>6.0</z-offset-m>
+            <field-of-view>53.5</field-of-view>
+        </view>
+        <marker>
+            <x-m>4.9132</x-m>
+            <y-m>-0.1835</y-m>
+            <z-m>-0.7075</z-m>
+            <scale>3.0000</scale>
+        </marker>
+        <error>
+            <message>You have to secure the aircraft with the tiedowns!</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/securing/tiedownT-visible</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/securing/tiedownT-visible</property>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Attach the right tiedown.</message>
+        <view>
+            <heading-offset-deg>220.0</heading-offset-deg>
+            <pitch-offset-deg>-13.2</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>1.7</x-offset-m>
+            <y-offset-m>0.4</y-offset-m>
+            <z-offset-m>-0.8</z-offset-m>
+            <field-of-view>85.0</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>0.0041</x-m>
+            <y-m>2.1942</y-m>
+            <z-m>0.3686</z-m>
+            <scale>3.0000</scale>
+        </marker>
+        <error>
+            <message>You have to secure the aircraft with the tiedowns!</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/securing/tiedownR-visible</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/securing/tiedownR-visible</property>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Place the cowl plugs.</message>
+        <view>
+            <heading-offset-deg>220.0</heading-offset-deg>
+            <pitch-offset-deg>-21.5</pitch-offset-deg>
+            <roll-offset-deg>0.1</roll-offset-deg>
+            <x-offset-m>-1.3</x-offset-m>
+            <y-offset-m>0.3</y-offset-m>
+            <z-offset-m>-3.0</z-offset-m>
+            <field-of-view>77.0</field-of-view>
+        </view>
+        <marker>
+            <x-m>-1.7</x-m>
+            <y-m>0.0</y-m>
+            <z-m>-0.0519</z-m>
+            <scale>30.0</scale>
+        </marker>
+        <error>
+            <message>You must place the cowl plugs.</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/securing/cowl-plugs-visible</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/securing/cowl-plugs-visible</property>
+            </condition>
+        </exit>
+    </step>
+
+    <step>
+        <message>Place the wheel chocks.</message>
+        <view>
+            <heading-offset-deg>96.1</heading-offset-deg>
+            <pitch-offset-deg>-17.6</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>1.7</x-offset-m>
+            <y-offset-m>-0.1</y-offset-m>
+            <z-offset-m>-1.0</z-offset-m>
+            <field-of-view>79.1</field-of-view>
+        </view>
+
+        <marker>
+            <x-m>-1.0760</x-m>
+            <y-m>0.0281</y-m>
+            <z-m>-1.0620</z-m>
+            <scale>21.0000</scale>
+        </marker>
+        <error>
+            <message>You must place the wheel chocks now!</message>
+            <condition>
+                <not>
+                    <property>sim/model/c172p/securing/chock</property>
+                </not>
+            </condition>
+        </error>
+        <exit>
+            <condition>
+                <property>sim/model/c172p/securing/chock</property>
+            </condition>
+        </exit>
+    </step>
+    
+    <step>
+        <set>
+            <property>/nasal/tutorial/loaded</property>
+            <value>false</value>
+        </set>
+        <message>Congratulations! Your aircraft is secured.</message>
+        <view>
+            <heading-offset-deg>42.0</heading-offset-deg>
+            <pitch-offset-deg>-4.7</pitch-offset-deg>
+            <roll-offset-deg>0.0</roll-offset-deg>
+            <x-offset-m>18.7</x-offset-m>
+            <y-offset-m>1.8</y-offset-m>
+            <z-offset-m>16.0</z-offset-m>
+            <field-of-view>48.4</field-of-view>
+        </view>
+    </step>
+
+</PropertyList>

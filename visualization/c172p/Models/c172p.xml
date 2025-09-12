@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <path>c172p.ac</path>
+
+    <offsets>
+        <pitch-deg>-3.0</pitch-deg>
+        <z-m>-0.065</z-m>
+    </offsets>
+
+
+    
+    <params>
+        <engine>
+            <rpm>engines/engine[2]/rpm</rpm>
+        </engine>
+    </params>
+
+    <!-- exterior effects -->
+    <!-- Normal shader effect. Separate effects required for each normal map and dirt texture -->
+    <effect>
+        <inherits-from>Effects/exterior/dirt-fuselage</inherits-from>
+        <object-name>Spinner</object-name>
+        <object-name>Propeller</object-name>
+        <object-name>PropellerCowlPlugs</object-name>
+        
+    </effect>
+
+    <effect>
+        <inherits-from>Effects/model-transparent</inherits-from>
+        <object-name>Propeller.Fast</object-name>
+    </effect>
+
+
+    <!-- Props Not Damaged -->
+    <animation>
+        <type>select</type>
+        <object-name>Propeller</object-name>
+        <condition>
+             <and>
+                <less-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>500</value>
+                </less-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
+    <animation>
+        <type>select</type>
+        <object-name>Spinner</object-name>
+        <condition>
+            <not>
+                <property alias="/params/engine/crashed"/>
+            </not>
+        </condition>
+    </animation>
+    <animation>
+        <type>select</type>
+        <object-name>Propeller.Fast</object-name>
+        <nopreview/>
+        <condition>
+            <and>
+                <greater-than>
+                    <property alias="/params/engine/rpm"/>
+                    <value>400</value>
+                </greater-than>
+                <not>
+                    <property alias="/params/securing/cowl-plugs"/>
+                </not>
+                <not>
+                    <property alias="/params/engine/crashed"/>
+                </not>
+            </and>
+        </condition>
+    </animation>
+    <animation>
+        <type>blend</type>
+        <object-name>Propeller.Fast</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>0.0004</factor>
+        <max>0.5</max>
+        <min>0.0</min>
+    </animation>
+    <animation>
+        <type>spin</type>
+        <object-name>Propeller</object-name>
+        <object-name>Spinner</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>-1</factor>
+        <center>
+            <x-m>-1.96139</x-m>
+            <y-m>0.00127</y-m>
+            <z-m>-0.0519</z-m>
+        </center>
+        <axis>
+            <x>1.0</x>
+            <y>0.0</y>
+            <z>0.0</z>
+        </axis>
+    </animation>
+    <animation>
+        <type>spin</type>
+        <object-name>Propeller.Fast</object-name>
+        <object-name>Spinner</object-name>
+        <property alias="/params/engine/rpm"/>
+        <factor>-0.001</factor>
+        <center>
+            <x-m>-1.96139</x-m>
+            <y-m>0.00127</y-m>
+            <z-m>-0.0519</z-m>
+        </center>
+        <axis>
+            <x>1.0</x>
+            <y>0.0</y>
+            <z>0.0</z>
+        </axis>
+    </animation>
+
+
+</PropertyList>

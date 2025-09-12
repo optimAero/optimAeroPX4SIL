@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PropertyList>
+
+    <!-- ============================================================== -->
+    <!-- Switches                                                       -->
+    <!-- ============================================================== -->
+
+    <!-- Parking brake -->
+    <signal>
+        <type>float</type>
+        <property type="string">/sim/model/c172p/brake-parking</property>
+    </signal>
+
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/engines/engine/primer-lever</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/switches/starter</property>
+    </signal>
+    <signal>
+        <type>int8</type>
+        <property type="string">/controls/switches/magnetos</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/switches/master-bat</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/switches/master-alt</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/switches/dome-white</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/switches/dome-red</property>
+    </signal>
+    <!-- Note: /controls/switches/master-avionics is set in
+               Aircraft/Generic/flightrecorder/components/controls.xml.
+    -->
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/anti-ice/pitot-heat</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/environment/aircraft-effects/cabin-heat-set</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/environment/aircraft-effects/cabin-air-set</property>
+    </signal>
+
+    <!-- Fuel tank type -->
+    <signal>
+        <type>int</type>
+        <property type="string">/fdm/jsbsim/fuel/tank</property>
+    </signal>
+    <!-- Fuel selector -->
+    <signal>
+        <type>bool</type>
+        <property type="string">/consumables/fuel/tank[0]/selected</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/consumables/fuel/tank[1]/selected</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/consumables/fuel/tank[2]/selected</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/consumables/fuel/tank[3]/selected</property>
+    </signal>
+
+    <!-- Passengers and baggage -->
+    <signal>
+        <type>float</type>
+        <property type="string">/fdm/jsbsim/inertia/pointmass-weight-lbs[0]</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/fdm/jsbsim/inertia/pointmass-weight-lbs[1]</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/fdm/jsbsim/inertia/pointmass-weight-lbs[2]</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/fdm/jsbsim/inertia/pointmass-weight-lbs[3]</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/fdm/jsbsim/inertia/pointmass-weight-lbs[4]</property>
+    </signal>
+
+    <!-- Lights -->
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/lighting/nav-lights</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/lighting/beacon</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/lighting/strobe</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/lighting/landing-lights</property>
+    </signal>
+    <signal>
+        <type>bool</type>
+        <property type="string">/controls/lighting/taxi-light</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/controls/lighting/instruments-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/controls/lighting/radio-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/controls/lighting/dome-white-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/controls/lighting/dome-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/controls/lighting/gps-norm</property>
+    </signal>
+
+    <!-- ============================================================== -->
+    <!-- Doors and Windows                                              -->
+    <!-- ============================================================== -->
+
+    <signal>
+        <type>float</type>
+        <property type="string">/sim/model/door-positions/rightDoor/position-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/sim/model/door-positions/leftDoor/position-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/sim/model/door-positions/baggageDoor/position-norm</property>
+    </signal>
+
+    <signal>
+        <type>float</type>
+        <property type="string">/sim/model/door-positions/leftWindow/position-norm</property>
+    </signal>
+    <signal>
+        <type>float</type>
+        <property type="string">/sim/model/door-positions/rightWindow/position-norm</property>
+    </signal>
+
+</PropertyList>

@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <name>c172p-right-fuel-dialog</name>
+    <layout>vbox</layout>
+    <resizable>false</resizable>
+    <modal>false</modal>
+    <draggable>true</draggable>
+
+    <nasal>
+        <open>
+            # Fuel tanks being used
+            var integral_tanks = getprop("/fdm/jsbsim/fuel/tank");
+            if (integral_tanks) {
+                setprop("/consumables/fuel/right/level-norm", getprop("/consumables/fuel/tank[3]/level-norm"));
+                setprop("/consumables/fuel/right/level-gal_us", getprop("/consumables/fuel/tank[3]/level-gal_us"));
+                setprop("/consumables/fuel/right/level-lbs", getprop("/consumables/fuel/tank[3]/level-lbs"));
+                setprop("/consumables/fuel/right/level-litres", getprop("/consumables/fuel/tank[3]/level-litres"));
+            } else {
+                setprop("/consumables/fuel/right/level-norm", getprop("/consumables/fuel/tank[1]/level-norm"));
+                setprop("/consumables/fuel/right/level-gal_us", getprop("/consumables/fuel/tank[1]/level-gal_us"));
+                setprop("/consumables/fuel/right/level-lbs", getprop("/consumables/fuel/tank[1]/level-lbs"));
+                setprop("/consumables/fuel/right/level-litres", getprop("/consumables/fuel/tank[1]/level-litres"));
+            }
+        </open>
+    </nasal>
+
+    <group>
+        <layout>hbox</layout>
+
+        <empty><stretch>true</stretch></empty>
+        <text>
+            <label>Right Fuel Tank</label>
+        </text>
+        <empty><stretch>true</stretch></empty>
+
+        <button>
+            <legend/>
+            <key>Esc</key>
+            <pref-width>16</pref-width>
+            <pref-height>16</pref-height>
+           <binding>
+                <command>nasal</command>
+                <script>
+                    setprop("sim/model/open-sfuel-cap", 0);
+                </script>
+            </binding>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+    </group>
+
+    <hrule/>
+
+    <group>
+        <layout>vbox</layout>
+        <padding>6</padding>
+        <group>
+            <layout>hbox</layout>
+            <text>
+                <label>Right Fuel Tank:</label>
+                <halign>left</halign>
+            </text>
+            <slider>
+                <name>c172p-right-fuel-slider</name>
+                <min>0</min>
+                <max>1</max>
+                <live>true</live>
+                <enable>
+                    <and>
+                        <or>
+                            <property>/fdm/jsbsim/gear/unit[1]/WOW</property>
+                            <property>/fdm/jsbsim/gear/unit[19]/WOW</property>
+                            <property>/fdm/jsbsim/gear/unit[23]/WOW</property>
+                            <property>/fdm/jsbsim/hydro/active-norm</property>
+                        </or>
+                        <not>
+                            <property>/engines/active-engine/running</property>
+                        </not>
+                    </and>
+                </enable>
+                                <property>/consumables/fuel/right/level-norm</property>
+                <binding>
+                    <command>dialog-apply</command>
+                </binding>
+                <binding>
+                    <command>nasal</command>
+                    <script>
+                        # Fuel tanks being used
+                        var integral_tanks = getprop("/fdm/jsbsim/fuel/tank");
+                        if (integral_tanks) {
+                            setprop("/consumables/fuel/tank[3]/level-norm", getprop("/consumables/fuel/right/level-norm"));
+                            setprop("/consumables/fuel/right/level-gal_us", getprop("/consumables/fuel/tank[3]/level-gal_us"));
+                            setprop("/consumables/fuel/right/level-lbs", getprop("/consumables/fuel/tank[3]/level-lbs"));
+                            setprop("/consumables/fuel/right/level-litres", getprop("/consumables/fuel/tank[3]/level-litres"));
+                        } else {
+                            setprop("/consumables/fuel/tank[1]/level-norm", getprop("/consumables/fuel/right/level-norm"));
+                            setprop("/consumables/fuel/right/level-gal_us", getprop("/consumables/fuel/tank[1]/level-gal_us"));
+                            setprop("/consumables/fuel/right/level-lbs", getprop("/consumables/fuel/tank[1]/level-lbs"));
+                            setprop("/consumables/fuel/right/level-litres", getprop("/consumables/fuel/tank[1]/level-litres"));
+                        }
+                    </script>
+                </binding>
+            </slider>
+            <group>
+                <layout>vbox</layout>
+                <padding>6</padding>
+                <group>
+                    <layout>hbox</layout>
+                    <padding>6</padding>
+                    <text>
+                        <label>1234</label>
+                        <halign>left</halign>
+                        <format>%.2f</format>
+                        <live>true</live>
+                        <property>/consumables/fuel/right/level-gal_us</property>
+                    </text>
+                    <text>
+                        <label>gallons</label>
+                        <halign>left</halign>
+                    </text>
+                </group>
+                <group>
+                    <layout>hbox</layout>
+                    <padding>6</padding>
+                    <text>
+                        <label>1234</label>
+                        <halign>left</halign>
+                        <format>%.1f</format>
+                        <live>true</live>
+                        <property>/consumables/fuel/right/level-lbs</property>
+                    </text>
+                    <text>
+                        <label>pounds</label>
+                        <halign>left</halign>
+                    </text>
+                </group>
+                <group>
+                    <layout>hbox</layout>
+                    <padding>6</padding>
+                    <text>
+                        <label>1234</label>
+                        <halign>left</halign>
+                        <format>%.2f</format>
+                        <live>true</live>
+                        <property>/consumables/fuel/right/level-litres</property>
+                    </text>
+                    <text>
+                        <label>litres</label>
+                        <halign>left</halign>
+                    </text>
+                </group>
+            </group>
+        </group>
+    </group>
+
+    <group>
+        <layout>table</layout>
+        <text>
+            <row>0</row>
+            <col>0</col>
+            <visible>
+                <and>
+                    <or>
+                        <property>/fdm/jsbsim/gear/unit[1]/WOW</property>
+                        <property>/fdm/jsbsim/gear/unit[19]/WOW</property>
+                        <property>/fdm/jsbsim/gear/unit[23]/WOW</property>
+                        <property>/fdm/jsbsim/hydro/active-norm</property>
+                    </or>
+                    <property>/engines/active-engine/running</property>
+                </and>
+            </visible>
+            <color>
+                <red>0.9</red>
+                <green>0.1</green>
+                <blue>0.1</blue>
+            </color>
+            <label>Slider disabled while engine is running!</label>
+        </text>
+        <text>
+            <row>0</row>
+            <col>0</col>
+            <visible>
+                <not>
+                    <or>
+                        <property>/fdm/jsbsim/gear/unit[1]/WOW</property>
+                        <property>/fdm/jsbsim/gear/unit[19]/WOW</property>
+                        <property>/fdm/jsbsim/gear/unit[23]/WOW</property>
+                        <property>/fdm/jsbsim/hydro/active-norm</property>
+                    </or>
+                </not>
+            </visible>
+            <color>
+                <red>0.9</red>
+                <green>0.1</green>
+                <blue>0.1</blue>
+            </color>
+            <label>Slider disabled while in the air!</label>
+        </text>
+    </group>
+
+    <hrule/>
+
+    <group>
+        <layout>hbox</layout>
+        <default-padding>6</default-padding>
+        <empty><stretch>true</stretch></empty>
+        <button>
+            <legend>Close</legend>
+            <equal>true</equal>
+            <key>Esc</key>
+            <default>true</default>
+           <binding>
+                <command>nasal</command>
+                <script>
+                    setprop("sim/model/open-sfuel-cap", 0);
+                </script>
+            </binding>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+    </group>
+
+</PropertyList>
