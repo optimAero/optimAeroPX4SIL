@@ -43,10 +43,12 @@ arguments
     opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
     opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
+    opts.flightGearFreq_Hz    (1,1) double  = 0.5               % Frequency of the TCP send block is sending data to flightGear
 end
 % Note: In future versions these will be arguments
 vehicleParams.type                   = opts.vehicleType;
 vehicleParams.controllerType         = opts.controllerType;
+visualizationParams.flightGearFreq_Hz      = opts.flightGearFreq_Hz;
 
 % check for required toolboxes, support packages, and MATLAB version
 % list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names
