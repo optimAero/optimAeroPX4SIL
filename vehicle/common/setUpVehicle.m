@@ -23,7 +23,7 @@ switch lower(vehicleParams.type)
         vehicleParams.SRef_m2 = 0.5;
         aeroDataHex
         % set initial location to Juancho E. Yrausquin Airport, helipad 
-        referenceAltitude_m = 125 * ft2m;
+        referenceAltitude_m = 116 * ft2m;
         referenceLatitude_deg = 17.64450;
         referenceLongitude_deg = -63.21988;
     otherwise
