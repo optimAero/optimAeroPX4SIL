@@ -23,16 +23,22 @@
 % ======================================================================================================================
 % initVehicleSIL("launchFullSIL", false):   
 %   Run the intialization file only, this should be used before changing any models
+
 % initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL",true):
 %   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory
 %   and set IP address for PX4 connection.
+
 % initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL", false)
 %   Load sim as "hexarotor"
+
 % initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP",
 % "192.168.12.145", "PX4InWSL", true, "makeClean", true, "clearSLCache", false)
 %   Launch full sim for hexarotor in FlightGear using the PX4 repo in the Linux partition for faster compilation, 
-% make clean on PX4 compile and  NOT clearing the Simulink clache
+%   make clean on PX4 compile and  NOT clearing the Simulink clache
 
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear","PX4InWSL",
+% true,"failureType","motor1")
+%  Full launch of sim using hexarotor with the failure injection set to motor1.
 function initVehicleSIL(opts)
 
 arguments
