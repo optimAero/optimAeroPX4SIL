@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HarnessInformation>
   <Harness>
-    <P Name="Name">gravityTestHarness</P>
+    <P Name="Name">hexAeroCoefficientsModelTestHarness</P>
     <P Name="Description"/>
-    <P Name="CreatedBy">jerem</P>
-    <P Name="CreatedOn">Sat Oct 19 11:29:42 2024</P>
+    <P Name="CreatedBy">GTAR</P>
+    <P Name="CreatedOn">Fri Apr 04 23:31:13 2025</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 19 14:19:21 2025</P>
+    <P Name="LastSaved">Sun Oct 19 14:31:38 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
     <P Name="Directory"/>
-    <P Name="FileName">gravityTestHarness.slx</P>
+    <P Name="FileName">hexAeroCoefficientsModelTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
-    <P Name="HarnessUUID">d1c22a05-565d-4da6-80e3-ef818497d061</P>
-    <P Name="HarnessConnectionsMap">0,1,2|0|0,0,0,0||</P>
+    <P Name="HarnessUUID">ae9e4844-295e-4514-9c2c-c69115dff786</P>
+    <P Name="HarnessConnectionsMap">||0,1077805056,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -25,7 +25,7 @@
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
     <P Name="SynchronizationMode">2</P>
-    <P Name="IsImported">false</P>
+    <P Name="IsImported">true</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
     <P Name="SchedulerBlock">0</P>
@@ -33,14 +33,14 @@
     <P Name="SinkTypeString">Test Assessment</P>
     <P Name="CustomSourcePath"/>
     <P Name="CustomSinkPath"/>
-    <P Name="BlockSIDs">2|21|0|0|0|0|0</P>
+    <P Name="BlockSIDs">2|13|0|0|0|0|0</P>
     <P Name="OpenGraphs"/>
     <P Name="ExistingBuildFolder"/>
     <P Name="FunctionInterfaceName"/>
     <P Name="SysArchSUTModel"/>
   </Harness>
   <ModelMetadata>
-    <P Name="ModelUUID">04a18d9d-fc18-4ef9-8f7f-c67403e486ee</P>
-    <P Name="OwnerBDName">gravity</P>
+    <P Name="ModelUUID">7f0b5d21-670b-49e5-832d-19ca48ac6a4c</P>
+    <P Name="OwnerBDName">hexAeroCoefficientsModel</P>
   </ModelMetadata>
 </HarnessInformation>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HarnessInformation>
   <Harness>
-    <P Name="Name">gravityTestHarness</P>
+    <P Name="Name">hexAeroTestHarness</P>
     <P Name="Description"/>
     <P Name="CreatedBy">jerem</P>
-    <P Name="CreatedOn">Sat Oct 19 11:29:42 2024</P>
+    <P Name="CreatedOn">Mon May 05 15:40:36 2025</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 19 14:19:21 2025</P>
+    <P Name="LastSaved">Sun Oct 19 14:20:48 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
     <P Name="Directory"/>
-    <P Name="FileName">gravityTestHarness.slx</P>
+    <P Name="FileName">hexAeroTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
-    <P Name="HarnessUUID">d1c22a05-565d-4da6-80e3-ef818497d061</P>
-    <P Name="HarnessConnectionsMap">0,1,2|0|0,0,0,0||</P>
+    <P Name="HarnessUUID">fcdc7e02-e73e-45c1-a7a4-8afe01bd4809</P>
+    <P Name="HarnessConnectionsMap">||0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -25,7 +25,7 @@
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
     <P Name="SynchronizationMode">2</P>
-    <P Name="IsImported">false</P>
+    <P Name="IsImported">true</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
     <P Name="SchedulerBlock">0</P>
@@ -33,14 +33,14 @@
     <P Name="SinkTypeString">Test Assessment</P>
     <P Name="CustomSourcePath"/>
     <P Name="CustomSinkPath"/>
-    <P Name="BlockSIDs">2|21|0|0|0|0|0</P>
+    <P Name="BlockSIDs">2|33|0|0|0|0|0</P>
     <P Name="OpenGraphs"/>
     <P Name="ExistingBuildFolder"/>
     <P Name="FunctionInterfaceName"/>
     <P Name="SysArchSUTModel"/>
   </Harness>
   <ModelMetadata>
-    <P Name="ModelUUID">04a18d9d-fc18-4ef9-8f7f-c67403e486ee</P>
-    <P Name="OwnerBDName">gravity</P>
+    <P Name="ModelUUID">615da6b5-af1c-4d0b-9c3a-4e91e019afe9</P>
+    <P Name="OwnerBDName">hexAero</P>
   </ModelMetadata>
 </HarnessInformation>
