@@ -100,5 +100,6 @@ tmp/
 cache/
 work/
 
-# Ignore MATLAB associated files
+# Ignore MATLAB associated files except those associated with testHarnesses
 *.xml
+!F16/**/*.xml

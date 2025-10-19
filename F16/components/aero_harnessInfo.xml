@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HarnessInformation>
+  <Harness>
+    <P Name="Name">aeroTestHarness</P>
+    <P Name="Description"/>
+    <P Name="CreatedBy">jerem</P>
+    <P Name="CreatedOn">Sat Oct 18 17:03:05 2025</P>
+    <P Name="ModifiedBy">jerem</P>
+    <P Name="LastSaved">Sun Oct 19 11:36:09 2025</P>
+    <P Name="Owner">bd</P>
+    <P Name="OwnerType">BD_HARNESS</P>
+    <P Name="OwnerPath">.</P>
+    <P Name="Directory"/>
+    <P Name="FileName">aeroTestHarness.slx</P>
+    <P Name="SavedVersion">24.1</P>
+    <P Name="HarnessUUID">6af30f8b-b81a-4476-924f-7f376f7c12ba</P>
+    <P Name="HarnessConnectionsMap">||-14209408,1073741951,-1958358785,34975||</P>
+    <P Name="VerificationMode">0</P>
+    <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
+    <P Name="RebuildOnOpen">false</P>
+    <P Name="RebuildModelData">false</P>
+    <P Name="Graphical">false</P>
+    <P Name="DriveFcnCallWithTS">true</P>
+    <P Name="ScheduleInitTermReset">false</P>
+    <P Name="AutoShapeInputs">false</P>
+    <P Name="SLDVCompatible">no</P>
+    <P Name="SynchronizationMode">2</P>
+    <P Name="IsImported">true</P>
+    <P Name="PostRebuildCB"/>
+    <P Name="IsCodeContext">false</P>
+    <P Name="SchedulerBlock">0</P>
+    <P Name="SourceTypeString">Constant</P>
+    <P Name="SinkTypeString">None</P>
+    <P Name="CustomSourcePath"/>
+    <P Name="CustomSinkPath"/>
+    <P Name="BlockSIDs">2|45|0|0|0|0|0</P>
+    <P Name="OpenGraphs"/>
+    <P Name="ExistingBuildFolder"/>
+    <P Name="FunctionInterfaceName"/>
+    <P Name="SysArchSUTModel"/>
+  </Harness>
+  <ModelMetadata>
+    <P Name="ModelUUID">c6b25580-f38d-4ea7-8611-73a9f2d947de</P>
+    <P Name="OwnerBDName">aero</P>
+  </ModelMetadata>
+</HarnessInformation>
