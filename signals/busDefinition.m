@@ -8,6 +8,8 @@ servosBusDefinition(vehicleType);
 % servo commands bus
 servosCommandBusDefinition(vehicleType);
 
+% failure bus
+failureBusDefinition(vehicleType);
 
 % Bus object: ComponentForcesMomentsBus
 clear elems;

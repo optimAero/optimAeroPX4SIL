@@ -1,4 +1,4 @@
-<p>
+<p align="center">
     <img src="README_Images/optimAero.png" alt="optimAero Logo" width="350"/>
 </p>
 
@@ -192,4 +192,5 @@ The F16 parameters that should be used when running the simulation can be found 
 ### Simulink fail to launch
 
 In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder (clearing the Simulink cache) in the repo and re-launch the Simulink model. This can also be done by setting the `clearSLCache` argument to true when using the `initVehicleSIL.m` function.
+
 

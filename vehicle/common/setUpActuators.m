@@ -34,7 +34,7 @@ switch lower(vehicleParams.type)
                                          -0.8660    0.5000 0;
                                           0.8660    0.5000 0;
                                          -0.8660   -0.5000 0];
-        vehicleParams.rotor.spinDirectionCW_isTrue = [1 0 1 0 1 0]; 
+        vehicleParams.rotor.spinDirectionCW_isTrue = [1 0 1 0 0 1]; 
 
         % Using a generic 2nd order transfer function for an ESC and brushless motor
         vehicleParams.actuator.tfNumerator = 250000;
