@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HarnessInformation>
+  <Harness>
+    <P Name="Name">EarthTestHarness</P>
+    <P Name="Description"/>
+    <P Name="CreatedBy">jerem</P>
+    <P Name="CreatedOn">Tue Oct 22 14:40:00 2024</P>
+    <P Name="ModifiedBy">jerem</P>
+    <P Name="LastSaved">Sun Oct 19 12:00:44 2025</P>
+    <P Name="Owner">bd</P>
+    <P Name="OwnerType">BD_HARNESS</P>
+    <P Name="OwnerPath">.</P>
+    <P Name="Directory"/>
+    <P Name="FileName">EarthTestHarness.slx</P>
+    <P Name="SavedVersion">24.1</P>
+    <P Name="HarnessUUID">ec9f2605-6166-4226-a44b-c3ceca90e534</P>
+    <P Name="HarnessConnectionsMap">||32767,1221656384,2671745,-1957888000||</P>
+    <P Name="VerificationMode">0</P>
+    <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
+    <P Name="RebuildOnOpen">false</P>
+    <P Name="RebuildModelData">false</P>
+    <P Name="Graphical">false</P>
+    <P Name="DriveFcnCallWithTS">true</P>
+    <P Name="ScheduleInitTermReset">false</P>
+    <P Name="AutoShapeInputs">false</P>
+    <P Name="SLDVCompatible">no</P>
+    <P Name="SynchronizationMode">2</P>
+    <P Name="IsImported">true</P>
+    <P Name="PostRebuildCB"/>
+    <P Name="IsCodeContext">false</P>
+    <P Name="SchedulerBlock">0</P>
+    <P Name="SourceTypeString">Test Sequence</P>
+    <P Name="SinkTypeString">Test Assessment</P>
+    <P Name="CustomSourcePath"/>
+    <P Name="CustomSinkPath"/>
+    <P Name="BlockSIDs">2|11|0|0|0|0|0</P>
+    <P Name="OpenGraphs"/>
+    <P Name="ExistingBuildFolder"/>
+    <P Name="FunctionInterfaceName"/>
+    <P Name="SysArchSUTModel"/>
+  </Harness>
+  <ModelMetadata>
+    <P Name="ModelUUID">3688db6e-42ca-4600-b649-41577d78df9b</P>
+    <P Name="OwnerBDName">Earth</P>
+  </ModelMetadata>
+</HarnessInformation>

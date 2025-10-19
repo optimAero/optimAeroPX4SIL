@@ -103,3 +103,5 @@ work/
 # Ignore MATLAB associated files except those associated with testHarnesses
 *.xml
 !F16/**/*.xml
+!environment/**/*.xml
+!sensors/**/*.xml
