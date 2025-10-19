@@ -6,7 +6,7 @@
     <P Name="CreatedBy">jerem</P>
     <P Name="CreatedOn">Sat Oct 19 11:18:54 2024</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 19 11:43:23 2025</P>
+    <P Name="LastSaved">Sun Oct 19 12:07:57 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
@@ -14,7 +14,7 @@
     <P Name="FileName">addFMTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
     <P Name="HarnessUUID">4613c50f-3ad4-4c3f-88b6-1a02a9d4ed46</P>
-    <P Name="HarnessConnectionsMap">||0,0,0,0||</P>
+    <P Name="HarnessConnectionsMap">0,1,2,3,4,5|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -25,7 +25,7 @@
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
     <P Name="SynchronizationMode">2</P>
-    <P Name="IsImported">true</P>
+    <P Name="IsImported">false</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
     <P Name="SchedulerBlock">0</P>

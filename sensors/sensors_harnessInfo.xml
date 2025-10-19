@@ -6,7 +6,7 @@
     <P Name="CreatedBy">aeroth</P>
     <P Name="CreatedOn">Fri Jun 14 16:56:49 2024</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 19 12:04:53 2025</P>
+    <P Name="LastSaved">Sun Oct 19 12:08:15 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
@@ -14,7 +14,7 @@
     <P Name="FileName">sensorsTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
     <P Name="HarnessUUID">61539a89-d5a5-4d0d-a7fc-00cf1e51a88c</P>
-    <P Name="HarnessConnectionsMap">||683231352,-1326745952,1207959553,-1991691895||</P>
+    <P Name="HarnessConnectionsMap">0,1|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -25,7 +25,7 @@
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
     <P Name="SynchronizationMode">2</P>
-    <P Name="IsImported">true</P>
+    <P Name="IsImported">false</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
     <P Name="SchedulerBlock">0</P>

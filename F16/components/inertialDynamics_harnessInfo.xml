@@ -6,7 +6,7 @@
     <P Name="CreatedBy">jerem</P>
     <P Name="CreatedOn">Sat Oct 19 11:05:21 2024</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 19 11:39:35 2025</P>
+    <P Name="LastSaved">Sun Oct 19 12:08:10 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
@@ -14,7 +14,7 @@
     <P Name="FileName">inertialDynamicsTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
     <P Name="HarnessUUID">ce7866d3-64a3-4acf-96eb-c31c3aecf1d8</P>
-    <P Name="HarnessConnectionsMap">||1909332356,-2041978411,-130250086,-1992088420||</P>
+    <P Name="HarnessConnectionsMap">0,1|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -25,7 +25,7 @@
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
     <P Name="SynchronizationMode">2</P>
-    <P Name="IsImported">true</P>
+    <P Name="IsImported">false</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
     <P Name="SchedulerBlock">0</P>
