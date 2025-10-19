@@ -105,3 +105,4 @@ work/
 !F16/**/*.xml
 !environment/**/*.xml
 !sensors/**/*.xml
+!*harnessInfo.xml
