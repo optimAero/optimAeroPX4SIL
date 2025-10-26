@@ -4,16 +4,16 @@
     <P Name="Name">hexMotorModelTestHarness</P>
     <P Name="Description"/>
     <P Name="CreatedBy">jerem</P>
-    <P Name="CreatedOn">Wed Apr 09 17:05:28 2025</P>
+    <P Name="CreatedOn">Sun Oct 26 11:22:51 2025</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Wed Oct 22 18:57:59 2025</P>
+    <P Name="LastSaved">Sun Oct 26 11:35:46 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
     <P Name="Directory"/>
     <P Name="FileName">hexMotorModelTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
-    <P Name="HarnessUUID">8118f85a-060e-42af-befa-2b94ce787a86</P>
+    <P Name="HarnessUUID">819e19d9-0cd5-4dfd-a6c3-44d0c15a1ae9</P>
     <P Name="HarnessConnectionsMap">0,1,2,3,4|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
@@ -24,7 +24,7 @@
     <P Name="ScheduleInitTermReset">false</P>
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
-    <P Name="SynchronizationMode">2</P>
+    <P Name="SynchronizationMode">1</P>
     <P Name="IsImported">false</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
@@ -33,7 +33,7 @@
     <P Name="SinkTypeString">Test Assessment</P>
     <P Name="CustomSourcePath"/>
     <P Name="CustomSinkPath"/>
-    <P Name="BlockSIDs">2|30|0|0|0|0|0</P>
+    <P Name="BlockSIDs">2|34|0|0|0|0|0</P>
     <P Name="OpenGraphs"/>
     <P Name="ExistingBuildFolder"/>
     <P Name="FunctionInterfaceName"/>
