@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HarnessInformation>
+  <Harness>
+    <P Name="Name">hexAddFmTestHarness</P>
+    <P Name="Description"/>
+    <P Name="CreatedBy">jerem</P>
+    <P Name="CreatedOn">Tue May 06 11:04:50 2025</P>
+    <P Name="ModifiedBy">jerem</P>
+    <P Name="LastSaved">Sun Oct 26 11:20:32 2025</P>
+    <P Name="Owner">bd</P>
+    <P Name="OwnerType">BD_HARNESS</P>
+    <P Name="OwnerPath">.</P>
+    <P Name="Directory"/>
+    <P Name="FileName">hexAddFmTestHarness.slx</P>
+    <P Name="SavedVersion">24.1</P>
+    <P Name="HarnessUUID">6b1bfe18-a894-4cd9-b880-245d80d62ccb</P>
+    <P Name="HarnessConnectionsMap">0,1,2,3|0|0,0,0,0||</P>
+    <P Name="VerificationMode">0</P>
+    <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
+    <P Name="RebuildOnOpen">false</P>
+    <P Name="RebuildModelData">false</P>
+    <P Name="Graphical">false</P>
+    <P Name="DriveFcnCallWithTS">true</P>
+    <P Name="ScheduleInitTermReset">false</P>
+    <P Name="AutoShapeInputs">false</P>
+    <P Name="SLDVCompatible">no</P>
+    <P Name="SynchronizationMode">2</P>
+    <P Name="IsImported">false</P>
+    <P Name="PostRebuildCB"/>
+    <P Name="IsCodeContext">false</P>
+    <P Name="SchedulerBlock">0</P>
+    <P Name="SourceTypeString">Test Sequence</P>
+    <P Name="SinkTypeString">Test Assessment</P>
+    <P Name="CustomSourcePath"/>
+    <P Name="CustomSinkPath"/>
+    <P Name="BlockSIDs">2|30|0|0|0|0|0</P>
+    <P Name="OpenGraphs"/>
+    <P Name="ExistingBuildFolder"/>
+    <P Name="FunctionInterfaceName"/>
+    <P Name="SysArchSUTModel"/>
+  </Harness>
+  <ModelMetadata>
+    <P Name="ModelUUID">59f2605e-116b-4a6b-ad9e-001883b58eef</P>
+    <P Name="OwnerBDName">hexAddFm</P>
+  </ModelMetadata>
+</HarnessInformation>

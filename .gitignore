@@ -101,8 +101,11 @@ cache/
 work/
 ignoreFolder/
 
-# Ignore MATLAB associated files
+# Ignore MATLAB associated files except those associated with testHarnesses and visualization files
 *.xml
-# But do not ignore .xml files inside visualization/
+!vehicle/**/**/*.xml
+!environment/**/*.xml
+!sensors/**/*.xml
+!*harnessInfo.xml
 !visualization/
 !visualization/**/*.xml

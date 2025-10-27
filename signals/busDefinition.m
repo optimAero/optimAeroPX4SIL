@@ -1321,17 +1321,6 @@ elems(1).Max = [];
 elems(1).DocUnits = '';
 elems(1).Description = '';
 
-elems(2) = Simulink.BusElement;
-elems(2).Name = 'groundCollision';
-elems(2).Dimensions = 1;
-elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'boolean';
-elems(2).Complexity = 'real';
-elems(2).Min = [];
-elems(2).Max = [];
-elems(2).DocUnits = '';
-elems(2).Description = '';
-
 VehicleConfigurationBus = Simulink.Bus;
 VehicleConfigurationBus.HeaderFile = '';
 VehicleConfigurationBus.Description = '';
