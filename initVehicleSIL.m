@@ -151,15 +151,17 @@ setUpEnvironment
 
 % If no failureType selected, disable joystick failure injection.
 % If failureType selected, set Joystick1 so failure can be injected into plant.
+warning on all
+warning('query', 'last')
 if strcmpi(opts.failureType,"none")
     modelName = 'VehicleSilSimulation';
     jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
-    load_system(modelName);
+    load_system(modelName); %#ok<NASGU>
     set_param(jsBlockPath, 'JoystickID', 'None');
 else
     modelName = 'VehicleSilSimulation';
     jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
-    load_system(modelName);
+    load_system(modelName); %#ok<NASGU>
     set_param(jsBlockPath, 'JoystickID', 'Joystick1');
 end
 
