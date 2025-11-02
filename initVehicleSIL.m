@@ -151,17 +151,16 @@ setUpEnvironment
 
 % If no failureType selected, disable joystick failure injection.
 % If failureType selected, set Joystick1 so failure can be injected into plant.
-warning on all
-warning('query', 'last')
 if strcmpi(opts.failureType,"none")
     modelName = 'VehicleSilSimulation';
     jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
-    load_system(modelName); %#ok<NASGU>
+    warning('off', 'Simulink:ConfigSet:CannotFindConfigSet');
+    load_system(modelName);
     set_param(jsBlockPath, 'JoystickID', 'None');
 else
     modelName = 'VehicleSilSimulation';
     jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
-    load_system(modelName); %#ok<NASGU>
+    load_system(modelName); 
     set_param(jsBlockPath, 'JoystickID', 'Joystick1');
 end
 
@@ -244,7 +243,6 @@ if opts.launchFullSIL
     if ~opts.PX4InWSL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
-        opts.simHostIPVal = double(split(opts.simHostIP, '.'));
         if opts.makeClean
             [~,cmdout] = system(sprintf(['start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make clean && ' ...
                 'make px4_sitl_default %s"'],...
