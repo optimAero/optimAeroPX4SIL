@@ -399,7 +399,7 @@ elems(2).DocUnits = '';
 elems(2).Description = '';
 
 elems(3) = Simulink.BusElement;
-elems(3).Name = 'aeroForcesMoments';
+elems(3).Name = 'AeroForcesMomentsBus';
 elems(3).Dimensions = 1;
 elems(3).DimensionsMode = 'Fixed';
 elems(3).DataType = 'Bus: ComponentForcesMomentsBus';
@@ -410,7 +410,7 @@ elems(3).DocUnits = '';
 elems(3).Description = '';
 
 elems(4) = Simulink.BusElement;
-elems(4).Name = 'engineForcesMoments';
+elems(4).Name = 'EngineForcesMomentsBus';
 elems(4).Dimensions = 1;
 elems(4).DimensionsMode = 'Fixed';
 elems(4).DataType = 'Bus: ComponentForcesMomentsBus';
@@ -421,7 +421,7 @@ elems(4).DocUnits = '';
 elems(4).Description = '';
 
 elems(5) = Simulink.BusElement;
-elems(5).Name = 'groundForcesMoments';
+elems(5).Name = 'GroundForcesMomentsBus';
 elems(5).Dimensions = 1;
 elems(5).DimensionsMode = 'Fixed';
 elems(5).DataType = 'Bus: ComponentForcesMomentsBus';
@@ -1244,7 +1244,7 @@ assignin('base', 'TerrainEnvironmentBus', TerrainEnvironmentBus);
 % Bus object: VehicleBus
 clear elems;
 elems(1) = Simulink.BusElement;
-elems(1).Name = 'VehicleConfiguration';
+elems(1).Name = 'VehicleConfigurationBus';
 elems(1).Dimensions = 1;
 elems(1).DimensionsMode = 'Fixed';
 elems(1).DataType = 'Bus: VehicleConfigurationBus';
@@ -1255,7 +1255,7 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'BodyStates';
+elems(2).Name = 'BodyStatesBus';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
 elems(2).DataType = 'Bus: BodyStateBus';
@@ -1266,7 +1266,7 @@ elems(2).DocUnits = '';
 elems(2).Description = '';
 
 elems(3) = Simulink.BusElement;
-elems(3).Name = 'MassProperties';
+elems(3).Name = 'MassPropertiesBus';
 elems(3).Dimensions = 1;
 elems(3).DimensionsMode = 'Fixed';
 elems(3).DataType = 'Bus: MassPropertiesBus';
@@ -1277,7 +1277,7 @@ elems(3).DocUnits = '';
 elems(3).Description = '';
 
 elems(4) = Simulink.BusElement;
-elems(4).Name = 'AircraftForcesMoments';
+elems(4).Name = 'AircraftForcesMomentsBus';
 elems(4).Dimensions = 1;
 elems(4).DimensionsMode = 'Fixed';
 elems(4).DataType = 'Bus: AircraftForcesMomentsBus';
