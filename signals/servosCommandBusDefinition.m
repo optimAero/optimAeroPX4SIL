@@ -1,13 +1,13 @@
 % servosCommandBusDefinition: This function defines the servo command bus signals. If you're importing your
 % own vehicle design, replace the servosCommandCustomAircraftBusDefinition with your own vehicle servo command 
 % bus definition.
-function servosCommandBusDefinition(vehicleType) 
+function ServosCommandBusDefinition(vehicleType) 
 % Bus object: ServosCommandBus
 
 switch lower(vehicleType)
     case "f-16"
         % F16 servo command bus definition
-        servosCommandF16BusDefinition
+        ServosCommandF16BusDefinition
         elems(1) = Simulink.BusElement;
         elems(1).Name = 'ServosCommandF16Bus';
         elems(1).Dimensions = 1;
@@ -29,7 +29,7 @@ switch lower(vehicleType)
         clear elems;
         assignin('base', 'ServosCommandBus', ServosCommandBus);
     case "hexarotor"
-        motorCommandHexBusDefinition
+        MotorCommandHexBusDefinition
         elems(1) = Simulink.BusElement;
         elems(1).Name = 'MotorCommandHexBus';
         elems(1).Dimensions = 1;
@@ -51,7 +51,7 @@ switch lower(vehicleType)
         assignin('base', 'ServosCommandBus', ServosCommandBus);
     case "customAircraft"
         % Custom aircraft servo command bus definition
-        servosCommandCustomAircraftBusDefinition
+        ServosCommandCustomAircraftBusDefinition
         elems(1) = Simulink.BusElement;
         elems(1).Name = 'ServosCommandCustomAircraftBus';
         elems(1).Dimensions = 1;

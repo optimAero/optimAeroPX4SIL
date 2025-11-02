@@ -1,14 +1,14 @@
 % failureBusDefinition: 
-function failureBusDefinition(vehicleType) 
+function FailureBusDefinition(vehicleType) 
 % Bus object: failureBus
 
 switch lower(vehicleType)
     case "f-16"
         % F16 servo command bus definition
-        failureF16BusDefinition
+        FailureF16BusDefinition
         
     case "hexarotor"
-        failureHexBusDefinition
+        FailureHexBusDefinition
 
     case "customAircraft"
         % Custom aircraft failureBus bus definition

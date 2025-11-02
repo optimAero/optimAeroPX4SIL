@@ -1,4 +1,4 @@
-function failureF16BusDefinition() 
+function FailureF16BusDefinition() 
 % Bus object: failureHexBus
 
 ii = 1;

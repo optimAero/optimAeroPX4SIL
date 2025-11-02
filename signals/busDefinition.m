@@ -1,15 +1,15 @@
 % busDefinition: This function initializes a set of bus objects in the MATLAB base workspace. All busses used in the
 % simulation can be found in this function
-function busDefinition(vehicleType)
+function BusDefinition(vehicleType)
 
 % Servo bus definition
-servosBusDefinition(vehicleType);
+ServosBusDefinition(vehicleType);
 
 % servo commands bus
-servosCommandBusDefinition(vehicleType);
+ServosCommandBusDefinition(vehicleType);
 
 % failure bus
-failureBusDefinition(vehicleType);
+FailureBusDefinition(vehicleType);
 
 % Bus object: ComponentForcesMomentsBus
 clear elems;
@@ -47,7 +47,7 @@ assignin('base', 'ComponentForcesMomentsBus', ComponentForcesMomentsBus);
 
 
 % Propulsion System Bus
-propulsionSystemBusDefinition(vehicleType)
+PropulsionSystemBusDefinition(vehicleType)
 
 % Bus object: ADCSensorBus
 clear elems;
