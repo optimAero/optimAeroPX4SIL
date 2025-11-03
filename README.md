@@ -7,8 +7,11 @@
 
 <strong>Simulator Preview Video</strong>: (Click to view)
 
-[![Thumbnail](https://img.youtube.com/vi/evAoTjM-tIw/hqdefault.jpg)](https://www.youtube.com/watch?v=evAoTjM-tIw)
-
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=evAoTjM-tIw">
+    <img src="https://img.youtube.com/vi/evAoTjM-tIw/hqdefault.jpg" alt="Thumbnail" width="640">
+  </a>
+</p>
 
 # optimAero PX4 Simulink SIL Overview
 
@@ -74,6 +77,10 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 10. Build the PX4 executable:
 ```
 make px4_sitl_default optimAeroF16
+```
+or
+```
+make px4_sitl_default optimAeroHex
 ```
 Once built, the PX4 executable should connect to the Simulink model. Ensure you run the Simulink file first before attempting to connect the PX4 executable. The Simulink model will report "Initializing" or "waiting to connect on 4560" when it is ready for the PX4 executable to connect.
 
@@ -157,25 +164,14 @@ The aircraft configuration file must be added to the <strong>px4-autopilot\ROMFS
 
 ## Known Issues
 
-### Mapping commands from PX4
-
-Mapping the commands from the <strong>pixhawk_sil_connector</strong> to the <strong>ServosCommandBus</strong> can be challenging. One method of figuring out what signals from the pixhawk_sil_connector correspond to the vehicle's actuators is by using a demux to view all 16 signals coming from the first output of the px4_sil_connector as shown in Figure 6, and observing how the signals change given a joystick input.
-
 ### Ending the simulation
 
 When ending the simulation after a successful launch, Ctrl+C must be used to end the PX4 autopilot first (in the WSL terminal, press Ctrl+C). If this is not done first, the Simulink model will fail to close and MATLAB will need to be terminated.
 
 ### Vehicle parameters
 
-The F16 parameters that should be used when running the simulation can be found here: ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
+The F16 parameters that should be used when running the simulation can be found here: `ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16` and the hexarotor paramters are in the same folder with the file name `10021_optimAeroHex`. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
 
 ### Simulink fail to launch
 
 In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
-
-<p>
-    <img src="README_Images/demuxCmds.png" alt="Demux Commands" width="600"/>
-</p>
-<p>
-    <em>Figure 6: Demux command signals</em>
-</p>
