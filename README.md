@@ -1,10 +1,9 @@
-<p>
-    <img src="README_Images/optimAero.png" alt="optimAero Logo" width="350"/>
-</p>
+<p align="center">
+    <img src="README_Images/optimAero.png" alt="optimAero Logo" width="750"/>
+<p align="center">
 
-https://www.optim.aero
-
-info@optim.aero
+<p align="center">https://www.optim.aero</p>
+<p align="center">info@optim.aero</p>
 
 <strong>Simulator Preview Video</strong>: (Click to view)
 
@@ -64,7 +63,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 
 <strong>To run the simulation, follow these steps:</strong>
 
-5. Make sure the **Required Matlab Toolboxes** and **Required Support Packages** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
+5. Make sure the **Required Matlab Toolboxes** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
 
 6. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"simHostIP", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
    1. (OPTIONAL) Vehicle visualization can also occur via FlightGear. To download FlightGear follow the instructions in the <strong> Visualization </strong> section below. Once downloaded the `FlightGear` argument can be used when calling the `initVehicleSil` function (e.g.,`initVehicleSIL("launchFullSIL",false,"visualizationType","FlightGear","simHostIP", <simHostIP>)`)
@@ -103,10 +102,6 @@ If additional UTs need to be created, the makeHarness function can be used to ge
 7. Simulink Coder
 8. Simulink Test
 9. UAV Toolbox
-
-## Required Support Packages
-
-1. UAV Toolbox Support Package for PX4 Autopilots
 
 ## Visualization
 
