@@ -1,4 +1,4 @@
-function motorCommandHexBusDefinition() 
+function MotorCommandHexBusDefinition() 
 % Bus object: motorCommandHexBus 
 
 for ii = 1:6

@@ -1,4 +1,4 @@
-function propulsionSystemHexBusDefinition() 
+function PropulsionSystemHexBusDefinition() 
 % Bus object: propulsionSystemHexBusDefinition 
 
 ii = 1;

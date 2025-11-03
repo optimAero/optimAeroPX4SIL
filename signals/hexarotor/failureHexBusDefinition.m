@@ -1,4 +1,4 @@
-function failureHexBusDefinition() 
+function FailureHexBusDefinition() 
 % Bus object: failureHexBus
 
 for ii = 1:6

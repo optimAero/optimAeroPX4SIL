@@ -19,7 +19,7 @@ switch lower(vehicleType)
         elems(1).Description = '';
 
         elems(2) = Simulink.BusElement;
-        elems(2).Name = 'engineForcesMoments';
+        elems(2).Name = 'EngineForcesMomentsBus';
         elems(2).Dimensions = 1;
         elems(2).DimensionsMode = 'Fixed';
         elems(2).DataType = 'Bus: ComponentForcesMomentsBus';
@@ -61,7 +61,7 @@ switch lower(vehicleType)
         elems(1).Description = '';
 
         elems(2) = Simulink.BusElement;
-        elems(2).Name = 'engineForcesMoments';
+        elems(2).Name = 'EngineForcesMomentsBus';
         elems(2).Dimensions = 1;
         elems(2).DimensionsMode = 'Fixed';
         elems(2).DataType = 'Bus: ComponentForcesMomentsBus';

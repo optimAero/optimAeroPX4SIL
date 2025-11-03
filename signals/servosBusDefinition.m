@@ -6,7 +6,7 @@ function servosBusDefinition(vehicleType)
 switch lower(vehicleType)
     case "f-16"
         % Call bus definition for F16
-        servosBusDefinitionF16
+        ServosBusDefinitionF16
         elems(1) = Simulink.BusElement;
         elems(1).Name = 'ServosF16Bus';
         elems(1).Dimensions = 1;
@@ -29,7 +29,7 @@ switch lower(vehicleType)
         assignin('base', 'ServosBus', ServosBus);
     case "hexarotor"
         % Call bus definition for Hex
-        servosBusDefinitionHex
+        ServosBusDefinitionHex
         elems(1) = Simulink.BusElement;
         elems(1).Name = 'ServosHexBus';
         elems(1).Dimensions = 1;
@@ -52,7 +52,7 @@ switch lower(vehicleType)
         assignin('base', 'ServosBus', ServosBus);
     case "customAircraft"
         % Call bus definition for Custom Aircraft
-        servosBusDefinitionCustomAircraft
+        ServosBusDefinitionCustomAircraft
         elems(1) = Simulink.BusElement;
         elems(1).Name = 'ServosCustomAircraftBus';
         elems(1).Dimensions = 1;

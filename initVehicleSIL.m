@@ -135,7 +135,7 @@ stepSize_s = 0.004; % step size used in standardSILConfugrationParams.mat file
 constants
 
 % load bus definitions
-busDefinition(vehicleParams.type)
+BusDefinition(vehicleParams.type)
 
 % load vehicle specific data and initial conditions
 setUpVehicle
