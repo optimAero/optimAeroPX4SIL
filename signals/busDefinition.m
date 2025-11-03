@@ -432,7 +432,7 @@ elems(5).DocUnits = '';
 elems(5).Description = '';
 
 elems(6) = Simulink.BusElement;
-elems(6).Name = 'weightForcesMoments';
+elems(6).Name = 'WeightForcesMomentsBus';
 elems(6).Dimensions = 1;
 elems(6).DimensionsMode = 'Fixed';
 elems(6).DataType = 'Bus: ComponentForcesMomentsBus';
