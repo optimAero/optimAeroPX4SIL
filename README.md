@@ -68,13 +68,18 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 
 5. Make sure the **Required Matlab Toolboxes** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
 
-6. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"simHostIP", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
+6. You must set up the PX4 build tool chain which can be done using the following command via WSL in the folder where you checked out the PX4 repository:
+```
+ ./Tools/setup/ubuntu.sh
+```
+
+7. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"simHostIP", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
    1. (OPTIONAL) Vehicle visualization can also occur via FlightGear. To download FlightGear follow the instructions in the <strong> Visualization </strong> section below. Once downloaded the `FlightGear` argument can be used when calling the `initVehicleSil` function (e.g.,`initVehicleSIL("launchFullSIL",false,"visualizationType","FlightGear","simHostIP", <simHostIP>)`)
    2. NOTE - If FlightGear does not appear after using the visualization argument, simply  run `runFlightGear.m` in the MATLAB terminal after calling the `initVehicleSIL` function.
-7. Open and run the `VehicleSILSimulation.slx` model
-8.  While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
-9. Launch wsl in the command prompt (`wsl`) and navigate to the PX4-Autopilot repo/subrepo (depending on what you chose in STEP 1)
-10. Build the PX4 executable:
+8. Open and run the `VehicleSILSimulation.slx` model
+9.  While the model is running, open a Windows command prompt and navigate to the PX4-Autopilot submodule inside the repository
+10. Launch wsl in the command prompt (`wsl`) and navigate to the PX4-Autopilot repo/subrepo (depending on what you chose in STEP 1)
+11. Build the PX4 executable:
 ```
 make px4_sitl_default optimAeroF16
 ```
@@ -103,10 +108,10 @@ If additional UTs need to be created, the makeHarness function can be used to ge
 1. Aerospace Toolbox
 2. Aerospace Blockset
 3. Simulink
-4. Simulink Test
+4. Simulink Test (For running the unit tests)
 5. UAV Toolbox
 6. Instrument control toolbox
-
+7. MATLAB Support for MinGW-w64 C/C++/Fortran Compiler
 
 ## Visualization
 

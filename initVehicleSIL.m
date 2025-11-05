@@ -70,11 +70,8 @@ requiredTools ={'Aerospace_Blockset'
     'RTW_Embedded_Coder' %Embedded Coder
     'SIMULINK'
     'Simulink_Test'
+    'Instr_Control_Toolbox'
     'UAV_Toolbox'};
-
-requiredSupportPackages = {};
-requiredSupportPackages(1).Name = {'UAV Toolbox Support Package for PX4 Autopilots'};
-requiredSupportPackages(1).Version = {'24.1.2', '24.1.3'};
 
 for ii = 1:length(requiredTools)
     if ~license('test', char(requiredTools(ii)))
@@ -82,26 +79,7 @@ for ii = 1:length(requiredTools)
     end
 end
 
-supportPackagesInstalled = matlabshared.supportpkg.getInstalled;
-if isempty(supportPackagesInstalled)
-    for ii = 1:numel(requiredSupportPackages)
-        warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-    end
-else
-    supportPackagesInstalledNames = {supportPackagesInstalled.Name};
-    supportPackagesInstalledVersions = {supportPackagesInstalled.InstalledVersion};
-    for ii = 1:numel(requiredSupportPackages)
-        compareIdx = contains(supportPackagesInstalledNames, requiredSupportPackages(ii).Name);
-        if ~any(compareIdx)
-            warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-        elseif all(strcmpi(supportPackagesInstalledVersions(compareIdx), requiredSupportPackages(ii).Version))
-            warning(['Please install v' requiredSupportPackages(ii).Version{1} ' or v' ...
-                requiredSupportPackages(ii).Version{2} ' of the ' requiredSupportPackages(ii).Name{1}])
-        end
-    end
-end
-
-% initSIL.m Initializes path, load bus definitions, and sets model
+% Initializes path, load bus definitions, and sets model
 % parameters for vehicleSIL.slx
 addpath(genpath('PX4-Autopilot'));
 addpath(genpath('environment'));
