@@ -66,8 +66,6 @@ visualizationParams.flightGearFreq_Hz      = opts.flightGearFreq_Hz;
 % -from-ver#answer_300675)
 requiredTools ={'Aerospace_Blockset'
     'Aerospace_Toolbox'
-    'Control_Toolbox'
-    'MATLAB_Coder'
     'Real-Time_Workshop' %Simulink Coder
     'RTW_Embedded_Coder' %Embedded Coder
     'SIMULINK'
