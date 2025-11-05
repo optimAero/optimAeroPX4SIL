@@ -8,8 +8,8 @@
 <strong>Simulator Preview Video</strong>: (Click to view)
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=evAoTjM-tIw">
-    <img src="https://img.youtube.com/vi/evAoTjM-tIw/hqdefault.jpg" alt="Thumbnail" width="640">
+  <a href="https://www.youtube.com/watch?v=h17urCZkXF8">
+    <img src="https://img.youtube.com/vi/h17urCZkXF8/hqdefault.jpg" alt="Thumbnail" width="640">
   </a>
 </p>
 
@@ -102,13 +102,11 @@ If additional UTs need to be created, the makeHarness function can be used to ge
 
 1. Aerospace Toolbox
 2. Aerospace Blockset
-3. Control System Toolbox
-4. Embedded Coder
-5. Matlab Coder
-6. Simulink
-7. Simulink Coder
-8. Simulink Test
-9. UAV Toolbox
+3. Simulink
+4. Simulink Test
+5. UAV Toolbox
+6. Instrument control toolbox
+
 
 ## Visualization
 
