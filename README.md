@@ -39,7 +39,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 `
    Then, install WSL by typing the following into the elevated cmd prompt (Note: the SIL has only been tested using Ubuntu <strong>22.04.3 LTS</strong>): 
     ```
-   wsl --install
+   wsl --install --distro Ubuntu-22.04
    ```
 
 1. In WSL:
@@ -178,3 +178,12 @@ The F16 parameters that should be used when running the simulation can be found 
 ### Simulink fail to launch
 
 In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
+
+### PX4 Build errors
+
+You may encounter issues when building PX4 for the first time, for example:`module 'em' has no attribute 'RAW_OPT'`. Which may require you to update or install certain python packages as shown below:
+
+```
+pip install empy==3.3.4
+```
+
