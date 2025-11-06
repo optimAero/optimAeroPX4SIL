@@ -6,7 +6,7 @@
     <P Name="CreatedBy">jerem</P>
     <P Name="CreatedOn">Sun Oct 06 19:40:03 2024</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 26 17:18:43 2025</P>
+    <P Name="LastSaved">Wed Nov 05 18:25:29 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
@@ -14,7 +14,7 @@
     <P Name="FileName">engineModelF16TestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
     <P Name="HarnessUUID">a88689ef-dd1a-435f-b9ed-248c507efbf3</P>
-    <P Name="HarnessConnectionsMap">0,1,2,3,4|0|0,0,0,0||</P>
+    <P Name="HarnessConnectionsMap">0,1,2,3,4,5|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>

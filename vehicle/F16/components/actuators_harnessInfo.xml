@@ -6,7 +6,7 @@
     <P Name="CreatedBy">jerem</P>
     <P Name="CreatedOn">Wed Oct 16 12:03:31 2024</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 26 17:18:30 2025</P>
+    <P Name="LastSaved">Wed Nov 05 18:08:41 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
@@ -14,7 +14,7 @@
     <P Name="FileName">actuatorsTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
     <P Name="HarnessUUID">2dac2dcc-9e7c-4218-b683-6414dead1345</P>
-    <P Name="HarnessConnectionsMap">0,1,2,3|0|0,0,0,0||</P>
+    <P Name="HarnessConnectionsMap">0,1,2,3,4|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
