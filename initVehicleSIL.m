@@ -18,6 +18,7 @@
 % opts.clearSLCache              Clear simulink cache. This deletes the work folder and will force all slx models 
 %                                to be recompiled. This can fix some Simulink errors
 % opts.flightGearFreq_Hz         Frequency of the TCP send block is sending data to flightGear
+% opts.assignFailureButton:      Set to true if you want to map a vehicle failrue to a joystick button
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
@@ -53,6 +54,7 @@ arguments
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
     opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
     opts.flightGearFreq_Hz    (1,1) double  = 0.5               % Frequency of the TCP send block is sending data to flightGear
+    opts.assignFailureButton  (1,1) logical = false             % Set to true if you want to map a vehicle failrue to a joystick button
 end
 restoredefaultpath
 % Note: In future versions these will be arguments
@@ -149,6 +151,14 @@ else
     set_param(jsBlockPath, 'JoystickID', 'Joystick1');
 end
 
+% Prompt the user to assign a joystick button to the failure injection.
+if ~strcmpi(opts.failureType,"none") &&  opts.assignFailureButton
+    assignFailureInjectionButton
+    opts.failureInjectionButton = failureInjectionButton;
+else
+    % Default failure injection button assignment.
+    opts.failureInjectionButton = uint32(64);
+end
 % Check failure type
 try
     if strcmpi(vehicleParams.type,"F-16")
