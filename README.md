@@ -39,7 +39,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 `
    Then, install WSL by typing the following into the elevated cmd prompt (Note: the SIL has only been tested using Ubuntu <strong>22.04.3 LTS</strong>): 
     ```
-   wsl --install --distro Ubuntu-22.04
+   wsl.exe --install Ubuntu-22.04
    ```
 
 1. In WSL:
