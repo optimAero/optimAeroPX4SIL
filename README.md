@@ -121,6 +121,20 @@ Installing FlightGear is optional but helps with visualizing flights. Once it is
 
 QGC must be connected in order to use the joystick when flying via PX4. In QGC, the joystick may be set up once PX4 is running and connected to Simulink. Plug in a joystick (an Xbox or PS5 controller has been tested successfully), click the Q in the top left, then Vehicle Setup, then Joystick. Select the correct Active Joystick, and it is recommended to assign some buttons to ARM and ACRO flight mode.
 
+## Failure Injections and Joystick Button Mapping
+
+### Hexarotor
+
+Each motor of the hexarotor can be failed by using the argument `"failureType","motor1"` when running the `initVehicleSIL` function. Note, the failureType must match the vehicleType (i.e, `motor1` failure type must be used when `vehicleType` is `hexarotor`) or you will get an error. Only one motor can be failed at a time and the failures are lathcing, meaning they cannot be removed once triggered during the sim. To remove the failure the Simulator must be restarted. 
+
+### F-16
+
+The ailerons, rudder, elevator and engine of the F-16 can be failed by inputing `ailerons`, `rudder`, `elevator`, or `engine` for the `failureType` argument. For the control surfaces the failure emulates a jammed control surface, meaning the control surface will maintain its current deflection angle. These failures are also latching. The engine failure simply cuts the engine off. 
+
+### Mapping failure injection to your joystick
+
+Failures are injected into the simulation using a chosen button on your joystick. To pick which button on your joystick will trigger the failure, simply set the the `assignFailureButton` argument to `true` when running the `intiVehicleSIL` function. You will be promoted to <strong>HOLD</strong> the joystick button and while holding the button, and while the matlab terminal is selected, press the space button. If successful, you will see a the following printed to the terminal: `Failure injection button has been mapped!`.
+
 ## Adding Custom Vehicle Configuration
 
 To add a custom vehicle configuration, the Simulink model and the PX4 configuration file, along with other files, must be changed.
