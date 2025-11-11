@@ -151,14 +151,6 @@ else
     set_param(jsBlockPath, 'JoystickID', 'Joystick1');
 end
 
-% Prompt the user to assign a joystick button to the failure injection.
-if ~strcmpi(opts.failureType,"none") &&  opts.assignFailureButton
-    assignFailureInjectionButton
-    opts.failureInjectionButton = failureInjectionButton;
-else
-    % Default failure injection button assignment.
-    opts.failureInjectionButton = uint32(64);
-end
 % Check failure type
 try
     if strcmpi(vehicleParams.type,"F-16")
@@ -171,6 +163,14 @@ catch
         "EnumHexFailureType.m or EnumF16FailureType.m")
 end
 
+% Prompt the user to assign a joystick button to the failure injection.
+if ~strcmpi(opts.failureType,"none") &&  opts.assignFailureButton
+    assignFailureInjectionButton
+    opts.failureInjectionButton = failureInjectionButton;
+else
+    % Default failure injection button assignment.
+    opts.failureInjectionButton = uint32(64);
+end
 
 % Save all workspace variables and push them to base workspace
 save('workspace')
