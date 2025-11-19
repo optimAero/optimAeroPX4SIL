@@ -68,11 +68,12 @@ visualizationParams.flightGearFreq_Hz      = opts.flightGearFreq_Hz;
 % -from-ver#answer_300675)
 requiredTools ={'Aerospace_Blockset'
     'Aerospace Toolbox'
-    'MATLAB Support for MinGW-w64 C/C++/Fortran Compiler'
     'SIMULINK'
     'Simulink Test'
     'Instrument Control Toolbox'
     'UAV Toolbox'};
+
+requiredSupportPackages = {};
 
 toolboxList = matlab.addons.installedAddons;
 for ii = 1:length(requiredTools)
@@ -89,6 +90,12 @@ for ii = 1:length(requiredTools)
     end
 end
 
+try 
+    mex -setup cpp
+catch 
+    error("Currently there's no C++ compiler installed. MinGW-w64 C/C++/Fortran Compiler can be installed from" + ...
+        " the Matlab Add-Ons" )
+end
 
 % Initializes path, load bus definitions, and sets model
 % parameters for vehicleSIL.slx
