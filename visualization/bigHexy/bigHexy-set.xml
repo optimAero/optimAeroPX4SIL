@@ -44,7 +44,6 @@
   <model>
    <path archive="y">Aircraft/bigHexy/Models/bigHexy.xml</path>
   </model>
- </sim>
   <view n="0">
   <type>Chase</type>
     <internal type="bool">true</internal>
@@ -68,4 +67,6 @@
 
     </config>
 </view>
+ </sim>
+
 </PropertyList>
