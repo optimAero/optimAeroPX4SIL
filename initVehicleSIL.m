@@ -93,8 +93,8 @@ end
 try 
     mex -setup cpp
 catch 
-    error("Currently there's no C++ compiler installed. MinGW-w64 C/C++/Fortran Compiler can be installed from" + ...
-        " the Matlab Add-Ons" )
+    error("Currently, there's no C++ compiler installed. MinGW-w64 C/C++/Fortran Compiler can be installed from" + ...
+        " using Matlab Add-Ons" )
 end
 
 % Initializes path, load bus definitions, and sets model
