@@ -67,11 +67,11 @@ visualizationParams.flightGearFreq_Hz      = opts.flightGearFreq_Hz;
 % list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names
 % -from-ver#answer_300675)
 requiredTools ={'Aerospace_Blockset'
-    'Aerospace Toolbox'
+    'Aerospace_Toolbox'
     'SIMULINK'
-    'Simulink Test'
+    'Simulink_Test'
     'Instrument Control Toolbox'
-    'UAV Toolbox'};
+    'UAV_Toolbox'};
 
 requiredSupportPackages = {};
 
@@ -81,8 +81,11 @@ for ii = 1:length(requiredTools)
     toolboxName = requiredTools{ii};
     toolboxName = replace(toolboxName, '_', ' '); % replace underscore with space to get names to match matlab.addons.installedAddons names
     if ~any(strcmpi(toolboxName, toolboxList.Name))
-        warning(['Please install ' toolboxName])
-
+        if strcmpi(toolboxName, 'Simulink Test')
+            warning(['Please install ' toolboxName])
+        else
+            error(['Please install the required toolbox:' toolboxName])
+        end
         % Check license
         if ~license('test', requiredTools{ii})
             warning(['No license for ' toolboxName])
