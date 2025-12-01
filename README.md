@@ -32,7 +32,11 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
    cd optimAeroPX4SIL
    git submodule update --init --recursive
    ```
-   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: Compilation of PX4 will be slow if the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, complete <strong>Step 2</strong> first and then clone the PX4-Autopilot repo, NOT THE FULL SIL REPO, into the WSL root directory on the Linux partition.
+   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: Compilation of PX4 will be slow because the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, complete <strong>Step 2</strong> first and then clone the PX4-Autopilot repo, NOT THE FULL SIL REPO, into the WSL root directory on the Linux partition using the following command while in the WSL root directory):
+
+   ```
+   git clone --branch OAPX4SIL-Hex --single-branch git@github.com:optimAero/PX4-Autopilot.git
+   ```
 
 2. From an elevated cmd prompt (e.g., run cmd as administrator or use Powershell): 
 
