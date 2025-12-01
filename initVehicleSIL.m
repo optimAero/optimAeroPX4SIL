@@ -18,6 +18,7 @@
 % opts.clearSLCache              Clear simulink cache. This deletes the work folder and will force all slx models 
 %                                to be recompiled. This can fix some Simulink errors
 % opts.flightGearFreq_Hz         Frequency of the TCP send block is sending data to flightGear
+% opts.assignFailureButton:      Set to true if you want to map a vehicle failrue to a joystick button
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
@@ -53,6 +54,7 @@ arguments
     opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
     opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
     opts.flightGearFreq_Hz    (1,1) double  = 0.5               % Frequency of the TCP send block is sending data to flightGear
+    opts.assignFailureButton  (1,1) logical = false             % Set to true if you want to map a vehicle failrue to a joystick button
 end
 restoredefaultpath
 % Note: In future versions these will be arguments
@@ -66,44 +68,39 @@ visualizationParams.flightGearFreq_Hz      = opts.flightGearFreq_Hz;
 % -from-ver#answer_300675)
 requiredTools ={'Aerospace_Blockset'
     'Aerospace_Toolbox'
-    'Control_Toolbox'
-    'MATLAB_Coder'
-    'Real-Time_Workshop' %Simulink Coder
-    'RTW_Embedded_Coder' %Embedded Coder
     'SIMULINK'
     'Simulink_Test'
+    'Instrument Control Toolbox'
     'UAV_Toolbox'};
 
 requiredSupportPackages = {};
-requiredSupportPackages(1).Name = {'UAV Toolbox Support Package for PX4 Autopilots'};
-requiredSupportPackages(1).Version = {'24.1.2', '24.1.3'};
 
+toolboxList = matlab.addons.installedAddons;
 for ii = 1:length(requiredTools)
-    if ~license('test', char(requiredTools(ii)))
-        warning(['Please install ' char(requiredTools(ii))])
-    end
-end
-
-supportPackagesInstalled = matlabshared.supportpkg.getInstalled;
-if isempty(supportPackagesInstalled)
-    for ii = 1:numel(requiredSupportPackages)
-        warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-    end
-else
-    supportPackagesInstalledNames = {supportPackagesInstalled.Name};
-    supportPackagesInstalledVersions = {supportPackagesInstalled.InstalledVersion};
-    for ii = 1:numel(requiredSupportPackages)
-        compareIdx = contains(supportPackagesInstalledNames, requiredSupportPackages(ii).Name);
-        if ~any(compareIdx)
-            warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-        elseif all(strcmpi(supportPackagesInstalledVersions(compareIdx), requiredSupportPackages(ii).Version))
-            warning(['Please install v' requiredSupportPackages(ii).Version{1} ' or v' ...
-                requiredSupportPackages(ii).Version{2} ' of the ' requiredSupportPackages(ii).Name{1}])
+    % Check if toolbox is installed & if license exists
+    toolboxName = requiredTools{ii};
+    toolboxName = replace(toolboxName, '_', ' '); % replace underscore with space to get names to match matlab.addons.installedAddons names
+    if ~any(strcmpi(toolboxName, toolboxList.Name))
+        if strcmpi(toolboxName, 'Simulink Test')
+            warning(['Please install ' toolboxName])
+        else
+            error(['Please install the required toolbox:' toolboxName])
+        end
+        % Check license
+        if ~license('test', requiredTools{ii})
+            warning(['No license for ' toolboxName])
         end
     end
 end
 
-% initSIL.m Initializes path, load bus definitions, and sets model
+try 
+    mex -setup cpp
+catch 
+    error("Currently, there's no C++ compiler installed. MinGW-w64 C/C++/Fortran Compiler can be installed from" + ...
+        " using Matlab Add-Ons" )
+end
+
+% Initializes path, load bus definitions, and sets model
 % parameters for vehicleSIL.slx
 addpath(genpath('PX4-Autopilot'));
 addpath(genpath('environment'));
@@ -154,12 +151,13 @@ setUpEnvironment
 if strcmpi(opts.failureType,"none")
     modelName = 'VehicleSilSimulation';
     jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
+    warning('off', 'Simulink:ConfigSet:CannotFindConfigSet');
     load_system(modelName);
     set_param(jsBlockPath, 'JoystickID', 'None');
 else
     modelName = 'VehicleSilSimulation';
     jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
-    load_system(modelName);
+    load_system(modelName); 
     set_param(jsBlockPath, 'JoystickID', 'Joystick1');
 end
 
@@ -175,6 +173,14 @@ catch
         "EnumHexFailureType.m or EnumF16FailureType.m")
 end
 
+% Prompt the user to assign a joystick button to the failure injection.
+if ~strcmpi(opts.failureType,"none") &&  opts.assignFailureButton
+    assignFailureInjectionButton
+    opts.failureInjectionButton = failureInjectionButton;
+else
+    % Default failure injection button assignment.
+    opts.failureInjectionButton = uint32(64);
+end
 
 % Save all workspace variables and push them to base workspace
 save('workspace')
@@ -242,36 +248,37 @@ if opts.launchFullSIL
     if ~opts.PX4InWSL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
-        opts.simHostIPVal = double(split(opts.simHostIP, '.'));
         if opts.makeClean
-            [~,cmdout] = system(sprintf(['start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make clean && ' ...
+            system(sprintf(['start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make clean && ' ...
                 'make px4_sitl_default %s"'],...
                 opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
                 compilerVehicleName ));
         else
-            [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
+            system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
                 opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
                 compilerVehicleName ));
         end
     else
         if opts.makeClean
             % Launch PX4-Autopilot that is cloned into the WSL root directory
-            [~,cmdout] = system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && ' ...
+            system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && ' ...
                 'make clean && make px4_sitl_default %s"'],...
                 opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
                 opts.simHostIPVal(4), compilerVehicleName ));
         else
             % Launch PX4-Autopilot that is cloned into the WSL root directory
-            [~,cmdout] = system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d &&' ...
+            system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d &&' ...
                 ' make px4_sitl_default %s"'],...
                 opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
                 opts.simHostIPVal(4), compilerVehicleName ));
         end
     end
 
-    if ~isempty(cmdout)
-        % Display system command output if system call fails
-        error(cmdout)
+    % Check to make sure WSL is running. Pause is needed to provide time for system command to fail.
+    pause(3)
+    [~, result] = system('tasklist /FI "IMAGENAME eq wsl.exe"');
+    if ~contains(result, 'wsl.exe')
+        error('WSL/PX4 did not successfully launch, try launching PX4 manually and starting the VehicleSilSimulation.slx manually.')
     end
 
     % Open simulink model

@@ -44,6 +44,29 @@
   <model>
    <path archive="y">Aircraft/bigHexy/Models/bigHexy.xml</path>
   </model>
+  <view n="0">
+  <type>Chase</type>
+    <internal type="bool">true</internal>
+    <enabled>true</enabled>
+    <config>
+      <!-- Camera distance from aircraft -->
+      <pitch-offset-deg>-10.0</pitch-offset-deg>
+        <x-offset-m>0</x-offset-m>   
+        <y-offset-m>5</y-offset-m>     <!-- This is the Z -->
+        <z-offset-m>20</z-offset-m>     
+        
+        <!-- Camera angle relative to aircraft -->
+        <yaw-offset-deg>0</yaw-offset-deg>
+
+        <!-- Field of view -->
+        <default-field-of-view-deg>70</default-field-of-view-deg>
+
+        <!-- Smoothness (optional, makes chase motion less jerky) -->
+        <follow-smoothness>4</follow-smoothness>
+        <follow-lag>4</follow-lag>
+
+    </config>
+</view>
  </sim>
 
 </PropertyList>
