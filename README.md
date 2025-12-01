@@ -206,3 +206,16 @@ You may encounter issues when building PX4 for the first time, for example:`modu
 pip install empy==3.3.4
 ```
 
+### matPlotLib Issue
+
+If you see the below error while building PX4, a change to the `Tools/setup/requirements.txt`, as shown in Figure 6 must be made. 
+
+ERROR: Invalid requirement: 'matplotlib>=3.0.': . suffix can only be used with == or != operators
+    matplotlib>=3.0.*
+              ~~~~~~^ (from line 11 of optimAeroPX4SIL/PX4-Autopilot/Tools/setup/requirements.txt
+<p>
+    <img src="README_Images/matplotlib_Fix.png" alt="MatlabPlotLibFix" width="400"/>
+</p>
+<p>
+    <em>Figure 6: MatlabPlotlib Fix</em>
+</p>
