@@ -28,7 +28,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 1. In git bash:
 
    ```
-   git clone (https)
+   git clone https://github.com/optimAero/optimAeroPX4SIL.git
    cd optimAeroPX4SIL
    git submodule update --init --recursive
    ```

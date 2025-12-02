@@ -284,6 +284,24 @@ if opts.launchFullSIL
     % Open simulink model
     cd(currLoc)
     open VehicleSilSimulation.slx
+
+    % Check to see if FlightGear is open and ready for TCP send
+    tStart = tic;   % start timer
+    isTCPOpen = false;
+    % Wait 15 seconds to establish TCP connection
+    while toc(tStart) < 15 && ~isTCPOpen
+        try
+            tcpclient("127.0.0.1", 5400); %#ok<NASGU>
+            isTCPOpen = true;
+        catch
+            pause(2);  % retry delay 
+        end
+    end
+
+    if ~isTCPOpen && strcmpi(opts.vehicleType,"hexarotor") && strcmpi(opts.visualizationType,"FlightGear")
+        error("TCP port for hexarotor visualization in FlightGear not open. Run flight gear manually and" + ...
+            " then run VehicleSILSImulation.slx")
+    end
     % Run simulink model
     sim VehicleSilSimulation
 end
