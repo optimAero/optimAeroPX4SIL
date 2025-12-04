@@ -202,6 +202,11 @@ The F16 parameters that should be used when running the simulation can be found 
 
 In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
 
+
+### Simulink has initialized but PX4 has not
+
+In some cases, if Simulink is initializing and PX4 has not been initialized, you will not be able to close or use MATLAB. Unfortunately, in this case, MATLAB must be killed using Task Manager. 
+
 ### PX4 Build errors
 
 You may encounter issues when building PX4 for the first time, for example:`module 'em' has no attribute 'RAW_OPT'`. Which may require you to update or install certain python packages as shown below:
@@ -222,4 +227,5 @@ ERROR: Invalid requirement: 'matplotlib>=3.0.': . suffix can only be used with =
 </p>
 <p>
     <em>Figure 6: MatlabPlotlib Fix</em>
+
 </p>
