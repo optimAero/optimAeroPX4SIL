@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HarnessInformation>
   <Harness>
-    <P Name="Name">gravityTestHarness</P>
+    <P Name="Name">inertialDynamicsTestHarness</P>
     <P Name="Description"/>
     <P Name="CreatedBy">jerem</P>
-    <P Name="CreatedOn">Sat Oct 19 11:29:42 2024</P>
+    <P Name="CreatedOn">Sat Oct 19 11:05:21 2024</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Thu Dec 04 19:18:56 2025</P>
+    <P Name="LastSaved">Sun Oct 19 12:08:10 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
     <P Name="Directory"/>
-    <P Name="FileName">gravityTestHarness.slx</P>
+    <P Name="FileName">inertialDynamicsTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
-    <P Name="HarnessUUID">d1c22a05-565d-4da6-80e3-ef818497d061</P>
-    <P Name="HarnessConnectionsMap">0,1,2|0|0,0,0,0||</P>
+    <P Name="HarnessUUID">ce7866d3-64a3-4acf-96eb-c31c3aecf1d8</P>
+    <P Name="HarnessConnectionsMap">0,1|0|0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -33,14 +33,14 @@
     <P Name="SinkTypeString">Test Assessment</P>
     <P Name="CustomSourcePath"/>
     <P Name="CustomSinkPath"/>
-    <P Name="BlockSIDs">2|21|0|0|0|0|0</P>
+    <P Name="BlockSIDs">2|29|0|0|0|0|0</P>
     <P Name="OpenGraphs"/>
     <P Name="ExistingBuildFolder"/>
     <P Name="FunctionInterfaceName"/>
     <P Name="SysArchSUTModel"/>
   </Harness>
   <ModelMetadata>
-    <P Name="ModelUUID">04a18d9d-fc18-4ef9-8f7f-c67403e486ee</P>
-    <P Name="OwnerBDName">gravity</P>
+    <P Name="ModelUUID">de2dbba9-4327-4941-8e87-c577d19fb3a1</P>
+    <P Name="OwnerBDName">inertialDynamics</P>
   </ModelMetadata>
 </HarnessInformation>
