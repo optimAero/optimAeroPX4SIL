@@ -99,10 +99,13 @@ logs/
 tmp/
 cache/
 work/
+ignoreFolder/
 
-# Ignore MATLAB associated files except those associated with testHarnesses
+# Ignore MATLAB associated files except those associated with testHarnesses and visualization files
 *.xml
-!F16/**/*.xml
+!vehicle/**/**/*.xml
 !environment/**/*.xml
 !sensors/**/*.xml
 !*harnessInfo.xml
+!visualization/
+!visualization/**/*.xml

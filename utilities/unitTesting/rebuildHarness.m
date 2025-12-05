@@ -72,7 +72,11 @@ function [] = rebuildHarness(modelName, varargin)
                 modelName = slxName{1}(1:end-4);
                 harnessName = [slxName{1}(1:end-4) 'TestHarness'];
                 load_system(modelName)
-                sltest.harness.rebuild(modelName, harnessName)
+                try
+                    sltest.harness.rebuild(modelName, harnessName)
+                catch ME
+                    warning("Cannot rebuild " + harnessName)
+                end
                 close_system(modelName, 0);
             end
         end

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<PropertyList include="Models/bigHexy.xml">
+
+ <sim>
+  <description>optimAero Big-Hexy Hexacopter | Palledrone</description>
+  <long-description>
+  Big-Hexy is a 250 lb hexarotor designed and fabricated by optimAero personnel.
+  </long-description>
+  <author>optimAero, (Dmitry Bershadsky, Stephen Haviland, Jeremy Epps)</author>
+  <status>production</status>
+  <rating>
+    <FDM type="int">5</FDM>
+    <systems type="int">4</systems>
+    <cockpit type="int">4</cockpit>
+    <model type="int">4</model>
+  </rating>
+  <flight-model>jsb</flight-model>
+  <variant-id type="int">5</variant-id>
+  <variant-engine type="int">2</variant-engine>
+  <tags>
+      <tag>bigHexy</tag>
+      <tag>Palledrone</tag>
+      <tag>optimAero</tag>
+    </tags>
+
+  <startup>
+   <splash-texture>Aircraft/bigHexy/bigHexySplash.png</splash-texture>
+  </startup>
+
+<previews>
+            <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>bigHexySplash.png</path>
+            </preview>
+              <preview>
+                <type>exterior</type>
+                <splash type="bool">true</splash>
+                <path>bigHexySplash2.png</path>
+            </preview>
+  </previews>
+
+  <model>
+   <path archive="y">Aircraft/bigHexy/Models/bigHexy.xml</path>
+  </model>
+  <view n="0">
+  <type>Chase</type>
+    <internal type="bool">true</internal>
+    <enabled>true</enabled>
+    <config>
+      <!-- Camera distance from aircraft -->
+      <pitch-offset-deg>-10.0</pitch-offset-deg>
+        <x-offset-m>0</x-offset-m>   
+        <y-offset-m>5</y-offset-m>     <!-- This is the Z -->
+        <z-offset-m>20</z-offset-m>     
+        
+        <!-- Camera angle relative to aircraft -->
+        <yaw-offset-deg>0</yaw-offset-deg>
+
+        <!-- Field of view -->
+        <default-field-of-view-deg>70</default-field-of-view-deg>
+
+        <!-- Smoothness (optional, makes chase motion less jerky) -->
+        <follow-smoothness>4</follow-smoothness>
+        <follow-lag>4</follow-lag>
+
+    </config>
+</view>
+ </sim>
+
+</PropertyList>

@@ -4,80 +4,103 @@
 % ======================================================================================================================
 %                                                       INPUTS
 % ======================================================================================================================
-% opts.launchFullSIL:            Flag used to launch the full SIL, set to False if desire is to only to load workspace. 
-%                                NOTE: should not be used on first attempt of using SIL. 
+% opts.launchFullSIL:            Flag used to launch the full SIL, set to False if desire is to only to load workspace.
+%                                NOTE: should not be used on first attempt of using SIL.
 % opts.visualizationType:        The method that will be used to visualize the aircraft while SIL is running
 % opts.simHostIP:                IP Address of users computer
-% opts.vehicleType:              The plant model that will be used during the SIL simulation (currently can only be F-16)
+% opts.vehicleType:              The plant model that will be used during the SIL simulation: F-16, hexarotor, etc
 % opts.controllerType:           The flight controller used in the SIL simulation (currently can only be PX4)
+% opts.failureType               A control surfance, engine, or motor failure. Must be element of  EnumHexFailureType.m or EnumF16FailureType.m
 % opts.PX4RepoPath               Path relative to optimAeroPX4SIL if PX4 repo is on windows side, or path relative to root wsl directory
 % opts.PX4InWSL                  If attempting to use the PX4 repo cloned into the WSL root directory, set this variable to true
+% opts.makeClean                 Removes all the compiled build files and intermediate artifacts. This may need to be 
+%                                set to true when making changes to the configuration file. 
+% opts.clearSLCache              Clear simulink cache. This deletes the work folder and will force all slx models 
+%                                to be recompiled. This can fix some Simulink errors
+% opts.flightGearFreq_Hz         Frequency of the TCP send block is sending data to flightGear
+% opts.assignFailureButton:      Set to true if you want to map a vehicle failrue to a joystick button
 % ======================================================================================================================
 %                                                    EXAMPLE USAGE
 % ======================================================================================================================
-% initVehicleSIL("launchFullSIL", true, "visualizationType","FlightGear","simHostIP","10.0.0.200","PX4InWSL",true): 
-% Launch full SIL sim, visualize vehicle using FlightGear, use the PX4 repo clned into the WSL root directory and set IP 
-% address for PX4 connection.
-% initVehicleSIL("launchFullSIL",false):   Run the intialization file only, this should be used before changing any models
+% initVehicleSIL("launchFullSIL", false):   
+%   Run the intialization file only, this should be used before changing any models
+
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "F-16", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL",true):
+%   Launch full SIL sim of F-16, visualize vehicle using FlightGear, use the PX4 repo cloned into the WSL root directory
+%   and set IP address for PX4 connection.
+
+% initVehicleSIL("launchFullSIL", false, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP", "10.0.0.200","PX4InWSL", false)
+%   Load sim as "hexarotor"
+
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear", "simHostIP",
+% "192.168.12.145", "PX4InWSL", true, "makeClean", true, "clearSLCache", false)
+%   Launch full sim for hexarotor in FlightGear using the PX4 repo in the Linux partition for faster compilation, 
+%   make clean on PX4 compile and  NOT clearing the Simulink clache
+
+% initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear","PX4InWSL",
+% true,"failureType","motor1")
+%  Full launch of sim using hexarotor with the failure injection set to motor1.
 function initVehicleSIL(opts)
 
 arguments
-    opts.launchFullSIL        (1,1) logical = false        
-    opts.vehicleType          (1,1) string  = "F-16"       % Currently F-16 is the only vehicle config
-    opts.visualizationType    (1,1) string  = "Matlab"     % Options "PassThrough", "FlightGear", or "Matlab"
-    opts.simHostIP            (1,1) string  = "10.0.0.243" % Replace with your IP address
-    opts.controllerType       (1,1) string  = "PX4"        % Currently PX4 is the only controller that can be used
-    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   
-    opts.PX4InWSL             (1,1) logical = false        
+    opts.launchFullSIL        (1,1) logical = false
+    opts.vehicleType          (1,1) string  = "hexarotor"       % "F-16", "hexarotor"
+    opts.visualizationType    (1,1) string  = "Matlab"          % "PassThrough", "FlightGear", or "Matlab"
+    opts.simHostIP            (1,1) string  = "auto"            % Replace with your IP address (not WSL's IP)
+    opts.controllerType       (1,1) string  = "PX4"             % Currently PX4 is the only controller that can be used
+    opts.failureType          (1,1) string  = "none"            % Must be a F-16 or hexartor failure type listed in EnumHexFailureType.m or EnumF16FailureType.m
+    opts.PX4RepoPath          (1,1) string  = "PX4-Autopilot"   % PX4 repository path
+    opts.PX4InWSL             (1,1) logical = false             % Is PX4 repository stored in Linux partition
+    opts.makeClean            (1,1) logical = false             % Run "make clean" before "make" - if in doubt, use if PX4 config changes made
+    opts.clearSLCache         (1,1) logical = false             % Clear Simulink cache
+    opts.flightGearFreq_Hz    (1,1) double  = 0.5               % Frequency of the TCP send block is sending data to flightGear
+    opts.assignFailureButton  (1,1) logical = false             % Set to true if you want to map a vehicle failrue to a joystick button
 end
+restoredefaultpath
 % Note: In future versions these will be arguments
-vehicleParams.type                  = opts.vehicleType;
-vehicleParams.controllerType        = opts.controllerType;
-visualizationType                   = opts.visualizationType;
-controllerType                      = opts.controllerType;
-vehicleType                         = opts.vehicleType;
+vehicleParams.type                   = opts.vehicleType;
+vehicleParams.controllerType         = opts.controllerType;
+vehicleParams.failureType            = opts.failureType;
+visualizationParams.flightGearFreq_Hz      = opts.flightGearFreq_Hz;
 
 % check for required toolboxes, support packages, and MATLAB version
-% list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names-from-ver#answer_300675)
+% list is here: (https://www.mathworks.com/matlabcentral/answers/377731-how-do-features-from-license-correspond-to-names
+% -from-ver#answer_300675)
 requiredTools ={'Aerospace_Blockset'
     'Aerospace_Toolbox'
-    'Control_Toolbox'
-    'MATLAB_Coder'
-    'Real-Time_Workshop' %Simulink Coder
-    'RTW_Embedded_Coder' %Embedded Coder
     'SIMULINK'
     'Simulink_Test'
+    'Instrument Control Toolbox'
     'UAV_Toolbox'};
 
 requiredSupportPackages = {};
-requiredSupportPackages(1).Name = {'UAV Toolbox Support Package for PX4 Autopilots'};
-requiredSupportPackages(1).Version = '24.1.2';
 
+toolboxList = matlab.addons.installedAddons;
 for ii = 1:length(requiredTools)
-    if ~license('test', char(requiredTools(ii)))
-        warning(['Please install ' char(requiredTools(ii))])
-    end
-end
-
-supportPackagesInstalled = matlabshared.supportpkg.getInstalled;
-if isempty(supportPackagesInstalled)
-    for ii = 1:numel(requiredSupportPackages)
-        warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-    end
-else
-    supportPackagesInstalledNames = {supportPackagesInstalled.Name};
-    supportPackagesInstalledVersions = {supportPackagesInstalled.InstalledVersion};
-    for ii = 1:numel(requiredSupportPackages)
-        compareIdx = contains(supportPackagesInstalledNames, requiredSupportPackages(ii).Name);
-        if ~any(compareIdx)
-            warning(['Please install ' char(requiredSupportPackages(ii).Name)])
-        elseif ~strcmp(supportPackagesInstalledVersions(compareIdx), requiredSupportPackages(ii).Version)
-            warning(['Please install v' requiredSupportPackages(ii).Version])
+    % Check if toolbox is installed & if license exists
+    toolboxName = requiredTools{ii};
+    toolboxName = replace(toolboxName, '_', ' '); % replace underscore with space to get names to match matlab.addons.installedAddons names
+    if ~any(strcmpi(toolboxName, toolboxList.Name))
+        if strcmpi(toolboxName, 'Simulink Test')
+            warning(['Please install ' toolboxName])
+        else
+            error(['Please install the required toolbox:' toolboxName])
+        end
+        % Check license
+        if ~license('test', requiredTools{ii})
+            warning(['No license for ' toolboxName])
         end
     end
 end
 
-% initSIL.m Initializes path, load bus definitions, and sets model
+try 
+    mex -setup cpp
+catch 
+    error("Currently, there's no C++ compiler installed. MinGW-w64 C/C++/Fortran Compiler can be installed from" + ...
+        " using Matlab Add-Ons" )
+end
+
+% Initializes path, load bus definitions, and sets model
 % parameters for vehicleSIL.slx
 addpath(genpath('PX4-Autopilot'));
 addpath(genpath('environment'));
@@ -87,10 +110,14 @@ addpath(genpath('signals'));
 addpath(genpath('utilities'));
 addpath(genpath('visualization'));
 addpath(genpath('PX4SILConnector'));
-if strcmp(vehicleParams.type, "F-16")
-    addpath(genpath('F16'));
-elseif strcmp(vehicleParams.type, "Default")
-    addpath(genpath('vehicle'));
+addpath(genpath('vehicle/common'));
+
+if strcmpi(vehicleParams.type, "F-16")
+    addpath(genpath('vehicle/F16'));
+    compilerVehicleName = "optimAeroF16";
+elseif strcmpi(vehicleParams.type, "hexarotor")
+    addpath(genpath('vehicle/hexarotor'))
+    compilerVehicleName = "optimAeroHex";
 end
 
 Simulink.fileGenControl('set', ...
@@ -98,105 +125,61 @@ Simulink.fileGenControl('set', ...
     'CodeGenFolder', 'work', ...
     'createDir', true)
 
-
 load('standardSILConfigurationParams.mat')
 stepSize_s = 0.004; % step size used in standardSILConfugrationParams.mat file
 
 % Conversions
-ft2m = 0.3048;
-m2ft = 3.28084;
-lbf2N = 4.44822;
-lbs2kg = 0.453592;
+constants
 
 % load bus definitions
-busDefinition
+BusDefinition(vehicleParams.type)
 
-% load vehicle specific data
-if strcmp(vehicleParams.type, "F-16")
-    vehicleParams.dryMass_kg = 20500 * lbs2kg;
-    vehicleParams.aircraftInertialBody_kgm2 = [12820.61 0 1331.41; 0 75673.62 0; 0 0 85552.11];
-    vehicleParams.bRef_m = 30 * ft2m;
-    vehicleParams.SRef_m2 = 27.8709;
-    vehicleParams.cRef_m = 11.32 * ft2m;% Mean Aero Chord
-    vehicleParams.aircraftCg_m = [vehicleParams.cRef_m * 0.35; 0; 0];
-    vehicleParams.refCG_m = [vehicleParams.cRef_m * 0.35; 0; 0]; % reference cg
-    aeroDataF16
-end
+% load vehicle specific data and initial conditions
+setUpVehicle
 
-% Initial Conditions
-% set initial location to Juancho E. Yrausquin Airport
-referenceAltitude_m = 125 * ft2m;
-referenceLatitude_deg = 17.645927;
-referenceLongitude_deg = -63.222027;
-aircraftInitialPosInNED_m = [0, 0, -referenceAltitude_m];
-aircraftInitialVelInBody_mps = [0, 0, 0];
-aircraftInitialEuler_rad = [0, 0, 1.9199];
-
-aircraftInitialBodyRates_radps = [0, 0, 0];
-referenceDecimalYear_years = 2024; % World magnetic model doesn't work in 2025
-aircraftInitial.lat_deg = referenceLatitude_deg;
-aircraftInitial.lon_deg = referenceLongitude_deg;
-aircraftInitial.alt_m = aircraftInitialPosInNED_m(3);
-aircraftInitial.yawAngle_rad = aircraftInitialEuler_rad(3);
-terrainHeightNED_m = aircraftInitialPosInNED_m(3);
-
-parameters.gps.vertPositionAccuracy_m = 40;
-parameters.gps.horzPositionAccuracy_m = 30;
-parameters.gps.vertPositionAccuracy_m = 0;
-parameters.gps.velocityAccuracy_mps = 0.05;
-parameters.gps.decayFactor_nd = 0.999; % 0 -> white noise, 1 -> random walk
-
-% specific accel and gyro not known, so use parameters from a representative
-% device "ICM-42688-P"
-parameters.accel.naturalFrequency_radps = 190;
-parameters.accel.dampingRatio_nd = 0.707;
-parameters.accel.scaleFactCrossCoupling_nd = [1 0 0; 0 1 0; 0 0 1;];
-parameters.accel.measurementBias_mps2 = [0 0 0];
-parameters.accel.lowerUpperLimits_mps2 = [-10000 -10000 -10000 10000 10000 10000];
-parameters.accel.noisePower_mps2 = [0.0000001 0.0000001 0.0000001];
-parameters.gyro.naturalFrequency_radps = 190;
-parameters.gyro.dampingRatio_nd = 0.707;
-parameters.gyro.scaleFactCrossCoupling_nd = [1 0 0; 0 1 0; 0 0 1;];
-parameters.gyro.measurementBias_radps = [0 0 0];
-parameters.gyro.gSensitiveBias_radps = [0 0 0];
-parameters.gyro.lowerUpperLimits_radps = [-10000 -10000 -10000 10000 10000 10000];
-parameters.gyro.noisePower_radps = [0.0000001 0.0000001 0.0000001];
-parameters.mag.noisePower_gauss = [0.000001 0.000001 0.000001];
-parameters.baro.noisePower_Pa = [0.001];
-parameters.thermo.noisePower_degC = [0.001];
+% load sensor data
+setUpSensors
 
 %actuatorInterface
-actuatorDelay_s = 0.005;
-plantSampleTime_s = 0.01;
-parameters.engine.minThrottle = 0.01; %idle happens above this value
+setUpActuators
 
-% Load F16 Engine Model
-F16EngineData
+% set up winds
+setUpEnvironment
 
-% Winds aloft
-xWindInNED_mps = 0;
-yWindInNED_mps = 0;
-zWindInNED_mps = 0;
+% If no failureType selected, disable joystick failure injection.
+% If failureType selected, set Joystick1 so failure can be injected into plant.
+if strcmpi(opts.failureType,"none")
+    modelName = 'VehicleSilSimulation';
+    jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
+    warning('off', 'Simulink:ConfigSet:CannotFindConfigSet');
+    load_system(modelName);
+    set_param(jsBlockPath, 'JoystickID', 'None');
+else
+    modelName = 'VehicleSilSimulation';
+    jsBlockPath = [modelName, '/Failure Injection/PilotJoystick'];
+    load_system(modelName); 
+    set_param(jsBlockPath, 'JoystickID', 'Joystick1');
+end
 
-% Gusts
-gustEnabled = false;
-gustStartTime_sec = 5;
-gustDuration_sec = 5; % when to start decreasing the gust
-gustLength_m = [120 100 80];
-gustAmplitude_mps = [3.5 3.5 3.0];
+% Check failure type
+try
+    if strcmpi(vehicleParams.type,"F-16")
+        vehicleParams.failureType = EnumF16FailureType(vehicleParams.failureType);
+    elseif strcmpi(vehicleParams.type,"hexarotor")
+        vehicleParams.failureType = EnumHexFailureType(vehicleParams.failureType);
+    end
+catch
+    error("The selected failure type does not match the selected vehicle. Failure type must be an enum from " + ...
+        "EnumHexFailureType.m or EnumF16FailureType.m")
+end
 
-% Turbulence
-turbulenceEnabled = false;
-turbulenceStartTime_sec = 5;
-turbulenceEndTime_sec = 10;
-turbulenceWingspan_m = 10;
-turbulenceMinAirspeed_mps = 1;
-
-% Variant Models
-% Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
-if strcmp(opts.visualizationType, 'Matlab')
-    warning("When using Matlab visualization the SIL runs slower than FlightGear. Recommend setting simulink model to" + ...
-        " accelerator mode.")
+% Prompt the user to assign a joystick button to the failure injection.
+if ~strcmpi(opts.failureType,"none") &&  opts.assignFailureButton
+    assignFailureInjectionButton
+    opts.failureInjectionButton = failureInjectionButton;
+else
+    % Default failure injection button assignment.
+    opts.failureInjectionButton = uint32(64);
 end
 
 % Save all workspace variables and push them to base workspace
@@ -204,11 +187,33 @@ save('workspace')
 evalin("base", 'load workspace.mat')
 delete workspace.mat
 
+% Variant Models
+% Note: When using the FlightGear option, you must start Flightgear manually by running runFlightGear.m
+if strcmpi(opts.visualizationType, 'Matlab')
+    load_system('VehicleSilSimulation.slx')
+    warning("When using Matlab visualization the SIL simulator runs slower than FlightGear. Recommend setting simulink model to" + ...
+        " accelerator mode.")
+    if strcmpi(vehicleParams.type,'Hexarotor')
+        set_param('VehicleSilSimulation/visualizationVariant/MatlabVisualization/UAV Animation', 'UAVType', ...
+            'Multirotor');
+    else
+        set_param('VehicleSilSimulation/visualizationVariant/MatlabVisualization/UAV Animation', 'UAVType', ...
+            'FixedWing');
+    end
+end
 % Launch full SIL if requested
 if opts.launchFullSIL
+
+    % Get WSL IP address if simHostIP is set to auto 
+    if (opts.simHostIP) == "auto"
+        getWSLIP
+        opts.simHostIP = wslVEip;
+    end
+    opts.simHostIPVal = double(split(string(opts.simHostIP), '.'));
+
     % Run flightgear if requested
     currLoc = pwd;
-    if strcmp(opts.visualizationType, "FlightGear")
+    if strcmpi(opts.visualizationType, "FlightGear")
         evalin("base", 'runFlightGear')
     end
 
@@ -216,30 +221,89 @@ if opts.launchFullSIL
     disp('Launch QGroundControl manually.');
 
     % Launch PX4
-    opts.simHostIPVal = double(split(opts.simHostIP, '.'));
+    if opts.clearSLCache
+        cacheFolderPath = 'work'; 
+
+        if exist(cacheFolderPath, 'dir')
+            fileTypes = {'*.slxc', '*.mexw64'};
+            
+            for k = 1:length(fileTypes)
+                files = dir(fullfile(cacheFolderPath, '**', fileTypes{k}));
+                
+                for i = 1:length(files)
+                    filePath = fullfile(files(i).folder, files(i).name);
+                    try
+                        delete(filePath);
+                        fprintf('Deleted: %s\n', filePath);
+                    catch ME
+                        fprintf('Error deleting file: %s\nReason: %s\n', filePath, ME.message);
+                    end
+                end
+            end
+        else
+            fprintf('Folder "%s" does not exist.\n', cacheFolderPath);
+        end
+    end
+
     if ~opts.PX4InWSL
         % Launch PX4-Autopilot that is checked out on the Windows side
         eval(strcat("cd ", opts.PX4RepoPath))
-        opts.simHostIPVal = double(split(opts.simHostIP, '.'));
-        [~,cmdout] = system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-            opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
+        if opts.makeClean
+            system(sprintf(['start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make clean && ' ...
+                'make px4_sitl_default %s"'],...
+                opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
+                compilerVehicleName ));
+        else
+            system(sprintf('start wsl bash -c "export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default %s"',...
+                opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4), ...
+                compilerVehicleName ));
+        end
     else
-        % Launch PX4-Autopilot that is cloned into the WSL root directory
-        [~,cmdout] = system(sprintf('start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && make px4_sitl_default optimAeroF16"',...
-            opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), opts.simHostIPVal(4)));
+        if opts.makeClean
+            % Launch PX4-Autopilot that is cloned into the WSL root directory
+            system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d && ' ...
+                'make clean && make px4_sitl_default %s"'],...
+                opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
+                opts.simHostIPVal(4), compilerVehicleName ));
+        else
+            % Launch PX4-Autopilot that is cloned into the WSL root directory
+            system(sprintf(['start wsl bash -c "cd ~/%s && export PX4_SIM_HOSTNAME=%d.%d.%d.%d &&' ...
+                ' make px4_sitl_default %s"'],...
+                opts.PX4RepoPath, opts.simHostIPVal(1), opts.simHostIPVal(2), opts.simHostIPVal(3), ...
+                opts.simHostIPVal(4), compilerVehicleName ));
+        end
     end
 
-    if ~isempty(cmdout)
-        % Display system command output if system call fails
-        error(cmdout)
+    % Check to make sure WSL is running. Pause is needed to provide time for system command to fail.
+    pause(3)
+    [~, result] = system('tasklist /FI "IMAGENAME eq wsl.exe"');
+    if ~contains(result, 'wsl.exe')
+        error('WSL/PX4 did not successfully launch, try launching PX4 manually and starting the VehicleSilSimulation.slx manually.')
     end
 
     % Open simulink model
     cd(currLoc)
     open VehicleSilSimulation.slx
+
+    % Check to see if FlightGear is open and ready for TCP send
+    tStart = tic;   % start timer
+    isTCPOpen = false;
+    % Wait 15 seconds to establish TCP connection
+    while toc(tStart) < 15 && ~isTCPOpen
+        try
+            tcpclient("127.0.0.1", 5400); %#ok<NASGU>
+            isTCPOpen = true;
+        catch
+            pause(2);  % retry delay 
+        end
+    end
+
+    if ~isTCPOpen && strcmpi(opts.vehicleType,"hexarotor") && strcmpi(opts.visualizationType,"FlightGear")
+        error("TCP port for hexarotor visualization in FlightGear not open. Run flight gear manually and" + ...
+            " then run VehicleSILSImulation.slx")
+    end
     % Run simulink model
     sim VehicleSilSimulation
-
 end
 
 end

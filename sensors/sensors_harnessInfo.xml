@@ -3,18 +3,18 @@
   <Harness>
     <P Name="Name">sensorsTestHarness</P>
     <P Name="Description"/>
-    <P Name="CreatedBy">aeroth</P>
-    <P Name="CreatedOn">Fri Jun 14 16:56:49 2024</P>
+    <P Name="CreatedBy">jerem</P>
+    <P Name="CreatedOn">Wed Nov 05 17:58:22 2025</P>
     <P Name="ModifiedBy">jerem</P>
-    <P Name="LastSaved">Sun Oct 19 12:08:15 2025</P>
+    <P Name="LastSaved">Thu Dec 04 19:17:17 2025</P>
     <P Name="Owner">bd</P>
     <P Name="OwnerType">BD_HARNESS</P>
     <P Name="OwnerPath">.</P>
     <P Name="Directory"/>
     <P Name="FileName">sensorsTestHarness.slx</P>
     <P Name="SavedVersion">24.1</P>
-    <P Name="HarnessUUID">61539a89-d5a5-4d0d-a7fc-00cf1e51a88c</P>
-    <P Name="HarnessConnectionsMap">0,1|0|0,0,0,0||</P>
+    <P Name="HarnessUUID">ff5087bd-dabe-411a-adbc-c82ef25c6725</P>
+    <P Name="HarnessConnectionsMap">||0,0,0,0||</P>
     <P Name="VerificationMode">0</P>
     <P Name="HarnessOwnerCheckSum">0,0,0,0</P>
     <P Name="RebuildOnOpen">false</P>
@@ -25,7 +25,7 @@
     <P Name="AutoShapeInputs">false</P>
     <P Name="SLDVCompatible">no</P>
     <P Name="SynchronizationMode">2</P>
-    <P Name="IsImported">false</P>
+    <P Name="IsImported">true</P>
     <P Name="PostRebuildCB"/>
     <P Name="IsCodeContext">false</P>
     <P Name="SchedulerBlock">0</P>
@@ -33,7 +33,7 @@
     <P Name="SinkTypeString">Test Assessment</P>
     <P Name="CustomSourcePath"/>
     <P Name="CustomSinkPath"/>
-    <P Name="BlockSIDs">2|39|0|0|0|0|0</P>
+    <P Name="BlockSIDs">2|46|0|0|0|0|0</P>
     <P Name="OpenGraphs"/>
     <P Name="ExistingBuildFolder"/>
     <P Name="FunctionInterfaceName"/>

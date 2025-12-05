@@ -1,31 +1,42 @@
-<p>
-    <img src="README_Images/optimAero.png" alt="optimAero Logo" width="350"/>
-</p>
+<p align="center">
+    <img src="README_Images/optimAero.png" alt="optimAero Logo" width="750"/>
+<p align="center">
 
-https://www.optim.aero
-
-info@optim.aero
+<p align="center">https://www.optim.aero</p>
+<p align="center">info@optim.aero</p>
 
 <strong>Simulator Preview Video</strong>: (Click to view)
 
-[![Thumbnail](https://img.youtube.com/vi/evAoTjM-tIw/hqdefault.jpg)](https://www.youtube.com/watch?v=evAoTjM-tIw)
-
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=h17urCZkXF8">
+    <img src="https://img.youtube.com/vi/h17urCZkXF8/hqdefault.jpg" alt="Thumbnail" width="640">
+  </a>
+</p>
 
 # optimAero PX4 Simulink SIL Overview
 
-This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently the default plant model is of an F-16 aircraft based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>. A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. **All simulink models were created using MATLAB 2024a Update 6**.
+This repository houses a software in the loop (SIL) simulation for an aircraft using the PX4 controller and a Simulink-based physics plant, sensor, and environmental model. The purpose of this SIL is to provide the user with an example of how to connect the PX4 flight controller to a Simulink plant model. The flight controller used in this SIL is a modified PX4 autopilot (V1.14.0). The SIL (`VehicleSilSimulation.slx`) is located in the root directory of the repo. The plant (`VehiclePlant.slx`) is also housed in the root directory. Currently there are two plant models to chose from, a F-16, and the Palledrone, a 250 Group-3 hexarotor UAS. The F-16 is based on the model provided in <em>Aircraft Control and Simulation THIRD EDITION (STEVENS, LEWIS, JOHNSON)</em>, and the Palledrone model is based on the Group-3 UAS developed by RotorX discussed in [<strong>The development and flight testing of a group-3, ultra-lift, UAS for the research and development sector</strong>](https://arc.aiaa.org/doi/abs/10.2514/6.2022-3636). A custom plant/aircraft can be added by following the instructions below in the <strong> Adding Custom Vehicle Configuration </strong> section. **All simulink models were created using MATLAB 2024a Update 6**.
 
 ## Windows installation instructions (NOTE: this will fail on Mac, as Matlab does not support Mac for all required toolboxes):
-<strong>Installation Tutorial Video</strong>: (Click to view)[![Thumbnail](https://img.youtube.com/vi/XtOpK9rAsmg/maxresdefault.jpg)](https://www.youtube.com/watch?v=XtOpK9rAsmg)
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=7plK3ksYY64">
+    <img src="https://img.youtube.com/vi/7plK3ksYY64/hqdefault.jpg" alt="Thumbnail" width="640">
+  </a>
+</p>
 
 1. In git bash:
 
    ```
-   git clone (https)
+   git clone https://github.com/optimAero/optimAeroPX4SIL.git
    cd optimAeroPX4SIL
    git submodule update --init --recursive
    ```
-   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: Compilation of PX4 will be slow if the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, complete <strong>Step 2</strong> first and then clone the PX4-Autopilot repo, NOT THE FULL SIL REPO, into the WSL root directory on the Linux partition.
+   If working on slow internet/computer use `--depth 1` tag  `git submodule update --init --recursive --depth 1`. The depth 1 tag may be required on slow connections. This will pull the PX4 repository as well. (NOTE: Compilation of PX4 will be slow because the PX4-Autopilot subrepo is checked out on the Windows partition. To speed it up, complete <strong>Step 2</strong> first and then clone the PX4-Autopilot repo, NOT THE FULL SIL REPO, into the WSL root directory on the Linux partition using the following command while in the WSL root directory):
+
+   ```
+   git clone --branch OAPX4SIL-Hex --single-branch git@github.com:optimAero/PX4-Autopilot.git
+   ```
 
 2. From an elevated cmd prompt (e.g., run cmd as administrator or use Powershell): 
 
@@ -37,7 +48,7 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 `
    Then, install WSL by typing the following into the elevated cmd prompt (Note: the SIL has only been tested using Ubuntu <strong>22.04.3 LTS</strong>): 
     ```
-   wsl --install
+   wsl.exe --install Ubuntu-22.04
    ```
 
 1. In WSL:
@@ -64,20 +75,12 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 
 <strong>To run the simulation, follow these steps:</strong>
 
-5. Make sure the **Required Matlab Toolboxes** and **Required Support Packages** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
-6. You must set up the PX4 build tool chain which can be done through the Matlab setup of the UAV Toolbox Support Package for PX4 Autopilots, Figure 2. https://www.mathworks.com/help/uav/px4/ug/setting-px4-toolchain-ubuntu.html. Otherwise, you can do it via WSL in the folder where you checked out the PX4 repository: ./Tools/setup/ubuntu.sh
-   <p>
-       <img src="README_Images/AddOns.PNG" alt="Add On Manager" width="600"/>
-   </p>
-   <p>
-       <em> Figure 1: Add-On Manager</em>
-   </p>
-   <p>
-       <img src="README_Images/UAVSupportPack.PNG" alt="UAV Support Package" width="600"/>
-   </p>
-   <p>
-       <em> Figure 2: UAV Support Package for PX4</em>
-   </p>
+5. Make sure the **Required Matlab Toolboxes** (listed below) are downloaded in Matlab Add On Manager, Figure 1.
+
+6. You must set up the PX4 build tool chain which can be done using the following command via WSL in the folder where you checked out the PX4 repository:
+```
+ ./Tools/setup/ubuntu.sh
+```
 
 7. Open Matlab, run `initVehicleSIL("launchFullSIL",false,"simHostIP", <simHostIP>)` and change the Matlab directory to its containing folder (this script initializes the workspace)
    1. (OPTIONAL) Vehicle visualization can also occur via FlightGear. To download FlightGear follow the instructions in the <strong> Visualization </strong> section below. Once downloaded the `FlightGear` argument can be used when calling the `initVehicleSil` function (e.g.,`initVehicleSIL("launchFullSIL",false,"visualizationType","FlightGear","simHostIP", <simHostIP>)`)
@@ -89,11 +92,15 @@ This repository houses a software in the loop (SIL) simulation for an aircraft u
 ```
 make px4_sitl_default optimAeroF16
 ```
+or
+```
+make px4_sitl_default optimAeroHex
+```
 Once built, the PX4 executable should connect to the Simulink model. Ensure you run the Simulink file first before attempting to connect the PX4 executable. The Simulink model will report "Initializing" or "waiting to connect on 4560" when it is ready for the PX4 executable to connect.
 
 ## Launching SIL AFTER initial setup
 
-After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true,"visualizationType","FlightGear","simHostIP","192.168.50.236")` ). <strong>If the PX4-Autopilot repo has been cloned on the WSL root directory use the `"PX4InWSL",true` argument.</strong>
+After the initial setup, the full SIL can be launched using the `initVehicleSIL` with the `launchFullSIL` argument set to true. Set all arguments as needed. Example: `initVehicleSIL("launchFullSIL", true, "vehicleType", "hexarotor", "visualizationType", "FlightGear")`. If PX4 cannot establish a connection, close the WSL terminal and run the `initVehicleSIL` function using the `simHostIP` argument (example: `initVehicleSIL("launchFullSIL",true, "vehicleType", "hexarotor","visualizationType","FlightGear","simHostIP","192.168.50.236")` ). <strong>If the PX4-Autopilot repo has been cloned on the WSL root directory use the `"PX4InWSL",true` argument.</strong>
 
 ## SIL Connector Notes
 
@@ -109,17 +116,11 @@ If additional UTs need to be created, the makeHarness function can be used to ge
 
 1. Aerospace Toolbox
 2. Aerospace Blockset
-3. Control System Toolbox
-4. Embedded Coder
-5. Matlab Coder
-6. Simulink
-7. Simulink Coder
-8. Simulink Test
-9. UAV Toolbox
-
-## Required Support Packages
-
-1. UAV Toolbox Support Package for PX4 Autopilots
+3. Simulink
+4. Simulink Test (For running the unit tests)
+5. UAV Toolbox
+6. Instrument control toolbox
+7. MATLAB Support for MinGW-w64 C/C++/Fortran Compiler
 
 ## Visualization
 
@@ -128,6 +129,20 @@ Installing FlightGear is optional but helps with visualizing flights. Once it is
 ## QGroundControl
 
 QGC must be connected in order to use the joystick when flying via PX4. In QGC, the joystick may be set up once PX4 is running and connected to Simulink. Plug in a joystick (an Xbox or PS5 controller has been tested successfully), click the Q in the top left, then Vehicle Setup, then Joystick. Select the correct Active Joystick, and it is recommended to assign some buttons to ARM and ACRO flight mode.
+
+## Failure Injections and Joystick Button Mapping
+
+### Hexarotor
+
+Each motor of the hexarotor can be failed by using the argument `"failureType","motor1"` when running the `initVehicleSIL` function. Note, the failureType must match the vehicleType (i.e, `motor1` failure type must be used when `vehicleType` is `hexarotor`) or you will get an error. Only one motor can be failed at a time and the failures are lathcing, meaning they cannot be removed once triggered during the sim. To remove the failure the Simulator must be restarted. 
+
+### F-16
+
+The ailerons, rudder, elevator and engine of the F-16 can be failed by inputing `ailerons`, `rudder`, `elevator`, or `engine` for the `failureType` argument. For the control surfaces the failure emulates a jammed control surface, meaning the control surface will maintain its current deflection angle. These failures are also latching. The engine failure simply cuts the engine off. 
+
+### Mapping failure injection to your joystick
+
+Failures are injected into the simulation using a chosen button on your joystick. To pick which button on your joystick will trigger the failure, simply set the the `assignFailureButton` argument to `true` when running the `intiVehicleSIL` function. You will be promoted to <strong>HOLD</strong> the joystick button and while holding the button, and while the matlab terminal is selected, press the space button. If successful, you will see a the following printed to the terminal: `Failure injection button has been mapped!`.
 
 ## Adding Custom Vehicle Configuration
 
@@ -175,25 +190,42 @@ The aircraft configuration file must be added to the <strong>px4-autopilot\ROMFS
 
 ## Known Issues
 
-### Mapping commands from PX4
-
-Mapping the commands from the <strong>pixhawk_sil_connector</strong> to the <strong>ServosCommandBus</strong> can be challenging. One method of figuring out what signals from the pixhawk_sil_connector correspond to the vehicle's actuators is by using a demux to view all 16 signals coming from the first output of the px4_sil_connector as shown in Figure 6, and observing how the signals change given a joystick input.
-
 ### Ending the simulation
 
 When ending the simulation after a successful launch, Ctrl+C must be used to end the PX4 autopilot first (in the WSL terminal, press Ctrl+C). If this is not done first, the Simulink model will fail to close and MATLAB will need to be terminated.
 
 ### Vehicle parameters
 
-The F16 parameters that should be used when running the simulation can be found here: ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
+The F16 parameters that should be used when running the simulation can be found here: `ROMFS/px4fmu_common/init.d-posix/airframes/10020_optimAeroF16` and the hexarotor paramters are in the same folder with the file name `10021_optimAeroHex`. In some cases, these parameters are not properly loaded into QGC. If that occurs, the parameters will need to be updated. manually.
 
 ### Simulink fail to launch
 
 In some cases Simulink my fail to run and Matlab/Simulink may crash. If this happens multiple times, delete the work folder in the repo and re-launch the Simulink model
 
+
+### Simulink has initialized but PX4 has not
+
+In some cases, if Simulink is initializing and PX4 has not been initialized, you will not be able to close or use MATLAB. Unfortunately, in this case, MATLAB must be killed using Task Manager. 
+
+### PX4 Build errors
+
+You may encounter issues when building PX4 for the first time, for example:`module 'em' has no attribute 'RAW_OPT'`. Which may require you to update or install certain python packages as shown below:
+
+```
+pip install empy==3.3.4
+```
+
+### matPlotLib Issue
+
+If you see the below error while building PX4, a change to the `Tools/setup/requirements.txt`, as shown in Figure 6 must be made. 
+
+ERROR: Invalid requirement: 'matplotlib>=3.0.': . suffix can only be used with == or != operators
+    matplotlib>=3.0.*
+              ~~~~~~^ (from line 11 of optimAeroPX4SIL/PX4-Autopilot/Tools/setup/requirements.txt
 <p>
-    <img src="README_Images/demuxCmds.png" alt="Demux Commands" width="600"/>
+    <img src="README_Images/matplotlib_Fix.png" alt="MatlabPlotLibFix" width="400"/>
 </p>
 <p>
-    <em>Figure 6: Demux command signals</em>
+    <em>Figure 6: MatlabPlotlib Fix</em>
+
 </p>

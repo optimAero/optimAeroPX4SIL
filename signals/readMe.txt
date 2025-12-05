@@ -1,6 +1,6 @@
 Edit bus definitions:
 
-1. Directly in busDefinition.m
+1. Directly in BusDefinition.m
 
 or
 

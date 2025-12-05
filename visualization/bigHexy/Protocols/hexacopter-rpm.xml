@@ -1,0 +1,8 @@
+<protocol name="hexacopter-rpm">
+  <property n="1" type="float">/engines/engine[1]/rpm</property>
+  <property n="2" type="float">/engines/engine[2]/rpm</property>
+  <property n="3" type="float">/engines/engine[3]/rpm</property>
+  <property n="4" type="float">/engines/engine[4]/rpm</property>
+  <property n="5" type="float">/engines/engine[5]/rpm</property>
+  <property n="6" type="float">/engines/engine[6]/rpm</property>
+</protocol>

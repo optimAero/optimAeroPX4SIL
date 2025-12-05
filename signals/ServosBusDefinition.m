@@ -1,0 +1,86 @@
+% servosBusDefinition: This function creates a bus that contains the actuator positions/dynamics after the corresponding
+% servo commands have been processed. 
+% Note: For new vehicle designs, servo busses can be added here.
+function servosBusDefinition(vehicleType)
+
+switch lower(vehicleType)
+    case "f-16"
+        % Call bus definition for F16
+        ServosBusDefinitionF16
+        elems(1) = Simulink.BusElement;
+        elems(1).Name = 'ServosF16Bus';
+        elems(1).Dimensions = 1;
+        elems(1).DimensionsMode = 'Fixed';
+        elems(1).DataType   = 'Bus: ServosF16Bus';
+        elems(1).Complexity = 'real';
+        elems(1).Min = [];
+        elems(1).Max = [];
+        elems(1).DocUnits = '';
+        elems(1).Description = '';
+
+        ServosBus = Simulink.Bus;
+        ServosBus.HeaderFile = '';
+        ServosBus.Description = '';
+        ServosBus.DataScope = 'Auto';
+        ServosBus.Alignment = -1;
+        ServosBus.PreserveElementDimensions = 0;
+        ServosBus.Elements = elems;
+        clear elems;
+        assignin('base', 'ServosBus', ServosBus);
+    case "hexarotor"
+        % Call bus definition for Hex
+        ServosBusDefinitionHex
+        elems(1) = Simulink.BusElement;
+        elems(1).Name = 'ServosHexBus';
+        elems(1).Dimensions = 1;
+        elems(1).DimensionsMode = 'Fixed';
+        elems(1).DataType   = 'Bus: ServosHexBus';
+        elems(1).Complexity = 'real';
+        elems(1).Min = [];
+        elems(1).Max = [];
+        elems(1).DocUnits = '';
+        elems(1).Description = '';
+
+        ServosBus = Simulink.Bus;
+        ServosBus.HeaderFile = '';
+        ServosBus.Description = '';
+        ServosBus.DataScope = 'Auto';
+        ServosBus.Alignment = -1;
+        ServosBus.PreserveElementDimensions = 0;
+        ServosBus.Elements = elems;
+        clear elems;
+        assignin('base', 'ServosBus', ServosBus);
+    case "customAircraft"
+        % Call bus definition for Custom Aircraft
+        ServosBusDefinitionCustomAircraft
+        elems(1) = Simulink.BusElement;
+        elems(1).Name = 'ServosCustomAircraftBus';
+        elems(1).Dimensions = 1;
+        elems(1).DimensionsMode = 'Fixed';
+        elems(1).DataType   = 'Bus: ServosCustomAircraftBus';
+        elems(1).Complexity = 'real';
+        elems(1).Min = [];
+        elems(1).Max = [];
+        elems(1).DocUnits = '';
+        elems(1).Description = '';
+
+        ServosBus = Simulink.Bus;
+        ServosBus.HeaderFile = '';
+        ServosBus.Description = '';
+        ServosBus.DataScope = 'Auto';
+        ServosBus.Alignment = -1;
+        ServosBus.PreserveElementDimensions = 0;
+        ServosBus.Elements = elems;
+        clear elems;
+        assignin('base', 'ServosBus', ServosBus);
+    otherwise
+        error(char(["unknown vehicle: " vehicleType]))
+
+end
+
+
+
+
+
+
+

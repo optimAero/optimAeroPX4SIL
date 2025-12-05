@@ -13,13 +13,21 @@ else
 end
 % find closest feasible frame rate given the fixed step size (rounding up)
 frameRate_Hz = floor(1 / stepSize_s);
+
 % Check to see if F16 FlightGear visualization exist
 f16DirName = 'C:\Program Files\FlightGear 2020.3\data\Aircraft\f16';
-if isdir(f16DirName)
-    options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=f16-block-52 --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
-else
-    options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=c172p --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=c172p --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+switch lower(vehicleParams.type)
+    case "f-16"
+        if isdir(f16DirName)
+            options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp --aircraft=f16-block-52 --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+        end
+    case "hexarotor"
+        options = sprintf('--fdm=null --native-fdm=socket,in,%d,localhost,5502,udp, --aircraft=bigHexy  --aircraft-dir="visualization/bigHexy" --telnet=5400 --fog-fastest --disable-clouds --disable-sound', frameRate_Hz);
+    otherwise
+        warning("Unknown vehicle for display")
 end
+           
 initial_conditions = sprintf('--in-air=%s  --lat=%f --lon=%f --altitude=%f --heading=%f --timeofday=noon', 'false', init_lat, init_long, init_altitude, rad2deg(init_yaw_deg));
 scenery = sprintf('--enable-terrasync');
 use_additional_options = false;
