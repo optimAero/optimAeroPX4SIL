@@ -42,7 +42,7 @@ function [] = rebuildHarness(modelName, varargin)
         end
         
         %find all .slx
-        slxList = dir(fullfile(pathRootDir, '**\*.slx'));
+        slxList = dir(fullfile(pathRootDir, '**', '*.slx'));
         slxNames = unique({slxList.name});
         for slxName = slxNames
             
