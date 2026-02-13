@@ -47,6 +47,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: VehicleSIL-Test-Report
+          path: "**/*.pdf"             # <-- required, must point to actual file(s)
+          if-no-files-found: warn
 
       # You can use "run-build" to invoke the MATLAB build tool and run build tasks
       #- name: Run the default "test" task in the build file
