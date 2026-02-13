@@ -33,6 +33,7 @@ jobs:
             Aerospace_Blockset
             Aerospace_Toolbox
             UAV_Toolbox
+            Control_Toolbox
 
       - name: Run Vehicle SIL Test Suite
         uses: matlab-actions/run-command@v2
