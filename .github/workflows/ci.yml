@@ -30,6 +30,9 @@ jobs:
           products: >
             Simulink
             Simulink_Test
+            Aerospace_Blockset
+            Aerospace_Toolbox
+            UAV_Toolbox
 
       - name: Run Vehicle SIL Test Suite
         uses: matlab-actions/run-command@v2
