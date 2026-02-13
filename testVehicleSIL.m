@@ -30,10 +30,14 @@ cfg = Simulink.fileGenControl('getConfig');
 currentCacheFolder = cfg.CacheFolder;
 fullpathHere = mfilename('fullpath');
 [pathHere, ~, ~] = fileparts(fullpathHere);
-cfg.CacheFolder = [pathHere, '\work'];
-if ~exist([pathHere, '\work'], 'dir')
-    mkdir(pathHere, 'work')
+workFolder = fullfile(pathHere, 'work');
+cfg.CacheFolder = workFolder;
+
+if ~exist(workFolder, 'dir')
+    mkdir(workFolder)
 end
+Simulink.fileGenControl('setConfig', 'config', cfg);
+
 Simulink.fileGenControl('setConfig', 'config', cfg);
 
 try
